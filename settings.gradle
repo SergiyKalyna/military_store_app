@@ -1,0 +1,18 @@
+pluginManagement {
+    plugins {
+        id 'org.springframework.boot' version "${spring_boot_version}"
+
+        id 'org.jetbrains.gradle.plugin.idea-ext' version "1.1.5"
+        id 'org.owasp.dependencycheck' version "8.2.1"
+    }
+}
+
+rootProject.name = 'military_store_app'
+
+include 'domain'
+include 'infrastructure'
+include 'application'
+include 'infrastructure:database'
+include 'infrastructure:web'
+include 'domain:common'
+include 'domain:service'

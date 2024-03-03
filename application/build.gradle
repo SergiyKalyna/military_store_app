@@ -1,0 +1,17 @@
+dependencies {
+    implementation project(':domain:common')
+    implementation project(':domain:service')
+    implementation project(":infrastructure:web")
+    implementation project(":infrastructure:database")
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    testImplementation libs.unitTest
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+sourceSets {
+    test {
+        java.srcDirs = ['src/test/java/unit', 'src/test/java/integration']
+    }
+}

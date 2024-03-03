@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.gradle.plugin.idea-ext'
+    id 'org.owasp.dependencycheck'
+}
+
+ext.libs = [
+        unitTest: ["org.junit.jupiter:junit-jupiter-api",
+                   "org.junit.jupiter:junit-jupiter-params",
+                   "org.junit.jupiter:junit-jupiter-engine",
+                   "org.mockito:mockito-core",
+                   "org.mockito:mockito-junit-jupiter"],
+        lombok  : 'org.projectlombok:lombok:1.18.30'
+]
+
+subprojects {
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+
+    group = 'com.militarystore'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+            vendor = JvmVendorSpec.ADOPTIUM
+        }
+    }
+
+    dependencies {
+        implementation platform("org.springframework.boot:spring-boot-dependencies:${spring_boot_version}")
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+wrapper {
+    gradleVersion = "8.6"
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+dependencyCheck {
+    cveValidForHours = 24
+    failOnError = false
+    format = 'ALL'
+}
+
