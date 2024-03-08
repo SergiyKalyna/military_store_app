@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.jetbrains.gradle.plugin.idea-ext'
     id 'org.owasp.dependencycheck'
+    id 'checkstyle'
 }
 
 ext.libs = [
@@ -15,6 +16,7 @@ ext.libs = [
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'checkstyle'
 
     repositories {
         mavenCentral()
@@ -36,6 +38,13 @@ subprojects {
     test {
         useJUnitPlatform()
     }
+
+    checkstyle {
+        toolVersion = '10.6.0'
+        configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+        configProperties = ["suppressionFile": rootProject.file('config/checkstyle/suppressions.xml')]
+        sourceSets = [project.sourceSets.main, project.sourceSets.test] as Collection<SourceSet>
+    }
 }
 
 wrapper {
@@ -48,4 +57,3 @@ dependencyCheck {
     failOnError = false
     format = 'ALL'
 }
-

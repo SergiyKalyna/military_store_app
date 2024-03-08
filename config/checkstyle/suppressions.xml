@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+        "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+<suppressions>
+    <suppress files=".+\.(?:jar|zip|war|class|tar|bin)$" checks=".*"/>
+    <suppress files="[\\/]generated-src[\\/]" checks=".*"/>
+
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]api[\\/]entity_creation" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]entity_creation" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]api[\\/]images_import" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]api[\\/]not_financial_data" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]api[\\/]social_media" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]bean[\\/]socialMedia" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]controllers[\\/]freeTextError" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]controllers[\\/]newsStory" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]controllers[\\/]projectManagement" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]controllers[\\/]qaQueries" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]controllers[\\/]socialMedia" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]controllers[\\/]sectionSettings" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]dao[\\/]persistence[\\/]freeTextError" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]dao[\\/]persistence[\\/]logosPicture" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]dao[\\/]persistence[\\/]profileSettings" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]dao[\\/]persistence[\\/]projectManagement" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]dao[\\/]persistence[\\/]queryTag" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]dao[\\/]persistence[\\/]savedSearchesCriteria" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]dao[\\/]persistence[\\/]sectionSettings" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]dao[\\/]persistence[\\/]socialMedia" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]rtsLucene" checks="PackageName"/>
+    <suppress files="com[\\/]usc[\\/]dbd[\\/]migrations[\\/]flyway" checks="TypeName"/>
+    <suppress checks="FileLength" files="HibernateBaseDao.java"/>
+    <suppress checks="FileLength" files="JdbcTemplate.java"/>
+    <suppress checks="FileLength" files="BaseService.java"/>
+    <suppress checks="IllegalImport" files="WebUtils.java"/>
+    <suppress checks="IllegalImport" files="StringEncrypter.java"/>
+    <suppress checks="FileLength" files="DebugController.java"/>
+    <suppress checks="MemberName" files="DebugController.java"/>
+    <suppress checks="LocalVariableName" files="DebugController.java"/>
+    <suppress checks="ParameterAssignment" files="NewsStoryServiceRTSImpl.java"/>
+
+    <suppress checks="MemberName" files="CompanyGeneralInfoForm.java"/>
+    <suppress checks="ParameterName" files="CompanyGeneralInfoForm.java"/>
+    <suppress checks="MemberName" files="LimitedPartnerForm.java"/>
+    <suppress checks="ParameterName" files="LimitedPartnerForm.java"/>
+    <suppress checks="MemberName" files="BusinessEntityForm.java"/>
+    <suppress checks="ParameterName" files="BusinessEntityForm.java"/>
+    <suppress checks="MemberName" files="InvestorGeneralInfoForm.java"/>
+    <suppress checks="ParameterName" files="InvestorGeneralInfoForm.java"/>
+    <suppress checks="MemberName" files="Sec.java"/>
+    <suppress checks="ParameterName" files="Sec.java"/>
+    <suppress checks="MemberName" files="TargetFinancingDealFees.java"/>
+    <suppress checks="ParameterName" files="TargetFinancingDealFees.java"/>
+    <suppress checks="MemberName" files="RTSFinancials.java"/>
+    <suppress checks="ParameterName" files="RTSFinancials.java"/>
+    <suppress checks="MemberName" files="Workflow.java"/>
+    <suppress checks="ParameterName" files="Workflow.java"/>
+    <suppress checks="MemberName" files="WorkflowSearchCriteria.java"/>
+    <suppress checks="ParameterName" files="WorkflowSearchCriteria.java"/>
+    <suppress checks="MemberName" files="WorkflowSearchLog.java"/>
+    <suppress checks="ParameterName" files="WorkflowSearchLog.java"/>
+    <suppress checks="MemberName" files="TaskSearchCriteria.java"/>
+    <suppress checks="ParameterName" files="TaskSearchCriteria.java"/>
+    <suppress checks="MemberName" files="QACheckBean.java"/>
+    <suppress checks="ParameterName" files="QACheckBean.java"/>
+    <suppress checks="MemberName" files="AdvertisementSchedule.java"/>
+    <suppress checks="MemberName" files="AdvertisementSnapshot.java"/>
+    <suppress checks="MemberName" files="Advertisement.java"/>
+    <suppress checks="MemberName" files="InvestorFund.java"/>
+    <suppress checks="MemberName" files="SurveyTemplateReplacement.java"/>
+    <suppress checks="FileLength" files="CompanySurveyServiceImplTest.java"/>
+    <suppress checks="ParameterAssignment" files="VerticalSearchServiceTest.java"/>
+    <suppress checks="FileLength" files="BusinessEntityDupeCheckerSearchCriteriaIntegrationTest.java"/>
+</suppressions>
