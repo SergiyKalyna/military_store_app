@@ -12,7 +12,6 @@ import org.jooq.meta.jaxb.SchemaMappingType;
 import org.jooq.meta.jaxb.Target;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 public class JooqGeneratorTask extends DefaultTask {
 
@@ -42,7 +41,7 @@ public class JooqGeneratorTask extends DefaultTask {
         try {
             Configuration configuration = new Configuration()
                     .withJdbc(new Jdbc()
-                            .withDriver("org.postgresql.Driver")
+                            .withDriver(sqlDriver)
                             .withUrl(jdbcUrl + "/" + dbName)
                             .withUser(username)
                             .withPassword(password))
