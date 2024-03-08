@@ -11,7 +11,7 @@ spring:
   flyway:
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
-    url: "jdbc:postgresql://localhost:5432/military_store"
+    url: ${spring.datasource.url}
   jooq:
     sql-dialect: postgres
 
