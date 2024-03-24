@@ -10,8 +10,10 @@ ext.libs = [
                    "org.junit.jupiter:junit-jupiter-params",
                    "org.junit.jupiter:junit-jupiter-engine",
                    "org.mockito:mockito-core",
-                   "org.mockito:mockito-junit-jupiter"],
-        lombok  : 'org.projectlombok:lombok:1.18.30'
+                   "org.mockito:mockito-junit-jupiter",
+                   "org.assertj:assertj-core"],
+        lombok  : 'org.projectlombok:lombok:1.18.30',
+        slf4j  : 'org.slf4j:slf4j-api:2.0.12'
 ]
 
 subprojects {
