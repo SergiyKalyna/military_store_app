@@ -54,8 +54,7 @@ class UserControllerTest {
 
         mockMvc.perform(get("/users"))
             .andExpect(status().isOk())
-            .andExpect(content().json(objectMapper.writeValueAsString(usersDto)))
-            .andReturn();
+            .andExpect(content().json(objectMapper.writeValueAsString(usersDto)));
     }
 
     @Test
@@ -68,8 +67,7 @@ class UserControllerTest {
 
         mockMvc.perform(get("/users/1"))
             .andExpect(status().isOk())
-            .andExpect(content().json(objectMapper.writeValueAsString(userDto)))
-            .andReturn();
+            .andExpect(content().json(objectMapper.writeValueAsString(userDto)));
     }
 
     @Test
@@ -77,7 +75,6 @@ class UserControllerTest {
         doNothing().when(deleteUserUseCase).deleteUser(1);
 
         mockMvc.perform(delete("/users/1"))
-            .andExpect(status().isOk())
-            .andReturn();
+            .andExpect(status().isOk());
     }
 }
