@@ -12,7 +12,6 @@ build/
 
 ### IDEA ###
 .idea/
-out/
 *.iml
 classes
 
