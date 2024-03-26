@@ -1,7 +1,7 @@
 import com.militarystore.gradle.jooq.JooqGeneratorPlugin
 
 plugins {
-    id 'org.flywaydb.flyway' version '7.15.0'
+    id 'org.flywaydb.flyway' version '10.0.0'
 }
 
 apply plugin: JooqGeneratorPlugin
@@ -33,13 +33,6 @@ generateJooqData {
     password = "mySuperDbPassw0rd"
     dbName = "military_store"
     sqlDriver = "org.postgresql.Driver"
-}
-
-flyway {
-    url = 'jdbc:postgresql://localhost:5432/military_store'
-    user = 'sergiy_kalyna'
-    password = 'mySuperDbPassw0rd'
-    schemas = ['public']
 }
 
 compileJava.dependsOn(generateJooqData)
