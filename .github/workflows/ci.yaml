@@ -53,7 +53,6 @@ jobs:
 
             -   name: Checkstyle
                 run: ./gradlew checkstyleMain checkstyleTest
-                continue-on-error: true
 
             -   name: Test with Gradle
                 run: ./gradlew test

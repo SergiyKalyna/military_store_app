@@ -35,15 +35,15 @@ public class UserValidationService {
 
     private void validateLogin(String login) {
         if (isNull(login) || login.isBlank() || login.length() < MIN_LENGTH) {
-            throw new UserValidationException("Login should not be empty or less than 3 characters, " +
-                "instead was: " + login);
+            throw new UserValidationException("Login should not be empty or less than 3 characters, "
+                + "instead was: " + login);
         }
     }
 
     void validatePassword(String password) {
         if (isNull(password) || password.isBlank() || password.length() < MIN_LENGTH) {
-            throw new UserValidationException("Password should not be empty or less than 3 characters, " +
-                "instead was: " + password);
+            throw new UserValidationException("Password should not be empty or less than 3 characters, "
+                + "instead was: " + password);
         }
     }
 

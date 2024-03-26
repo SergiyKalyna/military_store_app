@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class UserMapperTest {
 
-    private static final DSLContext dslContext = DSL.using(SQLDialect.POSTGRES);
+    private static final DSLContext DSL_CONTEXT = DSL.using(SQLDialect.POSTGRES);
 
     private UserMapper userMapper;
 
@@ -32,7 +32,7 @@ class UserMapperTest {
 
     @Test
     void map_shouldCorrectMapRecord() {
-        var userRecord = dslContext.newRecord(USERS.fields());
+        var userRecord = DSL_CONTEXT.newRecord(USERS.fields());
         userRecord.setValue(USERS.ID, 1);
         userRecord.setValue(USERS.LOGIN, "login");
         userRecord.setValue(USERS.PASSWORD, "password");

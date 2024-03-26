@@ -4,6 +4,7 @@
 <suppressions>
     <suppress files=".+\.(?:jar|zip|war|class|tar|bin)$" checks=".*"/>
     <suppress files="[\\/]generated-src[\\/]" checks=".*"/>
+    <suppress files="[\\/]build[\\/]" checks=".*"/>
 
     <suppress files="com[\\/]usc[\\/]dbd[\\/]api[\\/]entity_creation" checks="PackageName"/>
     <suppress files="com[\\/]usc[\\/]dbd[\\/]entity_creation" checks="PackageName"/>
