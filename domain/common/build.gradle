@@ -1,4 +1,6 @@
 dependencies {
+    implementation("org.springframework:spring-web")
+
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 

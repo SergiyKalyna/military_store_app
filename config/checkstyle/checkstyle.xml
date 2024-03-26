@@ -49,7 +49,7 @@
         <!-- Checks for imports                              -->
         <!-- See http://checkstyle.sourceforge.net/config_imports.html -->
         <module name="IllegalImport">
-            <property name="illegalPkgs" value="sun.*,org.junit.*"/>
+            <property name="illegalPkgs" value="sun.*"/>
             <property name="regexp" value="true"/>
         </module>
         <module name="RedundantImport"/>

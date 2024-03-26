@@ -1,5 +1,9 @@
 import com.militarystore.gradle.jooq.JooqGeneratorPlugin
 
+plugins {
+    id 'org.flywaydb.flyway' version '10.0.0'
+}
+
 apply plugin: JooqGeneratorPlugin
 
 dependencies {
@@ -12,6 +16,7 @@ dependencies {
 
     compileOnly libs.lombok
     annotationProcessor libs.lombok
+    testImplementation libs.unitTest
 }
 
 sourceSets {
