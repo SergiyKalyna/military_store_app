@@ -48,12 +48,12 @@ public class UserValidationService {
     }
 
     private void validateUserInfo(String firstName, String secondName) {
-            if (isNull(firstName) || firstName.isBlank()) {
-                throw new UserValidationException("First name should not empty, instead was: " + firstName);
-            }
+        if (isNull(firstName) || firstName.isBlank()) {
+            throw new UserValidationException("First name should not empty, instead was: " + firstName);
+        }
 
-            if (isNull(secondName) || secondName.isBlank()) {
-                throw new UserValidationException("Second name should not empty, instead was: " + secondName);
+        if (isNull(secondName) || secondName.isBlank()) {
+            throw new UserValidationException("Second name should not empty, instead was: " + secondName);
         }
     }
 
