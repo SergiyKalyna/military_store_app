@@ -32,4 +32,8 @@ public class CategoryAdapter implements CategoryPort {
             .map(categoryMapper::map)
             .toList();
     }
+
+    public boolean isCategoryExists(int id) {
+        return categoryRepository.isCategoryExists(id);
+    }
 }

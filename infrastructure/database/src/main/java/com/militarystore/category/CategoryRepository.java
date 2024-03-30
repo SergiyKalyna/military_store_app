@@ -39,4 +39,9 @@ public class CategoryRepository {
         return dslContext.selectFrom(CATEGORIES)
             .fetch();
     }
+
+    public boolean isCategoryExists(int id) {
+        return dslContext.fetchExists(dslContext.selectFrom(CATEGORIES)
+            .where(CATEGORIES.ID.eq(id)));
+    }
 }

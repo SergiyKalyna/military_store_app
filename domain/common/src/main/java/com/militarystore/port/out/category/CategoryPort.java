@@ -13,4 +13,6 @@ public interface CategoryPort {
     void deleteCategory(int id);
 
     List<Category> getCategories();
+
+    boolean isCategoryExists(int id);
 }

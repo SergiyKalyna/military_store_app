@@ -74,4 +74,11 @@ class CategoryAdapterTest {
 
         assertThat(categoryAdapter.getCategories()).isEqualTo(List.of(category));
     }
+
+    @Test
+    void isCategoryExists() {
+        when(categoryRepository.isCategoryExists(1)).thenReturn(true);
+
+        assertThat(categoryAdapter.isCategoryExists(1)).isTrue();
+    }
 }
