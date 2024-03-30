@@ -3,7 +3,7 @@ package com.militarystore.user;
 import com.militarystore.entity.user.User;
 import com.militarystore.entity.user.model.Role;
 import com.militarystore.exception.UserNotFoundException;
-import com.militarystore.exception.UserValidationException;
+import com.militarystore.exception.MsValidationException;
 import com.militarystore.exception.WrongPasswordException;
 import com.militarystore.port.out.user.UserPort;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,9 +53,9 @@ class UpdateUserProfileServiceTest {
         var user = User.builder().id(USER_ID).build();
 
         doNothing().when(userService).checkIfUserExist(USER_ID);
-        doThrow(new UserValidationException("Invalid user")).when(userValidationService).validateUserToUpdate(user);
+        doThrow(new MsValidationException("Invalid user")).when(userValidationService).validateUserToUpdate(user);
 
-        assertThrows(UserValidationException.class, () -> updateUserProfileService.updateUser(user));
+        assertThrows(MsValidationException.class, () -> updateUserProfileService.updateUser(user));
     }
 
     @Test
@@ -80,10 +80,10 @@ class UpdateUserProfileServiceTest {
 
     @Test
     void changePassword_whenNewPasswordIsInvalid_shouldThrowException() {
-        doThrow(new UserValidationException("Invalid password")).when(userValidationService).validatePassword("new");
+        doThrow(new MsValidationException("Invalid password")).when(userValidationService).validatePassword("new");
 
         assertThrows(
-            UserValidationException.class,
+            MsValidationException.class,
             () -> updateUserProfileService.changePassword(USER_ID, "old", "new", "new")
         );
     }

@@ -2,7 +2,7 @@ package com.militarystore.user;
 
 import com.militarystore.entity.user.User;
 import com.militarystore.exception.UserNotFoundException;
-import com.militarystore.exception.UserValidationException;
+import com.militarystore.exception.MsValidationException;
 import com.militarystore.port.in.user.CreateUserUseCase;
 import com.militarystore.port.in.user.DeleteUserUseCase;
 import com.militarystore.port.in.user.GetUserUseCase;
@@ -64,7 +64,7 @@ public class UserService implements CreateUserUseCase, GetUserUseCase, DeleteUse
     private void checkIfLoginExist(String login) {
         var isLoginExists = userPort.isLoginExists(login);
         if (isLoginExists) {
-            throw new UserValidationException("User with login [" + login + "] is already exists");
+            throw new MsValidationException("User with login [" + login + "] is already exists");
         }
     }
 }
