@@ -3,6 +3,7 @@ package com.militarystore.subcategory;
 import com.militarystore.entity.subcategory.Subcategory;
 import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.exception.MsValidationException;
+import com.militarystore.port.out.category.CategoryPort;
 import com.militarystore.port.out.subcategory.SubcategoryPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,11 +24,14 @@ class SubcategoryServiceTest {
     @Mock
     private SubcategoryPort subcategoryPort;
 
+    @Mock
+    private CategoryPort categoryPort;
+
     private SubcategoryService subcategoryService;
 
     @BeforeEach
     void setUp() {
-        subcategoryService = new SubcategoryService(subcategoryPort);
+        subcategoryService = new SubcategoryService(subcategoryPort, categoryPort);
     }
 
     @Test

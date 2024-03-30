@@ -36,4 +36,8 @@ public class SubcategoryAdapter implements SubcategoryPort {
     public boolean isSubcategoryExists(int id) {
         return subcategoryRepository.isSubcategoryExists(id);
     }
+
+    public Subcategory getSubcategoryById(int id) {
+        return subcategoryMapper.map(subcategoryRepository.getSubcategoryById(id));
+    }
 }

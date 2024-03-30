@@ -13,4 +13,6 @@ public interface SubcategoryUseCase {
     void deleteSubcategory(int subcategoryId);
 
     List<Subcategory> getSubcategoriesByCategoryId(int categoryId);
+
+    Subcategory getSubcategoryById(int subcategoryId);
 }

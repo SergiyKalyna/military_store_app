@@ -15,4 +15,6 @@ public interface SubcategoryPort {
     List<Subcategory> getSubcategoriesByCategoryId(int categoryId);
 
     boolean isSubcategoryExists(int id);
+
+    Subcategory getSubcategoryById(int id);
 }

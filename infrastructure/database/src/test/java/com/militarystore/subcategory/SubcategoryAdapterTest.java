@@ -73,4 +73,15 @@ class SubcategoryAdapterTest {
 
         assertThat(subcategoryAdapter.isSubcategoryExists(1)).isTrue();
     }
+
+    @Test
+    void getSubcategoryById() {
+        var subcategoryRecord = new SubcategoriesRecord();
+        var subcategory = Subcategory.builder().build();
+
+        when(subcategoryRepository.getSubcategoryById(1)).thenReturn(subcategoryRecord);
+        when(subcategoryMapper.map(subcategoryRecord)).thenReturn(subcategory);
+
+        assertThat(subcategoryAdapter.getSubcategoryById(1)).isEqualTo(subcategory);
+    }
 }

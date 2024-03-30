@@ -47,4 +47,10 @@ public class SubcategoryRepository {
         return dslContext.fetchExists(dslContext.selectFrom(SUBCATEGORIES)
             .where(SUBCATEGORIES.ID.eq(id)));
     }
+
+    public SubcategoriesRecord getSubcategoryById(int id) {
+        return dslContext.selectFrom(SUBCATEGORIES)
+            .where(SUBCATEGORIES.ID.eq(id))
+            .fetchOne();
+    }
 }
