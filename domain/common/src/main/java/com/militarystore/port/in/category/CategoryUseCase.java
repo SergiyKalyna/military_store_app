@@ -10,9 +10,9 @@ public interface CategoryUseCase {
 
     void updateCategory(Category category);
 
-    void deleteCategory(int id);
+    void deleteCategory(Integer id);
 
     List<Category> getCategories();
 
-    Category getCategoryById(int id);
+    Category getCategoryById(Integer id);
 }

@@ -10,11 +10,11 @@ public interface CategoryPort {
 
     void updateCategory(Category category);
 
-    void deleteCategory(int id);
+    void deleteCategory(Integer id);
 
     List<Category> getCategories();
 
-    boolean isCategoryExists(int id);
+    boolean isCategoryExists(Integer id);
 
-    Category getCategoryById(int id);
+    Category getCategoryById(Integer id);
 }

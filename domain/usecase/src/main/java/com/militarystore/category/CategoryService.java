@@ -37,7 +37,7 @@ public class CategoryService implements CategoryUseCase {
         log.info("Category with name '{}' was updated", category);
     }
 
-    public void deleteCategory(int categoryId) {
+    public void deleteCategory(Integer categoryId) {
         verifyPossibilityToDeleteCategory(categoryId);
 
         categoryPort.deleteCategory(categoryId);
@@ -48,13 +48,13 @@ public class CategoryService implements CategoryUseCase {
         return categoryPort.getCategories();
     }
 
-    public Category getCategoryById(int categoryId) {
+    public Category getCategoryById(Integer categoryId) {
         checkIfCategoryExists(categoryId);
 
         return categoryPort.getCategoryById(categoryId);
     }
 
-    private void checkIfCategoryExists(int categoryId) {
+    private void checkIfCategoryExists(Integer categoryId) {
         if (!categoryPort.isCategoryExists(categoryId)) {
             throw new MsNotFoundException(String.format("Category with id '%d' does not exist", categoryId));
         }
@@ -66,7 +66,7 @@ public class CategoryService implements CategoryUseCase {
         }
     }
 
-    private void verifyPossibilityToDeleteCategory(int categoryId) {
+    private void verifyPossibilityToDeleteCategory(Integer categoryId) {
         checkIfCategoryExists(categoryId);
 
         var subcategoriesOfCategory = subcategoryPort.getSubcategoriesByCategoryId(categoryId);

@@ -10,9 +10,9 @@ public interface SubcategoryUseCase {
 
     void updateSubcategory(Subcategory subcategory);
 
-    void deleteSubcategory(int subcategoryId);
+    void deleteSubcategory(Integer subcategoryId);
 
-    List<Subcategory> getSubcategoriesByCategoryId(int categoryId);
+    List<Subcategory> getSubcategoriesByCategoryId(Integer categoryId);
 
-    Subcategory getSubcategoryById(int subcategoryId);
+    Subcategory getSubcategoryById(Integer subcategoryId);
 }

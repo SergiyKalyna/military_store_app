@@ -37,18 +37,18 @@ public class SubcategoryService implements SubcategoryUseCase {
         log.info("Subcategory with name '{}' was updated", subcategory);
     }
 
-    public void deleteSubcategory(int subcategoryId) {
+    public void deleteSubcategory(Integer subcategoryId) {
         checkIfSubcategoryExists(subcategoryId);
 
         subcategoryPort.deleteSubcategory(subcategoryId);
         log.info("Subcategory with id '{}' was deleted", subcategoryId);
     }
 
-    public List<Subcategory> getSubcategoriesByCategoryId(int categoryId) {
+    public List<Subcategory> getSubcategoriesByCategoryId(Integer categoryId) {
         return subcategoryPort.getSubcategoriesByCategoryId(categoryId);
     }
 
-    public Subcategory getSubcategoryById(int subcategoryId) {
+    public Subcategory getSubcategoryById(Integer subcategoryId) {
         checkIfSubcategoryExists(subcategoryId);
 
         return subcategoryPort.getSubcategoryById(subcategoryId);
@@ -64,13 +64,13 @@ public class SubcategoryService implements SubcategoryUseCase {
         }
     }
 
-    private void checkIfSubcategoryExists(int subcategoryId) {
+    private void checkIfSubcategoryExists(Integer subcategoryId) {
         if (!subcategoryPort.isSubcategoryExists(subcategoryId)) {
             throw new MsNotFoundException(String.format("Subcategory with id '%d' does not exist", subcategoryId));
         }
     }
 
-    private void checkCategoriesExisting(int categoryId, int subcategoryId) {
+    private void checkCategoriesExisting(Integer categoryId, Integer subcategoryId) {
         checkIfSubcategoryExists(subcategoryId);
 
         if (!categoryPort.isCategoryExists(categoryId)) {

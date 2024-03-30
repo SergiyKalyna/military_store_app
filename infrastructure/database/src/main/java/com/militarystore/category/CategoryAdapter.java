@@ -23,7 +23,7 @@ public class CategoryAdapter implements CategoryPort {
         categoryRepository.updateCategory(category);
     }
 
-    public void deleteCategory(int id) {
+    public void deleteCategory(Integer id) {
         categoryRepository.deleteCategory(id);
     }
 
@@ -33,11 +33,11 @@ public class CategoryAdapter implements CategoryPort {
             .toList();
     }
 
-    public boolean isCategoryExists(int id) {
+    public boolean isCategoryExists(Integer id) {
         return categoryRepository.isCategoryExists(id);
     }
 
-    public Category getCategoryById(int id) {
+    public Category getCategoryById(Integer id) {
         return categoryMapper.map(categoryRepository.getCategoryById(id));
     }
 }

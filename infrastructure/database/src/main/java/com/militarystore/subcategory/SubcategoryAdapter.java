@@ -23,21 +23,21 @@ public class SubcategoryAdapter implements SubcategoryPort {
         subcategoryRepository.updateSubcategory(subcategory);
     }
 
-    public void deleteSubcategory(int id) {
+    public void deleteSubcategory(Integer id) {
         subcategoryRepository.deleteSubcategory(id);
     }
 
-    public List<Subcategory> getSubcategoriesByCategoryId(int categoryId) {
+    public List<Subcategory> getSubcategoriesByCategoryId(Integer categoryId) {
         return subcategoryRepository.getSubcategoriesByCategoryId(categoryId).stream()
             .map(subcategoryMapper::map)
             .toList();
     }
 
-    public boolean isSubcategoryExists(int id) {
+    public boolean isSubcategoryExists(Integer id) {
         return subcategoryRepository.isSubcategoryExists(id);
     }
 
-    public Subcategory getSubcategoryById(int id) {
+    public Subcategory getSubcategoryById(Integer id) {
         return subcategoryMapper.map(subcategoryRepository.getSubcategoryById(id));
     }
 }

@@ -10,11 +10,11 @@ public interface SubcategoryPort {
 
     void updateSubcategory(Subcategory subcategory);
 
-    void deleteSubcategory(int id);
+    void deleteSubcategory(Integer id);
 
-    List<Subcategory> getSubcategoriesByCategoryId(int categoryId);
+    List<Subcategory> getSubcategoriesByCategoryId(Integer categoryId);
 
-    boolean isSubcategoryExists(int id);
+    boolean isSubcategoryExists(Integer id);
 
-    Subcategory getSubcategoryById(int id);
+    Subcategory getSubcategoryById(Integer id);
 }

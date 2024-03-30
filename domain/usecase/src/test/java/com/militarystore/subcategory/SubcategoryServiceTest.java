@@ -75,29 +75,32 @@ class SubcategoryServiceTest {
 
     @Test
     void updateSubcategory_whenSubcategoryNameIsNull_shouldThrowValidationException() {
-        var subcategory = Subcategory.builder().id(1).build();
+        var subcategory = Subcategory.builder().id(1).categoryId(1).build();
 
         when(subcategoryPort.isSubcategoryExists(1)).thenReturn(true);
+        when(categoryPort.isCategoryExists(1)).thenReturn(true);
 
         assertThrows(MsValidationException.class, () -> subcategoryService.updateSubcategory(subcategory));
     }
 
     @Test
     void updateSubcategory_whenSubcategoryNameIsEmpty_shouldThrowValidationException() {
-        var subcategory = Subcategory.builder().id(1).name("  ").build();
+        var subcategory = Subcategory.builder().id(1).name("  ").categoryId(1).build();
 
         when(subcategoryPort.isSubcategoryExists(1)).thenReturn(true);
+        when(categoryPort.isCategoryExists(1)).thenReturn(true);
 
         assertThrows(MsValidationException.class, () -> subcategoryService.updateSubcategory(subcategory));
     }
 
     @Test
-    void updateSubcategory_whenCategoryIdIsNull_shouldThrowValidationException() {
-        var subcategory = Subcategory.builder().id(1).name("subcategory").build();
+    void updateSubcategory_whenCategoryIdDoesNotExist_shouldThrowException() {
+        var subcategory = Subcategory.builder().id(1).name("subcategory").categoryId(1).build();
 
         when(subcategoryPort.isSubcategoryExists(1)).thenReturn(true);
+        when(categoryPort.isCategoryExists(1)).thenReturn(false);
 
-        assertThrows(MsValidationException.class, () -> subcategoryService.updateSubcategory(subcategory));
+        assertThrows(MsNotFoundException.class, () -> subcategoryService.updateSubcategory(subcategory));
     }
 
     @Test
@@ -105,6 +108,7 @@ class SubcategoryServiceTest {
         var subcategory = Subcategory.builder().id(2).name("subcategory").categoryId(1).build();
 
         when(subcategoryPort.isSubcategoryExists(2)).thenReturn(true);
+        when(categoryPort.isCategoryExists(1)).thenReturn(true);
 
         subcategoryService.updateSubcategory(subcategory);
 
