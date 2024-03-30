@@ -1,7 +1,7 @@
 package com.militarystore.user;
 
 import com.militarystore.entity.user.User;
-import com.militarystore.exception.UserNotFoundException;
+import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.exception.MsValidationException;
 import com.militarystore.port.in.user.CreateUserUseCase;
 import com.militarystore.port.in.user.DeleteUserUseCase;
@@ -44,7 +44,7 @@ public class UserService implements CreateUserUseCase, GetUserUseCase, DeleteUse
         var user = userPort.getUserById(userId);
 
         if (isNull(user)) {
-            throw new UserNotFoundException(userId);
+            throw new MsNotFoundException(String.format("User with id [%d] is not found", userId));
         }
 
         return user;
@@ -57,7 +57,7 @@ public class UserService implements CreateUserUseCase, GetUserUseCase, DeleteUse
     void checkIfUserExist(int userId) {
         var isUserExist = userPort.isUserExist(userId);
         if (!isUserExist) {
-            throw new UserNotFoundException(userId);
+            throw new MsNotFoundException(String.format("User with id [%d] is not found", userId));
         }
     }
 

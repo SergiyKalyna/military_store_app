@@ -4,7 +4,7 @@ import com.militarystore.IntegrationTest;
 import com.militarystore.entity.user.User;
 import com.militarystore.entity.user.model.Gender;
 import com.militarystore.entity.user.model.Role;
-import com.militarystore.exception.UserNotFoundException;
+import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.port.in.user.GetUserUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ class GetUserIntegrationTest extends IntegrationTest {
     @Test
     void getUser_whenUserNotFound_shouldThrowUserNotFoundException() {
         assertThatThrownBy(() -> getUserUseCase.getUserById(1))
-            .isInstanceOf(UserNotFoundException.class)
+            .isInstanceOf(MsNotFoundException.class)
             .hasMessage("User with id [1] is not found");
     }
 

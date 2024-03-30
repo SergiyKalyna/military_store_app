@@ -2,7 +2,7 @@ package com.militarystore.user;
 
 import com.militarystore.entity.user.User;
 import com.militarystore.entity.user.model.Role;
-import com.militarystore.exception.UserNotFoundException;
+import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.exception.WrongPasswordException;
 import com.militarystore.port.in.user.UpdateUserUseCase;
 import com.militarystore.port.out.user.UserPort;
@@ -64,7 +64,7 @@ public class UpdateUserProfileService implements UpdateUserUseCase {
     private String getDataBasePassword(int userId) {
         var databasePassword = userPort.getUserPassword(userId);
         if (isNull(databasePassword)) {
-            throw new UserNotFoundException(userId);
+            throw new MsNotFoundException(String.format("User with id [%d] is not found", userId));
         }
 
         return databasePassword;

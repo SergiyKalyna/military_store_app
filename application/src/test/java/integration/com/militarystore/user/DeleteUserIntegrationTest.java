@@ -4,7 +4,7 @@ import com.militarystore.IntegrationTest;
 import com.militarystore.entity.user.User;
 import com.militarystore.entity.user.model.Gender;
 import com.militarystore.entity.user.model.Role;
-import com.militarystore.exception.UserNotFoundException;
+import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.port.in.user.DeleteUserUseCase;
 import com.militarystore.port.in.user.GetUserUseCase;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class DeleteUserIntegrationTest extends IntegrationTest {
         int userId = 1;
 
         assertThatThrownBy(() -> deleteUserUseCase.deleteUser(userId))
-            .isInstanceOf(UserNotFoundException.class)
+            .isInstanceOf(MsNotFoundException.class)
             .hasMessage("User with id [1] is not found");
     }
 

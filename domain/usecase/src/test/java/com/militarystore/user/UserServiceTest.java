@@ -1,7 +1,7 @@
 package com.militarystore.user;
 
 import com.militarystore.entity.user.User;
-import com.militarystore.exception.UserNotFoundException;
+import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.exception.MsValidationException;
 import com.militarystore.port.out.user.UserPort;
 import org.junit.jupiter.api.BeforeEach;
@@ -78,7 +78,7 @@ class UserServiceTest {
         when(userPort.isUserExist(USER_ID)).thenReturn(false);
 
         assertThatCode(() -> userService.deleteUser(USER_ID))
-            .isInstanceOf(UserNotFoundException.class)
+            .isInstanceOf(MsNotFoundException.class)
             .hasMessageContaining("User with id [" + USER_ID + "] is not found");
     }
 
@@ -96,7 +96,7 @@ class UserServiceTest {
         when(userPort.getUserById(USER_ID)).thenReturn(null);
 
         assertThatCode(() -> userService.getUserById(USER_ID))
-            .isInstanceOf(UserNotFoundException.class)
+            .isInstanceOf(MsNotFoundException.class)
             .hasMessageContaining("User with id [" + USER_ID + "] is not found");
     }
 

@@ -2,7 +2,7 @@ package com.militarystore.user;
 
 import com.militarystore.entity.user.User;
 import com.militarystore.entity.user.model.Role;
-import com.militarystore.exception.UserNotFoundException;
+import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.exception.MsValidationException;
 import com.militarystore.exception.WrongPasswordException;
 import com.militarystore.port.out.user.UserPort;
@@ -43,9 +43,9 @@ class UpdateUserProfileServiceTest {
     void updateUser_whenUserDoesntExist_shouldTrowException() {
         var user = User.builder().id(USER_ID).build();
 
-        doThrow(new UserNotFoundException(USER_ID)).when(userService).checkIfUserExist(USER_ID);
+        doThrow(new MsNotFoundException("error message")).when(userService).checkIfUserExist(USER_ID);
 
-        assertThrows(UserNotFoundException.class, () -> updateUserProfileService.updateUser(user));
+        assertThrows(MsNotFoundException.class, () -> updateUserProfileService.updateUser(user));
     }
 
     @Test
@@ -93,7 +93,7 @@ class UpdateUserProfileServiceTest {
         when(userPort.getUserPassword(USER_ID)).thenReturn(null);
 
         assertThrows(
-            UserNotFoundException.class,
+            MsNotFoundException.class,
             () -> updateUserProfileService.changePassword(USER_ID, "old", "new", "new")
         );
     }
@@ -119,10 +119,10 @@ class UpdateUserProfileServiceTest {
 
     @Test
     void changeRole_whenUserDoesntExist_shouldThrowException() {
-        doThrow(new UserNotFoundException(USER_ID)).when(userService).checkIfUserExist(USER_ID);
+        doThrow(new MsNotFoundException("error message")).when(userService).checkIfUserExist(USER_ID);
 
         assertThrows(
-            UserNotFoundException.class,
+            MsNotFoundException.class,
             () -> updateUserProfileService.changeRole(USER_ID, null)
         );
     }
@@ -138,10 +138,10 @@ class UpdateUserProfileServiceTest {
 
     @Test
     void changeBanStatus_whenUserDoesntExist_shouldThrowException() {
-        doThrow(new UserNotFoundException(USER_ID)).when(userService).checkIfUserExist(USER_ID);
+        doThrow(new MsNotFoundException("error message")).when(userService).checkIfUserExist(USER_ID);
 
         assertThrows(
-            UserNotFoundException.class,
+            MsNotFoundException.class,
             () -> updateUserProfileService.changeBanStatus(USER_ID, true)
         );
     }
