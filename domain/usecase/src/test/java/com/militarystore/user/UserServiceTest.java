@@ -1,8 +1,8 @@
 package com.militarystore.user;
 
 import com.militarystore.entity.user.User;
-import com.militarystore.exception.UserNotFoundException;
-import com.militarystore.exception.UserValidationException;
+import com.militarystore.exception.MsNotFoundException;
+import com.militarystore.exception.MsValidationException;
 import com.militarystore.port.out.user.UserPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,17 +41,17 @@ class UserServiceTest {
         when(userPort.isLoginExists("login")).thenReturn(true);
 
         assertThatCode(() -> userService.saveUser(USER))
-            .isInstanceOf(UserValidationException.class)
+            .isInstanceOf(MsValidationException.class)
             .hasMessageContaining("User with login [login] is already exist");
     }
 
     @Test
     void saveUser_whenUserIsInvalid_shouldTrowException() {
         when(userPort.isLoginExists("login")).thenReturn(false);
-        doThrow(UserValidationException.class).when(userValidationService).validateNewUser(USER);
+        doThrow(MsValidationException.class).when(userValidationService).validateNewUser(USER);
 
         assertThatCode(() -> userService.saveUser(USER))
-            .isInstanceOf(UserValidationException.class);
+            .isInstanceOf(MsValidationException.class);
     }
 
     @Test
@@ -78,7 +78,7 @@ class UserServiceTest {
         when(userPort.isUserExist(USER_ID)).thenReturn(false);
 
         assertThatCode(() -> userService.deleteUser(USER_ID))
-            .isInstanceOf(UserNotFoundException.class)
+            .isInstanceOf(MsNotFoundException.class)
             .hasMessageContaining("User with id [" + USER_ID + "] is not found");
     }
 
@@ -96,7 +96,7 @@ class UserServiceTest {
         when(userPort.getUserById(USER_ID)).thenReturn(null);
 
         assertThatCode(() -> userService.getUserById(USER_ID))
-            .isInstanceOf(UserNotFoundException.class)
+            .isInstanceOf(MsNotFoundException.class)
             .hasMessageContaining("User with id [" + USER_ID + "] is not found");
     }
 

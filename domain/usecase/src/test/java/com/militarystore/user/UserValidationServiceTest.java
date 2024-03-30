@@ -1,7 +1,7 @@
 package com.militarystore.user;
 
 import com.militarystore.entity.user.User;
-import com.militarystore.exception.UserValidationException;
+import com.militarystore.exception.MsValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -37,28 +37,28 @@ class UserValidationServiceTest {
             .login("")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
     void validateUser_whenUserLoginIsNull_shouldThrowUserValidationException() {
         var user = User.builder().build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
     void validateUser_whenUserLoginIncludeOnlySpaces_shouldThrowUserValidationException() {
         var user = User.builder().login("        ").build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
     void validateUser_whenUserLoginLessThan3Chars_shouldThrowUserValidationException() {
         var user = User.builder().login("ab").build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
@@ -68,7 +68,7 @@ class UserValidationServiceTest {
             .password("")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
@@ -77,7 +77,7 @@ class UserValidationServiceTest {
             .login("login")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
@@ -87,7 +87,7 @@ class UserValidationServiceTest {
             .password("        ")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
@@ -97,7 +97,7 @@ class UserValidationServiceTest {
             .password("ab")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
@@ -108,7 +108,7 @@ class UserValidationServiceTest {
             .firstName("  ")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
@@ -118,7 +118,7 @@ class UserValidationServiceTest {
             .password("password")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
@@ -130,7 +130,7 @@ class UserValidationServiceTest {
             .secondName("  ")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
@@ -141,7 +141,7 @@ class UserValidationServiceTest {
             .firstName("firstName")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
@@ -154,7 +154,7 @@ class UserValidationServiceTest {
             .email("  ")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
@@ -166,7 +166,7 @@ class UserValidationServiceTest {
             .secondName("secondName")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
@@ -179,7 +179,7 @@ class UserValidationServiceTest {
             .email("usergmail.com")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
@@ -193,7 +193,7 @@ class UserValidationServiceTest {
             .phone("  ")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
@@ -206,7 +206,7 @@ class UserValidationServiceTest {
             .email("user@gmail.com")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 
     @Test
@@ -220,6 +220,6 @@ class UserValidationServiceTest {
             .phone("80675863281")
             .build();
 
-        assertThrows(UserValidationException.class, () -> userValidationService.validateNewUser(user));
+        assertThrows(MsValidationException.class, () -> userValidationService.validateNewUser(user));
     }
 }
