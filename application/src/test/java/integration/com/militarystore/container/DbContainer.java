@@ -3,6 +3,8 @@ package com.militarystore.container;
 import org.jooq.DSLContext;
 import org.testcontainers.containers.PostgreSQLContainer;
 
+import static com.militarystore.jooq.Tables.CATEGORIES;
+import static com.militarystore.jooq.Tables.SUBCATEGORIES;
 import static com.militarystore.jooq.Tables.USERS;
 
 public class DbContainer extends PostgreSQLContainer<DbContainer> {
@@ -17,5 +19,7 @@ public class DbContainer extends PostgreSQLContainer<DbContainer> {
 
     public static void clearTable(DSLContext dslContext) {
         dslContext.truncate(USERS).execute();
+        dslContext.truncate(SUBCATEGORIES).cascade().execute();
+        dslContext.truncate(CATEGORIES).cascade().execute();
     }
 }
