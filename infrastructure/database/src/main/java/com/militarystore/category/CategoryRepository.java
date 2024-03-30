@@ -44,4 +44,10 @@ public class CategoryRepository {
         return dslContext.fetchExists(dslContext.selectFrom(CATEGORIES)
             .where(CATEGORIES.ID.eq(id)));
     }
+
+    public CategoriesRecord getCategoryById(int id) {
+        return dslContext.selectFrom(CATEGORIES)
+            .where(CATEGORIES.ID.eq(id))
+            .fetchOne();
+    }
 }

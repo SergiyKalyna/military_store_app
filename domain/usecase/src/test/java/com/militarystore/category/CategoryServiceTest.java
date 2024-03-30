@@ -80,18 +80,18 @@ class CategoryServiceTest {
 
     @Test
     void updateCategory_whenCategoryNameIsEmpty_shouldThrowValidationException() {
-        var category = Category.builder().name("  ").build();
+        var category = Category.builder().id(1).name("  ").build();
 
-        when(categoryPort.isCategoryExists(category.id())).thenReturn(true);
+        when(categoryPort.isCategoryExists(1)).thenReturn(true);
 
         assertThrows(MsValidationException.class, () -> categoryService.updateCategory(category));
     }
 
     @Test
     void updateCategory_whenCategoryNameIsNull_shouldThrowValidationException() {
-        var category = Category.builder().build();
+        var category = Category.builder().id(1).build();
 
-        when(categoryPort.isCategoryExists(category.id())).thenReturn(true);
+        when(categoryPort.isCategoryExists(1)).thenReturn(true);
 
         assertThrows(MsValidationException.class, () -> categoryService.updateCategory(category));
     }
@@ -135,5 +135,25 @@ class CategoryServiceTest {
         when(categoryPort.getCategories()).thenReturn(List.of(category));
 
         assertThat(categoryService.getCategories()).isEqualTo(List.of(category));
+    }
+
+    @Test
+    void getCategoryById_whenCategoryDoesNotExist_shouldThrowNotFoundException() {
+        var categoryId = 1;
+
+        when(categoryPort.isCategoryExists(categoryId)).thenReturn(false);
+
+        assertThrows(MsNotFoundException.class, () -> categoryService.getCategoryById(categoryId));
+    }
+
+    @Test
+    void getCategoryById_whenCategoryExists_shouldReturnCategory() {
+        var categoryId = 1;
+        var category = Category.builder().build();
+
+        when(categoryPort.isCategoryExists(categoryId)).thenReturn(true);
+        when(categoryPort.getCategoryById(categoryId)).thenReturn(category);
+
+        assertThat(categoryService.getCategoryById(categoryId)).isEqualTo(category);
     }
 }

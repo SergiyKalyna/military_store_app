@@ -81,4 +81,18 @@ class CategoryAdapterTest {
 
         assertThat(categoryAdapter.isCategoryExists(1)).isTrue();
     }
+
+    @Test
+    void getCategoryById() {
+        var categoryRecord = new CategoriesRecord();
+        var category = Category.builder()
+            .id(1)
+            .name("name")
+            .build();
+
+        when(categoryRepository.getCategoryById(1)).thenReturn(categoryRecord);
+        when(categoryMapper.map(categoryRecord)).thenReturn(category);
+
+        assertThat(categoryAdapter.getCategoryById(1)).isEqualTo(category);
+    }
 }

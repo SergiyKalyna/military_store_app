@@ -13,4 +13,6 @@ public interface CategoryUseCase {
     void deleteCategory(int id);
 
     List<Category> getCategories();
+
+    Category getCategoryById(int id);
 }

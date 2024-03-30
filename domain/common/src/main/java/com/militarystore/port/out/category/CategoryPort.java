@@ -15,4 +15,6 @@ public interface CategoryPort {
     List<Category> getCategories();
 
     boolean isCategoryExists(int id);
+
+    Category getCategoryById(int id);
 }

@@ -48,6 +48,12 @@ public class CategoryService implements CategoryUseCase {
         return categoryPort.getCategories();
     }
 
+    public Category getCategoryById(int categoryId) {
+        checkIfCategoryExists(categoryId);
+
+        return categoryPort.getCategoryById(categoryId);
+    }
+
     private void checkIfCategoryExists(int categoryId) {
         if (!categoryPort.isCategoryExists(categoryId)) {
             throw new MsNotFoundException(String.format("Category with id '%d' does not exist", categoryId));
