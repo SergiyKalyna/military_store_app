@@ -1,6 +1,7 @@
 package com.militarystore.product;
 
 import com.militarystore.entity.product.Product;
+import com.militarystore.jooq.tables.records.ProductsRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -35,7 +36,7 @@ public class ProductRepository {
             .from(PRODUCTS)
             .innerJoin(PRODUCT_STOCK_DETAILS).on(PRODUCTS.ID.eq(PRODUCT_STOCK_DETAILS.PRODUCT_ID))
             .where(PRODUCTS.ID.eq(productId))
-            .fetchInto(Record.class);
+            .fetch();
     }
 
     public List<Record> getProductsBySubcategoryId(Integer subcategoryId) {
@@ -48,7 +49,7 @@ public class ProductRepository {
             )
             .from(PRODUCTS)
             .where(PRODUCTS.SUBCATEGORY_ID.eq(subcategoryId))
-            .fetchInto(Record.class);
+            .fetchInto(ProductsRecord.class);
     }
 
     public List<Record> getProductsByName(String name) {
@@ -61,7 +62,7 @@ public class ProductRepository {
             )
             .from(PRODUCTS)
             .where(PRODUCTS.NAME.containsIgnoreCase(name))
-            .fetchInto(Record.class);
+            .fetchInto(ProductsRecord.class);
     }
 
     public void updateProduct(Product product) {
