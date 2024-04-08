@@ -5,7 +5,6 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.militarystore.entity.user.User;
 import com.militarystore.exception.MsValidationException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
@@ -13,7 +12,6 @@ import java.util.regex.Pattern;
 import static java.util.Objects.isNull;
 
 @Service
-@Slf4j
 public class UserValidationService {
 
     private static final int MIN_LENGTH = 3;
