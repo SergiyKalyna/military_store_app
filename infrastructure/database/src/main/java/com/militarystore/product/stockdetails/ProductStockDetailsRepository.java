@@ -43,4 +43,10 @@ public class ProductStockDetailsRepository {
             .where(PRODUCT_STOCK_DETAILS.PRODUCT_ID.eq(productId))
             .execute();
     }
+
+    public boolean isEnoughProductStockAvailability(Integer productStockDetailsId, Integer orderedProductQuantity) {
+        return dslContext.fetchExists(dslContext.selectFrom(PRODUCT_STOCK_DETAILS)
+            .where(PRODUCT_STOCK_DETAILS.ID.eq(productStockDetailsId)
+                .and(PRODUCT_STOCK_DETAILS.STOCK_AVAILABILITY.greaterOrEqual(orderedProductQuantity))));
+    }
 }

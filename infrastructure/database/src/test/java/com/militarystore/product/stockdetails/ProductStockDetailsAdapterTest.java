@@ -80,4 +80,15 @@ class ProductStockDetailsAdapterTest {
 
         assertTrue(productStockDetailsAdapter.isProductAvailable(PRODUCT_ID));
     }
+
+    @Test
+    void isEnoughProductStockAvailability() {
+        var productStockDetailsId = 11;
+        var orderedProductQuantity = 100;
+
+        when(productStockDetailsRepository.isEnoughProductStockAvailability(productStockDetailsId, orderedProductQuantity))
+            .thenReturn(true);
+
+        assertTrue(productStockDetailsAdapter.isEnoughProductStockAvailability(productStockDetailsId, orderedProductQuantity));
+    }
 }

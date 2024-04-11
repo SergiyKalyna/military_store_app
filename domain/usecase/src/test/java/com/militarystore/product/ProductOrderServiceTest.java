@@ -8,11 +8,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class UpdateProductAvailabilityServiceTest {
+class ProductOrderServiceTest {
 
     @Mock
     private ProductPort productPort;
@@ -20,11 +21,11 @@ class UpdateProductAvailabilityServiceTest {
     @Mock
     private ProductStockDetailsPort productStockDetailsPort;
 
-    private UpdateProductAvailabilityService updateProductAvailabilityService;
+    private ProductOrderService productOrderService;
 
     @BeforeEach
     void setUp() {
-        updateProductAvailabilityService = new UpdateProductAvailabilityService(productPort, productStockDetailsPort);
+        productOrderService = new ProductOrderService(productPort, productStockDetailsPort);
     }
 
     @Test
@@ -35,9 +36,20 @@ class UpdateProductAvailabilityServiceTest {
 
         when(productStockDetailsPort.isProductAvailable(productId)).thenReturn(true);
 
-        updateProductAvailabilityService.updateProductStockAvailability(productId, productStockDetailsId, orderedProductQuantity);
+        productOrderService.updateProductStockAvailability(productId, productStockDetailsId, orderedProductQuantity);
 
         verify(productStockDetailsPort).updateProductStockAvailability(productStockDetailsId, orderedProductQuantity);
         verify(productPort).updateStockAvailability(productId, true);
+    }
+
+    @Test
+    void isEnoughProductStockAvailability() {
+        var productStockDetailsId = 1;
+        var orderedProductQuantity = 10;
+
+        when(productStockDetailsPort.isEnoughProductStockAvailability(productStockDetailsId, orderedProductQuantity))
+            .thenReturn(true);
+
+        assertTrue(productOrderService.isEnoughProductStockAvailability(productStockDetailsId, orderedProductQuantity));
     }
 }
