@@ -116,7 +116,7 @@ class ProductConverterTest {
             ProductSizeGridTypeDto.CLOTHES,
             ProductTagDto.NEW,
             List.of(
-                new ProductStockDetailsDto(1, 1, 10,ProductSizeDto.M),
+                new ProductStockDetailsDto(1, 1, 10, ProductSizeDto.M),
                 new ProductStockDetailsDto(2, 1, 20, ProductSizeDto.S)
             )
         );
@@ -156,7 +156,7 @@ class ProductConverterTest {
             ProductSizeGridTypeDto.CLOTHES,
             ProductTagDto.NEW,
             List.of(
-                new ProductStockDetailsDto(1, 1, 10,ProductSizeDto.M),
+                new ProductStockDetailsDto(1, 1, 10, ProductSizeDto.M),
                 new ProductStockDetailsDto(2, 1, 20, ProductSizeDto.S)
             )
         );

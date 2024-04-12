@@ -30,7 +30,7 @@ public class ProductConverter {
             .stockDetails(
                 product.stockDetails().stream()
                     .map(this::convertToProductStockDetailsDto)
-                    .sorted(Comparator.comparing(dto-> dto.productSize().ordinal()))
+                    .sorted(Comparator.comparing(dto -> dto.productSize().ordinal()))
                     .toList())
             .isInStock(product.isInStock())
             .build();

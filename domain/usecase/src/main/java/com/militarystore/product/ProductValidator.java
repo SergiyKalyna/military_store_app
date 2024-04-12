@@ -23,7 +23,7 @@ public class ProductValidator {
             throw new MsValidationException("Product name should not be empty");
         }
 
-        if(isNull(product.description()) || product.description().isBlank()) {
+        if (isNull(product.description()) || product.description().isBlank()) {
             throw new MsValidationException("Product description should not be empty");
         }
 
