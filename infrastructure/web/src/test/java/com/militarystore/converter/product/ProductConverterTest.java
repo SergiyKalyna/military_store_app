@@ -141,8 +141,7 @@ class ProductConverterTest {
                     .productSize(ProductSize.S)
                     .stockAvailability(20)
                     .build()
-            ))
-            .build();
+            )).build();
 
         assertThat(productConverter.convertToProduct(request)).isEqualTo(expectedProduct);
     }
