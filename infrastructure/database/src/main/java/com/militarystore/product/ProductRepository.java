@@ -1,21 +1,25 @@
 package com.militarystore.product;
 
 import com.militarystore.entity.product.Product;
-import com.militarystore.jooq.tables.records.ProductsRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
-import org.jooq.Record;
+import org.jooq.Record13;
+import org.jooq.Record6;
+import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.militarystore.jooq.Tables.PRODUCTS;
+import static com.militarystore.jooq.Tables.PRODUCT_RATES;
 import static com.militarystore.jooq.Tables.PRODUCT_STOCK_DETAILS;
-import static org.apache.commons.lang3.ArrayUtils.addAll;
 
 @Repository
 @RequiredArgsConstructor
 public class ProductRepository {
+
+    public static final String AVG_RATE = "avg_rate";
 
     private final DSLContext dslContext;
 
@@ -31,38 +35,60 @@ public class ProductRepository {
             .fetchOne(PRODUCTS.ID);
     }
 
-    public List<Record> getProductById(Integer productId) {
-        return dslContext.select(addAll(PRODUCTS.fields(), PRODUCT_STOCK_DETAILS.fields()))
+    public List<Record13<Integer, String, String, Integer, Integer, String, String, Boolean, Integer, Integer, String, Integer, BigDecimal>> getProductById(Integer productId) {
+        return dslContext.select(
+                PRODUCTS.ID,
+                PRODUCTS.NAME,
+                PRODUCTS.DESCRIPTION,
+                PRODUCTS.PRICE,
+                PRODUCTS.SUBCATEGORY_ID,
+                PRODUCTS.SIZE_GRID_TYPE,
+                PRODUCTS.PRODUCT_TAG,
+                PRODUCTS.IS_IN_STOCK,
+                PRODUCT_STOCK_DETAILS.ID,
+                PRODUCT_STOCK_DETAILS.PRODUCT_ID,
+                PRODUCT_STOCK_DETAILS.PRODUCT_SIZE,
+                PRODUCT_STOCK_DETAILS.STOCK_AVAILABILITY,
+                DSL.avg(PRODUCT_RATES.RATE).as(AVG_RATE)
+            )
             .from(PRODUCTS)
             .innerJoin(PRODUCT_STOCK_DETAILS).on(PRODUCTS.ID.eq(PRODUCT_STOCK_DETAILS.PRODUCT_ID))
+            .leftJoin(PRODUCT_RATES).on(PRODUCTS.ID.eq(PRODUCT_RATES.PRODUCT_ID))
             .where(PRODUCTS.ID.eq(productId))
+            .groupBy(PRODUCTS.ID, PRODUCT_STOCK_DETAILS.ID)
             .fetch();
     }
 
-    public List<Record> getProductsBySubcategoryId(Integer subcategoryId) {
+    public List<Record6<Integer, String, Integer, String, Boolean, BigDecimal>> getProductsBySubcategoryId(Integer subcategoryId) {
         return dslContext.select(
                 PRODUCTS.ID,
                 PRODUCTS.NAME,
                 PRODUCTS.PRICE,
                 PRODUCTS.PRODUCT_TAG,
-                PRODUCTS.IS_IN_STOCK
+                PRODUCTS.IS_IN_STOCK,
+                DSL.avg(PRODUCT_RATES.RATE).as(AVG_RATE)
             )
             .from(PRODUCTS)
+            .leftJoin(PRODUCT_RATES).on(PRODUCTS.ID.eq(PRODUCT_RATES.PRODUCT_ID))
             .where(PRODUCTS.SUBCATEGORY_ID.eq(subcategoryId))
-            .fetchInto(ProductsRecord.class);
+            .groupBy(PRODUCTS.ID)
+            .fetch();
     }
 
-    public List<Record> getProductsByName(String name) {
+    public List<Record6<Integer, String, Integer, String, Boolean, BigDecimal>> getProductsByName(String name) {
         return dslContext.select(
                 PRODUCTS.ID,
                 PRODUCTS.NAME,
                 PRODUCTS.PRICE,
                 PRODUCTS.PRODUCT_TAG,
-                PRODUCTS.IS_IN_STOCK
+                PRODUCTS.IS_IN_STOCK,
+                DSL.avg(PRODUCT_RATES.RATE).as(AVG_RATE)
             )
             .from(PRODUCTS)
+            .leftJoin(PRODUCT_RATES).on(PRODUCTS.ID.eq(PRODUCT_RATES.PRODUCT_ID))
             .where(PRODUCTS.NAME.containsIgnoreCase(name))
-            .fetchInto(ProductsRecord.class);
+            .groupBy(PRODUCTS.ID)
+            .fetch();
     }
 
     public void updateProduct(Product product) {
