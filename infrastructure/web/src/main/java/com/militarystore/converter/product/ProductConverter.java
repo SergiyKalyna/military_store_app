@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 
+import static java.util.Objects.isNull;
+
 @Component
 public class ProductConverter {
 
@@ -33,6 +35,7 @@ public class ProductConverter {
                     .sorted(Comparator.comparing(dto -> dto.productSize().ordinal()))
                     .toList())
             .isInStock(product.isInStock())
+            .avgRate(isNull(product.avgRate()) ? 0.0 : product.avgRate())
             .build();
     }
 
@@ -43,6 +46,7 @@ public class ProductConverter {
             .price(product.price())
             .tag(ProductTagDto.valueOf(product.tag().name()))
             .isInStock(product.isInStock())
+            .avgRate(isNull(product.avgRate()) ? 0.0 : product.avgRate())
             .build();
     }
 
