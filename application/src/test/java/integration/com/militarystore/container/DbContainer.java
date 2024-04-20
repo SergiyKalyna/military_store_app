@@ -5,9 +5,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import static com.militarystore.jooq.Tables.CATEGORIES;
 import static com.militarystore.jooq.Tables.PRODUCTS;
-import static com.militarystore.jooq.Tables.PRODUCT_RATES;
-import static com.militarystore.jooq.Tables.PRODUCT_STOCK_DETAILS;
-import static com.militarystore.jooq.Tables.SUBCATEGORIES;
 import static com.militarystore.jooq.Tables.USERS;
 
 public class DbContainer extends PostgreSQLContainer<DbContainer> {
