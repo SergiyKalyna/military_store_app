@@ -6,12 +6,15 @@ import com.militarystore.entity.product.model.ProductTag;
 import com.militarystore.product.stockdetails.mapper.ProductStockDetailsMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Record;
+import org.jooq.Record13;
 import org.jooq.RecordMapper;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.militarystore.jooq.Tables.PRODUCTS;
+import static com.militarystore.product.ProductRepository.AVG_RATE;
 
 @Component
 @RequiredArgsConstructor
@@ -27,10 +30,11 @@ public class ProductMapper implements RecordMapper<Record, Product> {
             .price(productRecord.get(PRODUCTS.PRICE))
             .tag(ProductTag.valueOf(productRecord.get(PRODUCTS.PRODUCT_TAG)))
             .isInStock(productRecord.get(PRODUCTS.IS_IN_STOCK))
+            .avgRate(productRecord.get(AVG_RATE, Double.class))
             .build();
     }
 
-    public Product map(List<Record> productRecords) {
+    public Product map(List<Record13<Integer, String, String, Integer, Integer, String, String, Boolean, Integer, Integer, String, Integer, BigDecimal>> productRecords) {
         var productRecord = productRecords.get(0);
         var stockDetails = productRecords.stream()
             .map(productStockDetailsMapper::map)
@@ -46,6 +50,7 @@ public class ProductMapper implements RecordMapper<Record, Product> {
             .tag(ProductTag.valueOf(productRecord.get(PRODUCTS.PRODUCT_TAG)))
             .isInStock(productRecord.get(PRODUCTS.IS_IN_STOCK))
             .stockDetails(stockDetails)
+            .avgRate(productRecord.get(AVG_RATE, Double.class))
             .build();
     }
 }

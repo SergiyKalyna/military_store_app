@@ -1,9 +1,8 @@
 package com.militarystore.product;
 
 import com.militarystore.entity.product.Product;
-import com.militarystore.jooq.tables.records.ProductsRecord;
 import com.militarystore.product.mapper.ProductMapper;
-import org.jooq.Record;
+import org.jooq.Record6;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,8 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -77,33 +76,32 @@ class ProductAdapterTest {
 
     @Test
     void getProductById() {
-        var productRecord = new ProductsRecord();
         var product = Product.builder().build();
 
-        when(productRepository.getProductById(PRODUCT_ID)).thenReturn(List.of(productRecord));
-        when(productMapper.map(anyList())).thenReturn(product);
+        when(productRepository.getProductById(PRODUCT_ID)).thenReturn(List.of());
+        when(productMapper.map(List.of())).thenReturn(product);
 
         assertThat(productAdapter.getProductById(PRODUCT_ID)).isEqualTo(product);
     }
 
     @Test
     void getProductsBySubcategoryId() {
-        List<Record> productRecords = List.of(new ProductsRecord());
+        var productRecord = mock(Record6.class);
         var product = Product.builder().build();
 
-        when(productRepository.getProductsBySubcategoryId(PRODUCT_ID)).thenReturn(productRecords);
-        when(productMapper.map(isA(ProductsRecord.class))).thenReturn(product);
+        when(productRepository.getProductsBySubcategoryId(PRODUCT_ID)).thenReturn(List.of(productRecord));
+        when(productMapper.map(isA(Record6.class))).thenReturn(product);
 
         assertThat(productAdapter.getProductsBySubcategoryId(PRODUCT_ID)).isEqualTo(List.of(product));
     }
 
     @Test
     void getProductsByName() {
-        List<Record> productRecords = List.of(new ProductsRecord());
+        var productRecord = mock(Record6.class);
         var product = Product.builder().build();
 
-        when(productRepository.getProductsByName("name")).thenReturn(productRecords);
-        when(productMapper.map(isA(ProductsRecord.class))).thenReturn(product);
+        when(productRepository.getProductsByName("name")).thenReturn(List.of(productRecord));
+        when(productMapper.map(isA(Record6.class))).thenReturn(product);
 
         assertThat(productAdapter.getProductsByName("name")).isEqualTo(List.of(product));
     }

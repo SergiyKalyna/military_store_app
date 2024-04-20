@@ -16,6 +16,7 @@ public record Product(
     ProductSizeGridType sizeGridType,
     ProductTag tag,
     List<ProductStockDetails> stockDetails,
+    Double avgRate,
     boolean isInStock
 ) {
 }

@@ -14,6 +14,7 @@ public record ProductDto(
     ProductSizeGridTypeDto sizeGridType,
     ProductTagDto tag,
     List<ProductStockDetailsDto> stockDetails,
-    boolean isInStock
+    boolean isInStock,
+    double avgRate
 ) {
 }

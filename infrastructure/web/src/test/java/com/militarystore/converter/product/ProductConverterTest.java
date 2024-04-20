@@ -19,7 +19,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class ProductConverterTest {
 
@@ -80,6 +80,64 @@ class ProductConverterTest {
                     .build()
             ))
             .isInStock(true)
+            .avgRate(0.0)
+            .build();
+
+        assertThat(productConverter.convertToProductDto(product)).isEqualTo(expectedDto);
+    }
+
+    @Test
+    void convertToProductDto_withAvgRate() {
+        var product = Product.builder()
+            .id(1)
+            .name("Product")
+            .description("Product description")
+            .price(100)
+            .subcategoryId(1)
+            .sizeGridType(ProductSizeGridType.CLOTHES)
+            .tag(ProductTag.NEW)
+            .stockDetails(List.of(
+                ProductStockDetails.builder()
+                    .id(1)
+                    .productId(1)
+                    .productSize(ProductSize.M)
+                    .stockAvailability(10)
+                    .build(),
+                ProductStockDetails.builder()
+                    .id(2)
+                    .productId(1)
+                    .productSize(ProductSize.S)
+                    .stockAvailability(20)
+                    .build()
+            ))
+            .isInStock(true)
+            .avgRate(4.5)
+            .build();
+
+        var expectedDto = ProductDto.builder()
+            .id(1)
+            .name("Product")
+            .description("Product description")
+            .price(100)
+            .subcategoryId(1)
+            .sizeGridType(ProductSizeGridTypeDto.CLOTHES)
+            .tag(ProductTagDto.NEW)
+            .stockDetails(List.of(
+                ProductStockDetailsDto.builder()
+                    .id(2)
+                    .productId(1)
+                    .productSize(ProductSizeDto.S)
+                    .stockAvailability(20)
+                    .build(),
+                ProductStockDetailsDto.builder()
+                    .id(1)
+                    .productId(1)
+                    .productSize(ProductSizeDto.M)
+                    .stockAvailability(10)
+                    .build()
+            ))
+            .isInStock(true)
+            .avgRate(4.5)
             .build();
 
         assertThat(productConverter.convertToProductDto(product)).isEqualTo(expectedDto);
@@ -101,6 +159,30 @@ class ProductConverterTest {
             .price(100)
             .tag(ProductTagDto.NEW)
             .isInStock(true)
+            .avgRate(0.0)
+            .build();
+
+        assertThat(productConverter.convertToSearchProductDto(product)).isEqualTo(expectedDto);
+    }
+
+    @Test
+    void convertToSearchProductDto_withAvgRate() {
+        var product = Product.builder()
+            .id(1)
+            .name("Product")
+            .price(100)
+            .tag(ProductTag.NEW)
+            .isInStock(true)
+            .avgRate(4.5)
+            .build();
+
+        var expectedDto = ProductDto.builder()
+            .id(1)
+            .name("Product")
+            .price(100)
+            .tag(ProductTagDto.NEW)
+            .isInStock(true)
+            .avgRate(4.5)
             .build();
 
         assertThat(productConverter.convertToSearchProductDto(product)).isEqualTo(expectedDto);

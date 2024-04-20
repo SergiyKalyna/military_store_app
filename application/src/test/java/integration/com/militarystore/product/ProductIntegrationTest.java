@@ -10,12 +10,15 @@ import com.militarystore.port.in.product.ProductUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.militarystore.jooq.Tables.CATEGORIES;
 import static com.militarystore.jooq.Tables.PRODUCTS;
+import static com.militarystore.jooq.Tables.PRODUCT_RATES;
 import static com.militarystore.jooq.Tables.PRODUCT_STOCK_DETAILS;
 import static com.militarystore.jooq.Tables.SUBCATEGORIES;
+import static com.militarystore.jooq.Tables.USERS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ProductIntegrationTest extends IntegrationTest {
@@ -76,6 +79,37 @@ class ProductIntegrationTest extends IntegrationTest {
                     .stockAvailability(10)
                     .build()))
             .isInStock(true)
+            .build();
+
+        var productFromDb = productUseCase.getProductById(PRODUCT_ID);
+
+        assertThat(productFromDb).isEqualTo(product);
+    }
+
+    @Test
+    void getProductById_shouldReturnCorrectProduct_whenProductHasAvgRate() {
+        initializeCategories();
+        initializeProduct();
+        initializeUser();
+        initializeProductRates();
+
+        var product = Product.builder()
+            .id(PRODUCT_ID)
+            .name("Product")
+            .description("Product description")
+            .price(100)
+            .subcategoryId(SUBCATEGORY_ID)
+            .sizeGridType(ProductSizeGridType.CLOTHES)
+            .tag(ProductTag.NEW)
+            .stockDetails(List.of(
+                ProductStockDetails.builder()
+                    .id(PRODUCT_STOCK_DETAILS_ID)
+                    .productId(PRODUCT_ID)
+                    .productSize(ProductSize.M)
+                    .stockAvailability(10)
+                    .build()))
+            .isInStock(true)
+            .avgRate(4.5)
             .build();
 
         var productFromDb = productUseCase.getProductById(PRODUCT_ID);
@@ -160,16 +194,16 @@ class ProductIntegrationTest extends IntegrationTest {
     }
 
     private void initializeCategories() {
-       dslContext.insertInto(CATEGORIES)
-           .set(CATEGORIES.ID, 1)
-           .set(CATEGORIES.NAME, "Category")
-           .execute();
+        dslContext.insertInto(CATEGORIES)
+            .set(CATEGORIES.ID, 1)
+            .set(CATEGORIES.NAME, "Category")
+            .execute();
 
-       dslContext.insertInto(SUBCATEGORIES)
-           .set(SUBCATEGORIES.ID, SUBCATEGORY_ID)
-           .set(SUBCATEGORIES.NAME, "Subcategory")
-           .set(SUBCATEGORIES.CATEGORY_ID, 1)
-           .execute();
+        dslContext.insertInto(SUBCATEGORIES)
+            .set(SUBCATEGORIES.ID, SUBCATEGORY_ID)
+            .set(SUBCATEGORIES.NAME, "Subcategory")
+            .set(SUBCATEGORIES.CATEGORY_ID, 1)
+            .execute();
     }
 
     private void initializeProduct() {
@@ -189,6 +223,31 @@ class ProductIntegrationTest extends IntegrationTest {
             .set(PRODUCT_STOCK_DETAILS.PRODUCT_ID, PRODUCT_ID)
             .set(PRODUCT_STOCK_DETAILS.PRODUCT_SIZE, ProductSize.M.name())
             .set(PRODUCT_STOCK_DETAILS.STOCK_AVAILABILITY, 10)
+            .execute();
+    }
+
+    private void initializeProductRates() {
+        dslContext.insertInto(PRODUCT_RATES, PRODUCT_RATES.PRODUCT_ID, PRODUCT_RATES.USER_ID, PRODUCT_RATES.RATE)
+            .values(PRODUCT_ID, 1, 5.0)
+            .values(PRODUCT_ID, 2, 4.0)
+            .execute();
+    }
+
+    private void initializeUser() {
+        dslContext.insertInto(USERS,
+                USERS.ID,
+                USERS.LOGIN,
+                USERS.PASSWORD,
+                USERS.FIRST_NAME,
+                USERS.SECOND_NAME,
+                USERS.EMAIL,
+                USERS.PHONE,
+                USERS.GENDER,
+                USERS.BIRTHDAY_DATE,
+                USERS.ROLE,
+                USERS.IS_BANNED)
+            .values(1, "login", "password", "firstName", "secondName", "email", "phone", "gender", LocalDate.EPOCH, "role", true)
+            .values(2, "login2", "password2", "firstName2", "secondName2", "email2", "phone2", "gender2", LocalDate.EPOCH, "role2", false)
             .execute();
     }
 }
