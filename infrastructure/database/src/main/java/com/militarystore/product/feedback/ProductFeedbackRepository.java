@@ -1,6 +1,7 @@
 package com.militarystore.product.feedback;
 
 import com.militarystore.entity.product.ProductFeedback;
+import com.militarystore.entity.user.model.Role;
 import com.militarystore.jooq.tables.records.ProductFeedbacksRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.militarystore.jooq.Tables.PRODUCT_FEEDBACKS;
+import static com.militarystore.jooq.Tables.USERS;
 
 @Repository
 @RequiredArgsConstructor
@@ -64,5 +66,15 @@ public class ProductFeedbackRepository {
             dslContext.selectFrom(PRODUCT_FEEDBACKS)
                 .where(PRODUCT_FEEDBACKS.ID.eq(feedbackId))
         );
+    }
+
+    public boolean canUserChangeFeedback(Integer feedbackId, Integer userId) {
+        return dslContext.fetchExists(
+            dslContext.selectFrom(PRODUCT_FEEDBACKS).asTable()
+                .innerJoin(USERS).on(USERS.ID.eq(PRODUCT_FEEDBACKS.USER_ID))
+                .where(PRODUCT_FEEDBACKS.ID.eq(feedbackId)
+                    .and(USERS.ID.eq(userId))
+                    .or(USERS.ROLE.eq(Role.ADMIN.name()))
+                    .or(USERS.ROLE.eq(Role.SUPER_ADMIN.name()))));
     }
 }

@@ -1,24 +1,18 @@
-package com.militarystore.port.out.product;
+package com.militarystore.port.in.product;
 
 import com.militarystore.entity.product.ProductFeedback;
 
 import java.util.List;
 
-public interface ProductFeedbackPort {
+public interface ProductFeedbackUseCase {
 
     Integer saveFeedback(ProductFeedback productFeedback);
 
     void updateFeedback(ProductFeedback productFeedback);
 
-    void deleteFeedback(Integer feedbackId);
-
-    void deleteFeedbacksByProductId(Integer productId);
+    void deleteFeedback(Integer feedbackId, Integer userId);
 
     ProductFeedback getFeedbackById(Integer feedbackId);
 
     List<ProductFeedback> getFeedbacksByProductId(Integer productId);
-
-    boolean isFeedbackExist(Integer feedbackId);
-
-    boolean canUserChangeFeedback(Integer feedbackId, Integer userId);
 }

@@ -51,4 +51,9 @@ public class ProductFeedbackAdapter implements ProductFeedbackPort {
     public boolean isFeedbackExist(Integer feedbackId) {
         return productFeedbackRepository.isFeedbackExist(feedbackId);
     }
+
+    @Override
+    public boolean canUserChangeFeedback(Integer feedbackId, Integer userId) {
+        return productFeedbackRepository.canUserChangeFeedback(feedbackId, userId);
+    }
 }

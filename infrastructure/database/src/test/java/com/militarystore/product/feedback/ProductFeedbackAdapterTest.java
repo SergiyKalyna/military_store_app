@@ -100,4 +100,14 @@ class ProductFeedbackAdapterTest {
 
         assertTrue(productFeedbackAdapter.isFeedbackExist(feedbackId));
     }
+
+    @Test
+    void canUserChangeFeedback() {
+        var feedbackId = 1;
+        var userId = 1;
+
+        when(productFeedbackRepository.canUserChangeFeedback(feedbackId, userId)).thenReturn(true);
+
+        assertTrue(productFeedbackAdapter.canUserChangeFeedback(feedbackId, userId));
+    }
 }
