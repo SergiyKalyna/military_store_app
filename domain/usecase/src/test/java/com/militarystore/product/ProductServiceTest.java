@@ -112,6 +112,8 @@ class ProductServiceTest {
         productService.deleteProduct(PRODUCT_ID);
 
         verify(productStockDetailsPort).deleteProductStockDetails(PRODUCT_ID);
+        verify(productRatePort).deleteRate(PRODUCT_ID);
+        verify(productFeedbackPort).deleteFeedbacksByProductId(PRODUCT_ID);
         verify(productPort).deleteProduct(PRODUCT_ID);
     }
 
