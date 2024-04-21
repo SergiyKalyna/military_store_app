@@ -2,7 +2,7 @@ package com.militarystore.product.stockdetails;
 
 import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.jooq.tables.records.ProductStockDetailsRecord;
-import com.militarystore.product.stockdetails.mapper.ProductStockDetailsMapper;
+import com.militarystore.product.mapper.ProductStockDetailsMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

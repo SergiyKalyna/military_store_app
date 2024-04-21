@@ -5,7 +5,6 @@ import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSize;
 import com.militarystore.entity.product.model.ProductSizeGridType;
 import com.militarystore.entity.product.model.ProductTag;
-import com.militarystore.product.stockdetails.mapper.ProductStockDetailsMapper;
 import org.jooq.Record;
 import org.jooq.Record13;
 import org.junit.jupiter.api.BeforeEach;

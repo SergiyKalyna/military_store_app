@@ -2,7 +2,7 @@ package com.militarystore.product.stockdetails;
 
 import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.port.out.product.ProductStockDetailsPort;
-import com.militarystore.product.stockdetails.mapper.ProductStockDetailsMapper;
+import com.militarystore.product.mapper.ProductStockDetailsMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

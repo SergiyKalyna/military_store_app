@@ -3,7 +3,6 @@ package com.militarystore.product.mapper;
 import com.militarystore.entity.product.Product;
 import com.militarystore.entity.product.model.ProductSizeGridType;
 import com.militarystore.entity.product.model.ProductTag;
-import com.militarystore.product.stockdetails.mapper.ProductStockDetailsMapper;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Record;
 import org.jooq.Record13;
