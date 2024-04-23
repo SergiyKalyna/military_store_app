@@ -2,6 +2,7 @@ package com.militarystore.product;
 
 import com.militarystore.IntegrationTest;
 import com.militarystore.entity.product.Product;
+import com.militarystore.entity.product.ProductFeedback;
 import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSize;
 import com.militarystore.entity.product.model.ProductSizeGridType;
@@ -11,10 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.militarystore.jooq.Tables.CATEGORIES;
 import static com.militarystore.jooq.Tables.PRODUCTS;
+import static com.militarystore.jooq.Tables.PRODUCT_FEEDBACKS;
 import static com.militarystore.jooq.Tables.PRODUCT_RATES;
 import static com.militarystore.jooq.Tables.PRODUCT_STOCK_DETAILS;
 import static com.militarystore.jooq.Tables.SUBCATEGORIES;
@@ -79,6 +82,8 @@ class ProductIntegrationTest extends IntegrationTest {
                     .stockAvailability(10)
                     .build()))
             .isInStock(true)
+            .avgRate(0.0)
+            .feedbacks(List.of())
             .build();
 
         var productFromDb = productUseCase.getProductById(PRODUCT_ID);
@@ -110,6 +115,46 @@ class ProductIntegrationTest extends IntegrationTest {
                     .build()))
             .isInStock(true)
             .avgRate(4.5)
+            .feedbacks(List.of())
+            .build();
+
+        var productFromDb = productUseCase.getProductById(PRODUCT_ID);
+
+        assertThat(productFromDb).isEqualTo(product);
+    }
+
+    @Test
+    void getProductById_shouldReturnCorrectProduct_whenProductHasAvgRateAndFeedbacks() {
+        initializeCategories();
+        initializeProduct();
+        initializeUser();
+        initializeProductRates();
+        initializeFeedbacks();
+
+        var product = Product.builder()
+            .id(PRODUCT_ID)
+            .name("Product")
+            .description("Product description")
+            .price(100)
+            .subcategoryId(SUBCATEGORY_ID)
+            .sizeGridType(ProductSizeGridType.CLOTHES)
+            .tag(ProductTag.NEW)
+            .stockDetails(List.of(
+                ProductStockDetails.builder()
+                    .id(PRODUCT_STOCK_DETAILS_ID)
+                    .productId(PRODUCT_ID)
+                    .productSize(ProductSize.M)
+                    .stockAvailability(10)
+                    .build()))
+            .isInStock(true)
+            .avgRate(4.5)
+            .feedbacks(List.of(ProductFeedback.builder()
+                .id(1)
+                .userId(1)
+                .userLogin("login")
+                .feedback("Feedback")
+                .dateTime(LocalDateTime.of(2021, 1, 1, 0, 0))
+                .build()))
             .build();
 
         var productFromDb = productUseCase.getProductById(PRODUCT_ID);
@@ -174,6 +219,8 @@ class ProductIntegrationTest extends IntegrationTest {
                     .stockAvailability(9)
                     .build()))
             .isInStock(true)
+            .avgRate(0.0)
+            .feedbacks(List.of())
             .build();
 
         productUseCase.updateProduct(productToUpdate);
@@ -248,6 +295,16 @@ class ProductIntegrationTest extends IntegrationTest {
                 USERS.IS_BANNED)
             .values(1, "login", "password", "firstName", "secondName", "email", "phone", "gender", LocalDate.EPOCH, "role", true)
             .values(2, "login2", "password2", "firstName2", "secondName2", "email2", "phone2", "gender2", LocalDate.EPOCH, "role2", false)
+            .execute();
+    }
+
+    private void initializeFeedbacks() {
+        dslContext.insertInto(PRODUCT_FEEDBACKS)
+            .set(PRODUCT_FEEDBACKS.ID, 1)
+            .set(PRODUCT_FEEDBACKS.PRODUCT_ID, PRODUCT_ID)
+            .set(PRODUCT_FEEDBACKS.USER_ID, 1)
+            .set(PRODUCT_FEEDBACKS.FEEDBACK, "Feedback")
+            .set(PRODUCT_FEEDBACKS.DATE_TIME, LocalDateTime.of(2021, 1, 1, 0, 0))
             .execute();
     }
 }
