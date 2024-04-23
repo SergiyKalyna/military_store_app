@@ -3,7 +3,6 @@ package com.militarystore.product.mapper;
 import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSize;
 import com.militarystore.jooq.tables.records.ProductStockDetailsRecord;
-import com.militarystore.product.mapper.ProductStockDetailsMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

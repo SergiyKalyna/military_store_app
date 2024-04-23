@@ -58,7 +58,7 @@ class ProductFeedbackServiceTest {
     }
 
     @Test
-    void saveFeedback_shouldSave_whenFeedbackIsValid(){
+    void saveFeedback_shouldSave_whenFeedbackIsValid() {
         var feedback = ProductFeedback.builder()
             .productId(PRODUCT_ID)
             .userId(USER_ID)
