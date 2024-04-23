@@ -17,6 +17,7 @@ public record Product(
     ProductTag tag,
     List<ProductStockDetails> stockDetails,
     Double avgRate,
-    boolean isInStock
+    boolean isInStock,
+    List<ProductFeedback> feedbacks
 ) {
 }

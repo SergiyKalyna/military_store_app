@@ -4,7 +4,9 @@ import com.militarystore.entity.product.Product;
 import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSize;
 import com.militarystore.exception.MsNotFoundException;
+import com.militarystore.port.out.product.ProductFeedbackPort;
 import com.militarystore.port.out.product.ProductPort;
+import com.militarystore.port.out.product.ProductRatePort;
 import com.militarystore.port.out.product.ProductStockDetailsPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,11 +32,17 @@ class ProductServiceTest {
     @Mock
     private ProductStockDetailsPort productStockDetailsPort;
 
+    @Mock
+    private ProductFeedbackPort productFeedbackPort;
+
+    @Mock
+    private ProductRatePort productRatePort;
+
     private ProductService productService;
 
     @BeforeEach
     void setUp() {
-        productService = new ProductService(productPort, productStockDetailsPort);
+        productService = new ProductService(productPort, productStockDetailsPort, productRatePort, productFeedbackPort);
     }
 
     @Test
@@ -104,6 +112,8 @@ class ProductServiceTest {
         productService.deleteProduct(PRODUCT_ID);
 
         verify(productStockDetailsPort).deleteProductStockDetails(PRODUCT_ID);
+        verify(productRatePort).deleteRate(PRODUCT_ID);
+        verify(productFeedbackPort).deleteFeedbacksByProductId(PRODUCT_ID);
         verify(productPort).deleteProduct(PRODUCT_ID);
     }
 

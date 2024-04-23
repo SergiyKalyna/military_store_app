@@ -1,13 +1,15 @@
 package com.militarystore.product.mapper;
 
 import com.militarystore.entity.product.Product;
+import com.militarystore.entity.product.ProductFeedback;
 import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSize;
 import com.militarystore.entity.product.model.ProductSizeGridType;
 import com.militarystore.entity.product.model.ProductTag;
-import com.militarystore.product.stockdetails.mapper.ProductStockDetailsMapper;
+import com.militarystore.jooq.tables.records.ProductStockDetailsRecord;
+import com.militarystore.jooq.tables.records.ProductsRecord;
 import org.jooq.Record;
-import org.jooq.Record13;
+import org.jooq.Record5;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,12 +19,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static com.militarystore.jooq.Tables.PRODUCTS;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -32,11 +34,14 @@ class ProductMapperTest {
     @Mock
     private ProductStockDetailsMapper productStockDetailsMapper;
 
+    @Mock
+    private ProductFeedbackMapper productFeedbackMapper;
+
     private ProductMapper productMapper;
 
     @BeforeEach
     void setUp() {
-        productMapper = new ProductMapper(productStockDetailsMapper);
+        productMapper = new ProductMapper(productStockDetailsMapper, productFeedbackMapper);
     }
 
     @Test
@@ -86,9 +91,17 @@ class ProductMapperTest {
 
     @Test
     void map_withListOfRecords() {
-        var record = mock(Record13.class);
-        mockProductRecord(record);
+        var productRecord = new ProductsRecord();
+        productRecord.set(PRODUCTS.ID, 1);
+        productRecord.set(PRODUCTS.NAME, "product");
+        productRecord.set(PRODUCTS.DESCRIPTION, "description");
+        productRecord.set(PRODUCTS.PRICE, 100);
+        productRecord.set(PRODUCTS.SUBCATEGORY_ID, 1);
+        productRecord.set(PRODUCTS.SIZE_GRID_TYPE, "CLOTHES");
+        productRecord.set(PRODUCTS.PRODUCT_TAG, "NEW");
+        productRecord.set(PRODUCTS.IS_IN_STOCK, true);
 
+        var stockDetailsRecord = new ProductStockDetailsRecord();
         var stockDetail = ProductStockDetails.builder()
             .id(1)
             .productId(1)
@@ -96,7 +109,17 @@ class ProductMapperTest {
             .stockAvailability(10)
             .build();
 
-        when(productStockDetailsMapper.map(any())).thenReturn(stockDetail);
+        var productFeedbackRecord = mock(Record5.class);
+        var feedback = ProductFeedback.builder()
+            .id(1)
+            .productId(1)
+            .userId(1)
+            .feedback("comment")
+            .dateTime(LocalDateTime.of(2021, 1, 1, 0, 0))
+            .build();
+
+        when(productStockDetailsMapper.map(stockDetailsRecord)).thenReturn(stockDetail);
+        when(productFeedbackMapper.map(productFeedbackRecord)).thenReturn(feedback);
 
         var expectedResult = Product.builder()
             .id(1)
@@ -109,21 +132,11 @@ class ProductMapperTest {
             .isInStock(true)
             .avgRate(4.5)
             .stockDetails(List.of(stockDetail))
+            .feedbacks(List.of(feedback))
             .build();
 
-        assertThat(productMapper.map(List.of(record))).isEqualTo(expectedResult);
-    }
-
-    private void mockProductRecord(Record record) {
-        when(record.get(PRODUCTS.ID)).thenReturn(1);
-        when(record.get(PRODUCTS.NAME)).thenReturn("product");
-        when(record.get(PRODUCTS.DESCRIPTION)).thenReturn("description");
-        when(record.get(PRODUCTS.PRICE)).thenReturn(100);
-        when(record.get(PRODUCTS.SUBCATEGORY_ID)).thenReturn(1);
-        when(record.get(PRODUCTS.SIZE_GRID_TYPE)).thenReturn("CLOTHES");
-        when(record.get(PRODUCTS.PRODUCT_TAG)).thenReturn("NEW");
-        when(record.get(PRODUCTS.IS_IN_STOCK)).thenReturn(true);
-        when(record.get("avg_rate", Double.class)).thenReturn(4.5);
+        assertThat(productMapper.map(productRecord, List.of(stockDetailsRecord), 4.5, List.of(productFeedbackRecord)))
+            .isEqualTo(expectedResult);
     }
 
     private static Stream<Arguments> productTagTestSource() {

@@ -1,4 +1,4 @@
-package com.militarystore.product.stockdetails.mapper;
+package com.militarystore.product.mapper;
 
 import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSize;

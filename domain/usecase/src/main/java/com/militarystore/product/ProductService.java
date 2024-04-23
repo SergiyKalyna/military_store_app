@@ -3,7 +3,9 @@ package com.militarystore.product;
 import com.militarystore.entity.product.Product;
 import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.port.in.product.ProductUseCase;
+import com.militarystore.port.out.product.ProductFeedbackPort;
 import com.militarystore.port.out.product.ProductPort;
+import com.militarystore.port.out.product.ProductRatePort;
 import com.militarystore.port.out.product.ProductStockDetailsPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,8 @@ public class ProductService implements ProductUseCase {
 
     private final ProductPort productPort;
     private final ProductStockDetailsPort productStockDetailsPort;
+    private final ProductRatePort productRatePort;
+    private final ProductFeedbackPort productFeedbackPort;
 
     @Override
     public Integer addProduct(Product product) {
@@ -54,6 +58,8 @@ public class ProductService implements ProductUseCase {
         checkProductExisting(productId);
 
         productStockDetailsPort.deleteProductStockDetails(productId);
+        productRatePort.deleteRate(productId);
+        productFeedbackPort.deleteFeedbacksByProductId(productId);
         productPort.deleteProduct(productId);
 
         log.info("Product with id - '{}' was deleted ", productId);
