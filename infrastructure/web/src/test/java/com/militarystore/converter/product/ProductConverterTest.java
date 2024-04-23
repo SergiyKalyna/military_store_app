@@ -1,11 +1,13 @@
 package com.militarystore.converter.product;
 
 import com.militarystore.entity.product.Product;
+import com.militarystore.entity.product.ProductFeedback;
 import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSize;
 import com.militarystore.entity.product.model.ProductSizeGridType;
 import com.militarystore.entity.product.model.ProductTag;
 import com.militarystore.model.dto.product.ProductDto;
+import com.militarystore.model.dto.product.ProductFeedbackDto;
 import com.militarystore.model.dto.product.ProductSizeDto;
 import com.militarystore.model.dto.product.ProductSizeGridTypeDto;
 import com.militarystore.model.dto.product.ProductStockDetailsDto;
@@ -16,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -27,7 +30,7 @@ class ProductConverterTest {
 
     @BeforeEach
     void setUp() {
-        productConverter = new ProductConverter();
+        productConverter = new ProductConverter(new ProductFeedbackConverter());
     }
 
     @Test
@@ -55,7 +58,24 @@ class ProductConverterTest {
                     .build()
             ))
             .isInStock(true)
+            .feedbacks(List.of(
+                ProductFeedback.builder()
+                    .id(1)
+                    .productId(1)
+                    .userId(1)
+                    .feedback("Feedback")
+                    .dateTime(LocalDateTime.of(2021, 1, 1, 0, 0))
+                    .build(),
+                ProductFeedback.builder()
+                    .id(2)
+                    .productId(1)
+                    .userId(2)
+                    .feedback("Feedback 2")
+                    .dateTime(LocalDateTime.of(2022, 1, 2, 0, 0))
+                    .build()
+            ))
             .build();
+
 
         var expectedDto = ProductDto.builder()
             .id(1)
@@ -81,6 +101,19 @@ class ProductConverterTest {
             ))
             .isInStock(true)
             .avgRate(0.0)
+            .feedbacks(List.of(
+                ProductFeedbackDto.builder()
+                    .id(2)
+                    .userId(2)
+                    .feedback("Feedback 2")
+                    .dateTime(LocalDateTime.of(2022, 1, 2, 0, 0))
+                    .build(),
+                ProductFeedbackDto.builder()
+                    .id(1)
+                    .userId(1)
+                    .feedback("Feedback")
+                    .dateTime(LocalDateTime.of(2021, 1, 1, 0, 0))
+                    .build()))
             .build();
 
         assertThat(productConverter.convertToProductDto(product)).isEqualTo(expectedDto);
@@ -112,6 +145,7 @@ class ProductConverterTest {
             ))
             .isInStock(true)
             .avgRate(4.5)
+            .feedbacks(List.of())
             .build();
 
         var expectedDto = ProductDto.builder()
@@ -138,6 +172,7 @@ class ProductConverterTest {
             ))
             .isInStock(true)
             .avgRate(4.5)
+            .feedbacks(List.of())
             .build();
 
         assertThat(productConverter.convertToProductDto(product)).isEqualTo(expectedDto);

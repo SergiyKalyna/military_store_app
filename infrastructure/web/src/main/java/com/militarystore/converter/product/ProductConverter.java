@@ -6,11 +6,13 @@ import com.militarystore.entity.product.model.ProductSize;
 import com.militarystore.entity.product.model.ProductSizeGridType;
 import com.militarystore.entity.product.model.ProductTag;
 import com.militarystore.model.dto.product.ProductDto;
+import com.militarystore.model.dto.product.ProductFeedbackDto;
 import com.militarystore.model.dto.product.ProductSizeDto;
 import com.militarystore.model.dto.product.ProductSizeGridTypeDto;
 import com.militarystore.model.dto.product.ProductStockDetailsDto;
 import com.militarystore.model.dto.product.ProductTagDto;
 import com.militarystore.model.request.product.ProductRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
@@ -18,7 +20,10 @@ import java.util.Comparator;
 import static java.util.Objects.isNull;
 
 @Component
+@RequiredArgsConstructor
 public class ProductConverter {
+
+    private final ProductFeedbackConverter productFeedbackConverter;
 
     public ProductDto convertToProductDto(Product product) {
         return ProductDto.builder()
@@ -36,6 +41,12 @@ public class ProductConverter {
                     .toList())
             .isInStock(product.isInStock())
             .avgRate(isNull(product.avgRate()) ? 0.0 : product.avgRate())
+            .feedbacks(
+                product.feedbacks().stream()
+                    .map(productFeedbackConverter::convertToProductFeedbackDto)
+                    .sorted(Comparator.comparing(ProductFeedbackDto::dateTime).reversed())
+                    .toList()
+            )
             .build();
     }
 

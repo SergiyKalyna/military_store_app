@@ -15,6 +15,7 @@ public record ProductDto(
     ProductTagDto tag,
     List<ProductStockDetailsDto> stockDetails,
     boolean isInStock,
-    double avgRate
+    double avgRate,
+    List<ProductFeedbackDto> feedbacks
 ) {
 }
