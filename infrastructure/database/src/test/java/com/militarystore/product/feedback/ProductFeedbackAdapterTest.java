@@ -3,6 +3,7 @@ package com.militarystore.product.feedback;
 import com.militarystore.entity.product.ProductFeedback;
 import com.militarystore.jooq.tables.records.ProductFeedbacksRecord;
 import com.militarystore.product.mapper.ProductFeedbackMapper;
+import org.jooq.Record5;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -83,7 +85,7 @@ class ProductFeedbackAdapterTest {
     @Test
     void getFeedbacksByProductId() {
         var productId = 1;
-        var feedbackRecord = new ProductFeedbacksRecord();
+        var feedbackRecord = mock(Record5.class);
         var feedback = ProductFeedback.builder().build();
 
         when(productFeedbackRepository.getFeedbacksByProductId(productId)).thenReturn(List.of(feedbackRecord));

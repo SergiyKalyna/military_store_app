@@ -2,11 +2,13 @@ package com.militarystore.product.feedback;
 
 import com.militarystore.entity.product.ProductFeedback;
 import com.militarystore.entity.user.model.Role;
-import com.militarystore.jooq.tables.records.ProductFeedbacksRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Record5;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.militarystore.jooq.Tables.PRODUCT_FEEDBACKS;
@@ -36,17 +38,33 @@ public class ProductFeedbackRepository {
             .execute();
     }
 
-    public List<ProductFeedbacksRecord> getFeedbacksByProductId(Integer productId) {
-        return dslContext.selectFrom(PRODUCT_FEEDBACKS)
+    public List<Record5<Integer, Integer, String, LocalDateTime, String>> getFeedbacksByProductId(Integer productId) {
+        return dslContext.select(
+                PRODUCT_FEEDBACKS.ID,
+                PRODUCT_FEEDBACKS.USER_ID,
+                PRODUCT_FEEDBACKS.FEEDBACK,
+                PRODUCT_FEEDBACKS.DATE_TIME,
+                USERS.LOGIN
+            )
+            .from(PRODUCT_FEEDBACKS)
+            .innerJoin(USERS).on(USERS.ID.eq(PRODUCT_FEEDBACKS.USER_ID))
             .where(PRODUCT_FEEDBACKS.PRODUCT_ID.eq(productId))
             .orderBy(PRODUCT_FEEDBACKS.DATE_TIME.desc())
             .fetch();
     }
 
-    public ProductFeedbacksRecord getFeedbackById(Integer feedbackId) {
-        return dslContext.selectFrom(PRODUCT_FEEDBACKS)
+    public Record getFeedbackById(Integer feedbackId) {
+        return dslContext.select(
+                PRODUCT_FEEDBACKS.ID,
+                PRODUCT_FEEDBACKS.USER_ID,
+                PRODUCT_FEEDBACKS.FEEDBACK,
+                PRODUCT_FEEDBACKS.DATE_TIME,
+                USERS.LOGIN
+            )
+            .from(PRODUCT_FEEDBACKS)
+            .innerJoin(USERS).on(USERS.ID.eq(PRODUCT_FEEDBACKS.USER_ID))
             .where(PRODUCT_FEEDBACKS.ID.eq(feedbackId))
-            .fetchOneInto(ProductFeedbacksRecord.class);
+            .fetchOne();
     }
 
     public void deleteFeedbacksByProductId(Integer productId) {
@@ -70,7 +88,8 @@ public class ProductFeedbackRepository {
 
     public boolean canUserChangeFeedback(Integer feedbackId, Integer userId) {
         return dslContext.fetchExists(
-            dslContext.selectFrom(PRODUCT_FEEDBACKS).asTable()
+            dslContext.select()
+                .from(PRODUCT_FEEDBACKS)
                 .innerJoin(USERS).on(USERS.ID.eq(PRODUCT_FEEDBACKS.USER_ID))
                 .where(PRODUCT_FEEDBACKS.ID.eq(feedbackId)
                     .and(USERS.ID.eq(userId))
