@@ -90,7 +90,7 @@ public class ProductFeedbackRepository {
         return dslContext.fetchExists(
             dslContext.select()
                 .from(PRODUCT_FEEDBACKS)
-                .innerJoin(USERS).on(USERS.ID.eq(PRODUCT_FEEDBACKS.USER_ID))
+                .innerJoin(USERS).on(USERS.ID.eq(userId))
                 .where(PRODUCT_FEEDBACKS.ID.eq(feedbackId)
                     .and(USERS.ID.eq(userId))
                     .or(USERS.ROLE.eq(Role.ADMIN.name()))
