@@ -1,9 +1,9 @@
 package com.militarystore.product;
 
 import com.militarystore.entity.product.Product;
+import com.militarystore.jooq.tables.records.ProductsRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
-import org.jooq.Record13;
 import org.jooq.Record6;
 import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
@@ -13,7 +13,6 @@ import java.util.List;
 
 import static com.militarystore.jooq.Tables.PRODUCTS;
 import static com.militarystore.jooq.Tables.PRODUCT_RATES;
-import static com.militarystore.jooq.Tables.PRODUCT_STOCK_DETAILS;
 
 @Repository
 @RequiredArgsConstructor
@@ -35,28 +34,10 @@ public class ProductRepository {
             .fetchOne(PRODUCTS.ID);
     }
 
-    public List<Record13<Integer, String, String, Integer, Integer, String, String, Boolean, Integer, Integer, String, Integer, BigDecimal>> getProductById(Integer productId) {
-        return dslContext.select(
-                PRODUCTS.ID,
-                PRODUCTS.NAME,
-                PRODUCTS.DESCRIPTION,
-                PRODUCTS.PRICE,
-                PRODUCTS.SUBCATEGORY_ID,
-                PRODUCTS.SIZE_GRID_TYPE,
-                PRODUCTS.PRODUCT_TAG,
-                PRODUCTS.IS_IN_STOCK,
-                PRODUCT_STOCK_DETAILS.ID,
-                PRODUCT_STOCK_DETAILS.PRODUCT_ID,
-                PRODUCT_STOCK_DETAILS.PRODUCT_SIZE,
-                PRODUCT_STOCK_DETAILS.STOCK_AVAILABILITY,
-                DSL.avg(PRODUCT_RATES.RATE).as(AVG_RATE)
-            )
-            .from(PRODUCTS)
-            .innerJoin(PRODUCT_STOCK_DETAILS).on(PRODUCTS.ID.eq(PRODUCT_STOCK_DETAILS.PRODUCT_ID))
-            .leftJoin(PRODUCT_RATES).on(PRODUCTS.ID.eq(PRODUCT_RATES.PRODUCT_ID))
+    public ProductsRecord getProductById(Integer productId) {
+        return dslContext.selectFrom(PRODUCTS)
             .where(PRODUCTS.ID.eq(productId))
-            .groupBy(PRODUCTS.ID, PRODUCT_STOCK_DETAILS.ID)
-            .fetch();
+            .fetchOne();
     }
 
     public List<Record6<Integer, String, Integer, String, Boolean, BigDecimal>> getProductsBySubcategoryId(Integer subcategoryId) {

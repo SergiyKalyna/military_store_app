@@ -3,13 +3,15 @@ package com.militarystore.product.mapper;
 import com.militarystore.entity.product.Product;
 import com.militarystore.entity.product.model.ProductSizeGridType;
 import com.militarystore.entity.product.model.ProductTag;
+import com.militarystore.jooq.tables.records.ProductStockDetailsRecord;
+import com.militarystore.jooq.tables.records.ProductsRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Record;
-import org.jooq.Record13;
+import org.jooq.Record5;
 import org.jooq.RecordMapper;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.militarystore.jooq.Tables.PRODUCTS;
@@ -20,6 +22,7 @@ import static com.militarystore.product.ProductRepository.AVG_RATE;
 public class ProductMapper implements RecordMapper<Record, Product> {
 
     private final ProductStockDetailsMapper productStockDetailsMapper;
+    private final ProductFeedbackMapper productFeedbackMapper;
 
     @Override
     public Product map(Record productRecord) {
@@ -33,10 +36,19 @@ public class ProductMapper implements RecordMapper<Record, Product> {
             .build();
     }
 
-    public Product map(List<Record13<Integer, String, String, Integer, Integer, String, String, Boolean, Integer, Integer, String, Integer, BigDecimal>> productRecords) {
-        var productRecord = productRecords.get(0);
-        var stockDetails = productRecords.stream()
+    public Product map(
+        ProductsRecord productRecord,
+        List<ProductStockDetailsRecord> productStockDetailsRecord,
+        double avgRate,
+        List<Record5<Integer, Integer, String, LocalDateTime, String>> productFeedbacksRecord
+    ) {
+        var stockDetails = productStockDetailsRecord.stream()
             .map(productStockDetailsMapper::map)
+            .distinct()
+            .toList();
+        var feedbacks = productFeedbacksRecord.stream()
+            .map(productFeedbackMapper::map)
+            .distinct()
             .toList();
 
         return Product.builder()
@@ -49,7 +61,8 @@ public class ProductMapper implements RecordMapper<Record, Product> {
             .tag(ProductTag.valueOf(productRecord.get(PRODUCTS.PRODUCT_TAG)))
             .isInStock(productRecord.get(PRODUCTS.IS_IN_STOCK))
             .stockDetails(stockDetails)
-            .avgRate(productRecord.get(AVG_RATE, Double.class))
+            .avgRate(avgRate)
+            .feedbacks(feedbacks)
             .build();
     }
 }

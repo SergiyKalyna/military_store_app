@@ -49,4 +49,10 @@ public class ProductStockDetailsRepository {
             .where(PRODUCT_STOCK_DETAILS.ID.eq(productStockDetailsId)
                 .and(PRODUCT_STOCK_DETAILS.STOCK_AVAILABILITY.greaterOrEqual(orderedProductQuantity))));
     }
+
+    public List<ProductStockDetailsRecord> getProductStockDetailsByProductId(Integer productId) {
+        return dslContext.selectFrom(PRODUCT_STOCK_DETAILS)
+            .where(PRODUCT_STOCK_DETAILS.PRODUCT_ID.eq(productId))
+            .fetch();
+    }
 }

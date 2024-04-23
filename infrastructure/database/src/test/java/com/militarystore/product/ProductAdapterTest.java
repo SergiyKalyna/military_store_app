@@ -1,7 +1,13 @@
 package com.militarystore.product;
 
 import com.militarystore.entity.product.Product;
+import com.militarystore.jooq.tables.records.ProductStockDetailsRecord;
+import com.militarystore.jooq.tables.records.ProductsRecord;
+import com.militarystore.product.feedback.ProductFeedbackRepository;
 import com.militarystore.product.mapper.ProductMapper;
+import com.militarystore.product.rate.ProductRateRepository;
+import com.militarystore.product.stockdetails.ProductStockDetailsRepository;
+import org.jooq.Record5;
 import org.jooq.Record6;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,13 +32,28 @@ class ProductAdapterTest {
     private ProductRepository productRepository;
 
     @Mock
+    private ProductFeedbackRepository productFeedbackRepository;
+
+    @Mock
+    private ProductStockDetailsRepository productStockDetailsRepository;
+
+    @Mock
+    private ProductRateRepository productRateRepository;
+
+    @Mock
     private ProductMapper productMapper;
 
     private ProductAdapter productAdapter;
 
     @BeforeEach
     void setUp() {
-        productAdapter = new ProductAdapter(productRepository, productMapper);
+        productAdapter = new ProductAdapter(
+            productRepository,
+            productStockDetailsRepository,
+            productRateRepository,
+            productFeedbackRepository,
+            productMapper
+        );
     }
 
     @Test
@@ -76,10 +97,17 @@ class ProductAdapterTest {
 
     @Test
     void getProductById() {
+        var productRecord = new ProductsRecord();
+        var productStockDetailsRecord = List.of(new ProductStockDetailsRecord());
+        var avgRate = 0.0;
+        var productFeedbacksRecord = mock(Record5.class);
         var product = Product.builder().build();
 
-        when(productRepository.getProductById(PRODUCT_ID)).thenReturn(List.of());
-        when(productMapper.map(List.of())).thenReturn(product);
+        when(productRepository.getProductById(PRODUCT_ID)).thenReturn(productRecord);
+        when(productStockDetailsRepository.getProductStockDetailsByProductId(PRODUCT_ID)).thenReturn(productStockDetailsRecord);
+        when(productRateRepository.getAverageRateByProductId(PRODUCT_ID)).thenReturn(avgRate);
+        when(productFeedbackRepository.getFeedbacksByProductId(PRODUCT_ID)).thenReturn(List.of(productFeedbacksRecord));
+        when(productMapper.map(productRecord, productStockDetailsRecord, avgRate, List.of(productFeedbacksRecord))).thenReturn(product);
 
         assertThat(productAdapter.getProductById(PRODUCT_ID)).isEqualTo(product);
     }
