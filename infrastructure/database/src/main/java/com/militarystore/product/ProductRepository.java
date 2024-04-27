@@ -72,6 +72,22 @@ public class ProductRepository {
             .fetch();
     }
 
+    public List<Record6<Integer, String, Integer, String, Boolean, BigDecimal>> getProductsByIds(List<Integer> productIds) {
+        return dslContext.select(
+                PRODUCTS.ID,
+                PRODUCTS.NAME,
+                PRODUCTS.PRICE,
+                PRODUCTS.PRODUCT_TAG,
+                PRODUCTS.IS_IN_STOCK,
+                DSL.avg(PRODUCT_RATES.RATE).as(AVG_RATE)
+            )
+            .from(PRODUCTS)
+            .leftJoin(PRODUCT_RATES).on(PRODUCTS.ID.eq(PRODUCT_RATES.PRODUCT_ID))
+            .where(PRODUCTS.ID.in(productIds))
+            .groupBy(PRODUCTS.ID)
+            .fetch();
+    }
+
     public void updateProduct(Product product) {
         dslContext.update(PRODUCTS)
             .set(PRODUCTS.NAME, product.name())

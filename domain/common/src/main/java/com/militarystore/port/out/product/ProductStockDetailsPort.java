@@ -17,4 +17,6 @@ public interface ProductStockDetailsPort {
     void deleteProductStockDetails(Integer productId);
 
     boolean isEnoughProductStockAvailability(Integer productStockDetailsId, Integer orderedProductQuantity);
+
+    List<ProductStockDetails> getProductStockDetailsByProductId(Integer productId);
 }

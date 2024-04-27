@@ -21,4 +21,6 @@ public interface ProductPort {
     void deleteProduct(Integer productId);
 
     boolean isProductExist(Integer productId);
+
+    List<Product> getProductsByIds(List<Integer> productIds);
 }

@@ -1,11 +1,11 @@
 package com.militarystore.product;
 
 import com.militarystore.entity.product.Product;
+import com.militarystore.port.out.product.ProductFeedbackPort;
 import com.militarystore.port.out.product.ProductPort;
-import com.militarystore.product.feedback.ProductFeedbackRepository;
+import com.militarystore.port.out.product.ProductRatePort;
+import com.militarystore.port.out.product.ProductStockDetailsPort;
 import com.militarystore.product.mapper.ProductMapper;
-import com.militarystore.product.rate.ProductRateRepository;
-import com.militarystore.product.stockdetails.ProductStockDetailsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,24 +16,27 @@ import java.util.List;
 public class ProductAdapter implements ProductPort {
 
     private final ProductRepository productRepository;
-    private final ProductStockDetailsRepository productStockDetailsRepository;
-    private final ProductRateRepository productRateRepository;
-    private final ProductFeedbackRepository productFeedbackRepository;
+    private final ProductStockDetailsPort productStockDetailsPort;
+    private final ProductRatePort productRatePort;
+    private final ProductFeedbackPort productFeedbackPort;
     private final ProductMapper productMapper;
 
+    @Override
     public Integer addProduct(Product product) {
         return productRepository.addProduct(product);
     }
 
+    @Override
     public Product getProductById(Integer productId) {
         var productRecord = productRepository.getProductById(productId);
-        var stockDetailsRecords = productStockDetailsRepository.getProductStockDetailsByProductId(productId);
-        var avgRate = productRateRepository.getAverageRateByProductId(productId);
-        var feedbacks = productFeedbackRepository.getFeedbacksByProductId(productId);
+        var stockDetails = productStockDetailsPort.getProductStockDetailsByProductId(productId);
+        var avgRate = productRatePort.getAverageRateByProductId(productId);
+        var feedbacks = productFeedbackPort.getFeedbacksByProductId(productId);
 
-        return productMapper.map(productRecord, stockDetailsRecords, avgRate, feedbacks);
+        return productMapper.map(productRecord, stockDetails, avgRate, feedbacks);
     }
 
+    @Override
     public List<Product> getProductsBySubcategoryId(Integer subcategoryId) {
         var productRecords = productRepository.getProductsBySubcategoryId(subcategoryId);
 
@@ -42,6 +45,7 @@ public class ProductAdapter implements ProductPort {
             .toList();
     }
 
+    @Override
     public List<Product> getProductsByName(String name) {
         var productRecords = productRepository.getProductsByName(name);
 
@@ -50,18 +54,31 @@ public class ProductAdapter implements ProductPort {
             .toList();
     }
 
+    @Override
+    public List<Product> getProductsByIds(List<Integer> productIds) {
+        var productRecords = productRepository.getProductsByIds(productIds);
+
+        return productRecords.stream()
+            .map(productMapper::map)
+            .toList();
+    }
+
+    @Override
     public void updateProduct(Product product) {
         productRepository.updateProduct(product);
     }
 
+    @Override
     public void updateStockAvailability(Integer productId, boolean isInStock) {
         productRepository.updateStockAvailability(productId, isInStock);
     }
 
+    @Override
     public void deleteProduct(Integer productId) {
         productRepository.deleteProduct(productId);
     }
 
+    @Override
     public boolean isProductExist(Integer productId) {
         return productRepository.isProductExist(productId);
     }
