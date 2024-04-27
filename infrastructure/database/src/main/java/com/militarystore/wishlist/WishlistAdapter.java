@@ -28,6 +28,11 @@ public class WishlistAdapter implements WishlistPort {
     }
 
     @Override
+    public void deleteProductFromWishlist(Integer productId) {
+        wishlistRepository.deleteProductFromWishlist(productId);
+    }
+
+    @Override
     public List<Integer> getUserWishlistProductIds(Integer userId) {
         return wishlistRepository.getUserWishlistProductIds(userId);
     }

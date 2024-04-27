@@ -34,6 +34,12 @@ public class WishlistRepository {
                 .execute();
     }
 
+    public void deleteProductFromWishlist(Integer productId) {
+        dslContext.deleteFrom(WISHLISTS)
+                .where(WISHLISTS.PRODUCT_ID.eq(productId))
+                .execute();
+    }
+
     public List<Integer> getUserWishlistProductIds(Integer userId) {
         return dslContext.select(WISHLISTS.PRODUCT_ID)
                 .from(WISHLISTS)

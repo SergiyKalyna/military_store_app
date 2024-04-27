@@ -63,4 +63,11 @@ class WishlistAdapterTest {
 
         assertTrue(wishlistAdapter.isProductInUserWishlist(PRODUCT_ID, USER_ID));
     }
+
+    @Test
+    void deleteProductFromWishlist() {
+        wishlistAdapter.deleteProductFromWishlist(PRODUCT_ID);
+
+        verify(wishlistRepository).deleteProductFromWishlist(PRODUCT_ID);
+    }
 }

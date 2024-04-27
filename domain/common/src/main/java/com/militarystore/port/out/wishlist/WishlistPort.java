@@ -10,6 +10,8 @@ public interface WishlistPort {
 
     void deleteAllUserProductsFromWishlist(Integer userId);
 
+    void deleteProductFromWishlist(Integer productId);
+
     List<Integer> getUserWishlistProductIds(Integer userId);
 
     boolean isProductInUserWishlist(Integer productId, Integer userId);
