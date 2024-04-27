@@ -6,7 +6,10 @@ import com.militarystore.exception.MsValidationException;
 import com.militarystore.port.in.user.CreateUserUseCase;
 import com.militarystore.port.in.user.DeleteUserUseCase;
 import com.militarystore.port.in.user.GetUserUseCase;
+import com.militarystore.port.out.product.ProductFeedbackPort;
+import com.militarystore.port.out.product.ProductRatePort;
 import com.militarystore.port.out.user.UserPort;
+import com.militarystore.port.out.wishlist.WishlistPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,9 @@ public class UserService implements CreateUserUseCase, GetUserUseCase, DeleteUse
 
     private final UserPort userPort;
     private final UserValidationService userValidationService;
+    private final ProductRatePort productRatePort;
+    private final ProductFeedbackPort productFeedbackPort;
+    private final WishlistPort wishlistPort;
 
     public Integer saveUser(User user) {
         checkIfLoginExist(user.login());
@@ -36,7 +42,11 @@ public class UserService implements CreateUserUseCase, GetUserUseCase, DeleteUse
     public void deleteUser(int userId) {
         checkIfUserExist(userId);
 
+        productFeedbackPort.deleteFeedbacksByUserId(userId);
+        productRatePort.deleteRatesByUserId(userId);
+        wishlistPort.deleteAllUserProductsFromWishlist(userId);
         userPort.deleteUser(userId);
+
         log.info("User with id '{}' was deleted", userId);
     }
 

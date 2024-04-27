@@ -24,4 +24,9 @@ public class ProductRateAdapter implements ProductRatePort {
     public void deleteRate(Integer productId) {
         productRateRepository.deleteRate(productId);
     }
+
+    @Override
+    public void deleteRatesByUserId(Integer userId) {
+        productRateRepository.deleteRatesByUserId(userId);
+    }
 }

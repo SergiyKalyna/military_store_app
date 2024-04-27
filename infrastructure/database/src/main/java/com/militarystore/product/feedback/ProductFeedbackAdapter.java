@@ -36,6 +36,11 @@ public class ProductFeedbackAdapter implements ProductFeedbackPort {
     }
 
     @Override
+    public void deleteFeedbacksByUserId(Integer userId) {
+        productFeedbackRepository.deleteFeedbacksByUserId(userId);
+    }
+
+    @Override
     public ProductFeedback getFeedbackById(Integer feedbackId) {
         return productFeedbackRepository.getFeedbackById(feedbackId).map(productFeedbackMapper);
     }

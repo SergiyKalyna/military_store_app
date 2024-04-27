@@ -14,6 +14,8 @@ public interface ProductFeedbackPort {
 
     void deleteFeedbacksByProductId(Integer productId);
 
+    void deleteFeedbacksByUserId(Integer userId);
+
     ProductFeedback getFeedbackById(Integer feedbackId);
 
     List<ProductFeedback> getFeedbacksByProductId(Integer productId);

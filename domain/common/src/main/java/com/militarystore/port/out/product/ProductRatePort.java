@@ -7,4 +7,6 @@ public interface ProductRatePort {
     double getAverageRateByProductId(Integer productId);
 
     void deleteRate(Integer productId);
+
+    void deleteRatesByUserId(Integer userId);
 }
