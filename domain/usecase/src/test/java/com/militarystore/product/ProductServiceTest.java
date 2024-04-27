@@ -8,6 +8,7 @@ import com.militarystore.port.out.product.ProductFeedbackPort;
 import com.militarystore.port.out.product.ProductPort;
 import com.militarystore.port.out.product.ProductRatePort;
 import com.militarystore.port.out.product.ProductStockDetailsPort;
+import com.militarystore.port.out.wishlist.WishlistPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,11 +39,20 @@ class ProductServiceTest {
     @Mock
     private ProductRatePort productRatePort;
 
+    @Mock
+    private WishlistPort wishlistPort;
+
     private ProductService productService;
 
     @BeforeEach
     void setUp() {
-        productService = new ProductService(productPort, productStockDetailsPort, productRatePort, productFeedbackPort);
+        productService = new ProductService(
+            productPort,
+            productStockDetailsPort,
+            productRatePort,
+            productFeedbackPort,
+            wishlistPort
+        );
     }
 
     @Test
@@ -112,6 +122,7 @@ class ProductServiceTest {
         productService.deleteProduct(PRODUCT_ID);
 
         verify(productStockDetailsPort).deleteProductStockDetails(PRODUCT_ID);
+        verify(wishlistPort).deleteProductFromWishlist(PRODUCT_ID);
         verify(productRatePort).deleteRate(PRODUCT_ID);
         verify(productFeedbackPort).deleteFeedbacksByProductId(PRODUCT_ID);
         verify(productPort).deleteProduct(PRODUCT_ID);
