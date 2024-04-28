@@ -104,6 +104,8 @@ class ProductMapperTest {
             .dateTime(LocalDateTime.of(2021, 1, 1, 0, 0))
             .build();
 
+        var isProductInUserWishlist = true;
+
         var expectedResult = Product.builder()
             .id(1)
             .name("product")
@@ -116,9 +118,10 @@ class ProductMapperTest {
             .avgRate(4.5)
             .stockDetails(List.of(stockDetail))
             .feedbacks(List.of(feedback))
+            .isProductInUserWishlist(isProductInUserWishlist)
             .build();
 
-        assertThat(productMapper.map(productRecord, List.of(stockDetail), 4.5, List.of(feedback)))
+        assertThat(productMapper.map(productRecord, List.of(stockDetail), 4.5, List.of(feedback), isProductInUserWishlist))
             .isEqualTo(expectedResult);
     }
 

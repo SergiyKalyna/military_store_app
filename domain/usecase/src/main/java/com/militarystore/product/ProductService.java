@@ -39,10 +39,10 @@ public class ProductService implements ProductUseCase {
     }
 
     @Override
-    public Product getProductById(Integer productId) {
+    public Product getProductById(Integer productId,  Integer userId) {
         checkProductExisting(productId);
 
-        return productPort.getProductById(productId);
+        return productPort.getProductById(productId, userId);
     }
 
     @Override

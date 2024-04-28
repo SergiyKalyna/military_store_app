@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
 class ProductServiceTest {
 
     private static final int PRODUCT_ID = 1;
+    private static final int USER_ID = 1;
 
     @Mock
     private ProductPort productPort;
@@ -83,16 +84,16 @@ class ProductServiceTest {
         var product = Product.builder().build();
 
         when(productPort.isProductExist(PRODUCT_ID)).thenReturn(true);
-        when(productPort.getProductById(PRODUCT_ID)).thenReturn(product);
+        when(productPort.getProductById(PRODUCT_ID, USER_ID)).thenReturn(product);
 
-        assertThat(productService.getProductById(PRODUCT_ID)).isEqualTo(product);
+        assertThat(productService.getProductById(PRODUCT_ID, USER_ID)).isEqualTo(product);
     }
 
     @Test
     void getProductById_shouldThrowException_whenProductNotExist() {
         when(productPort.isProductExist(PRODUCT_ID)).thenReturn(false);
 
-        assertThatThrownBy(() -> productService.getProductById(PRODUCT_ID))
+        assertThatThrownBy(() -> productService.getProductById(PRODUCT_ID, USER_ID))
             .isInstanceOf(MsNotFoundException.class)
             .hasMessage("Product does not exist with id: 1");
     }

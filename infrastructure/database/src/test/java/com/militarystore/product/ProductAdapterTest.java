@@ -7,6 +7,7 @@ import com.militarystore.jooq.tables.records.ProductsRecord;
 import com.militarystore.port.out.product.ProductFeedbackPort;
 import com.militarystore.port.out.product.ProductRatePort;
 import com.militarystore.port.out.product.ProductStockDetailsPort;
+import com.militarystore.port.out.wishlist.WishlistPort;
 import com.militarystore.product.mapper.ProductMapper;
 import org.jooq.Record6;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,7 @@ import static org.mockito.Mockito.when;
 class ProductAdapterTest {
 
     private static final int PRODUCT_ID = 1;
+    private static final int USER_ID = 1;
 
     @Mock
     private ProductRepository productRepository;
@@ -41,6 +43,9 @@ class ProductAdapterTest {
     private ProductRatePort productRatePort;
 
     @Mock
+    private WishlistPort wishlistPort;
+
+    @Mock
     private ProductMapper productMapper;
 
     private ProductAdapter productAdapter;
@@ -52,6 +57,7 @@ class ProductAdapterTest {
             productStockDetailsPort,
             productRatePort,
             productFeedbackPort,
+            wishlistPort,
             productMapper
         );
     }
@@ -101,15 +107,18 @@ class ProductAdapterTest {
         var productStockDetails = List.of(ProductStockDetails.builder().build());
         var avgRate = 0.0;
         var productFeedbacks = List.of(ProductFeedback.builder().build());
+        var isProductInUserWishlist = true;
         var product = Product.builder().build();
 
         when(productRepository.getProductById(PRODUCT_ID)).thenReturn(productRecord);
         when(productStockDetailsPort.getProductStockDetailsByProductId(PRODUCT_ID)).thenReturn(productStockDetails);
         when(productRatePort.getAverageRateByProductId(PRODUCT_ID)).thenReturn(avgRate);
         when(productFeedbackPort.getFeedbacksByProductId(PRODUCT_ID)).thenReturn(productFeedbacks);
-        when(productMapper.map(productRecord, productStockDetails, avgRate, productFeedbacks)).thenReturn(product);
+        when(wishlistPort.isProductInUserWishlist(PRODUCT_ID, USER_ID)).thenReturn(isProductInUserWishlist);
+        when(productMapper.map(productRecord, productStockDetails, avgRate, productFeedbacks, isProductInUserWishlist))
+            .thenReturn(product);
 
-        assertThat(productAdapter.getProductById(PRODUCT_ID)).isEqualTo(product);
+        assertThat(productAdapter.getProductById(PRODUCT_ID, USER_ID)).isEqualTo(product);
     }
 
     @Test

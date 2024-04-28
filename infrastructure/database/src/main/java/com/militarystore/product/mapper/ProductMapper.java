@@ -34,7 +34,8 @@ public class ProductMapper implements RecordMapper<Record, Product> {
         ProductsRecord productRecord,
         List<ProductStockDetails> productStockDetails,
         double avgRate,
-        List<ProductFeedback> productFeedbacks
+        List<ProductFeedback> productFeedbacks,
+        boolean isProductInUserWishlist
     ) {
         return Product.builder()
             .id(productRecord.get(PRODUCTS.ID))
@@ -48,6 +49,7 @@ public class ProductMapper implements RecordMapper<Record, Product> {
             .stockDetails(productStockDetails)
             .avgRate(avgRate)
             .feedbacks(productFeedbacks)
+            .isProductInUserWishlist(isProductInUserWishlist)
             .build();
     }
 }
