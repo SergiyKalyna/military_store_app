@@ -51,4 +51,13 @@ class ProductRateAdapterTest {
 
         verify(productRateRepository).deleteRate(productId);
     }
+
+    @Test
+    void deleteRateByUserId() {
+        var userId = 1;
+
+        productRateAdapter.deleteRatesByUserId(userId);
+
+        verify(productRateRepository).deleteRatesByUserId(userId);
+    }
 }

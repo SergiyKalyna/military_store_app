@@ -37,4 +37,10 @@ public class ProductRateRepository {
             .where(PRODUCT_RATES.PRODUCT_ID.eq(productId))
             .execute();
     }
+
+    public void deleteRatesByUserId(Integer userId) {
+        dslContext.deleteFrom(PRODUCT_RATES)
+            .where(PRODUCT_RATES.USER_ID.eq(userId))
+            .execute();
+    }
 }

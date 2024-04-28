@@ -1,13 +1,14 @@
 package com.militarystore.product;
 
 import com.militarystore.entity.product.Product;
-import com.militarystore.jooq.tables.records.ProductStockDetailsRecord;
+import com.militarystore.entity.product.ProductFeedback;
+import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.jooq.tables.records.ProductsRecord;
-import com.militarystore.product.feedback.ProductFeedbackRepository;
+import com.militarystore.port.out.product.ProductFeedbackPort;
+import com.militarystore.port.out.product.ProductRatePort;
+import com.militarystore.port.out.product.ProductStockDetailsPort;
+import com.militarystore.port.out.wishlist.WishlistPort;
 import com.militarystore.product.mapper.ProductMapper;
-import com.militarystore.product.rate.ProductRateRepository;
-import com.militarystore.product.stockdetails.ProductStockDetailsRepository;
-import org.jooq.Record5;
 import org.jooq.Record6;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,18 +28,22 @@ import static org.mockito.Mockito.when;
 class ProductAdapterTest {
 
     private static final int PRODUCT_ID = 1;
+    private static final int USER_ID = 1;
 
     @Mock
     private ProductRepository productRepository;
 
     @Mock
-    private ProductFeedbackRepository productFeedbackRepository;
+    private ProductFeedbackPort productFeedbackPort;
 
     @Mock
-    private ProductStockDetailsRepository productStockDetailsRepository;
+    private ProductStockDetailsPort productStockDetailsPort;
 
     @Mock
-    private ProductRateRepository productRateRepository;
+    private ProductRatePort productRatePort;
+
+    @Mock
+    private WishlistPort wishlistPort;
 
     @Mock
     private ProductMapper productMapper;
@@ -49,9 +54,10 @@ class ProductAdapterTest {
     void setUp() {
         productAdapter = new ProductAdapter(
             productRepository,
-            productStockDetailsRepository,
-            productRateRepository,
-            productFeedbackRepository,
+            productStockDetailsPort,
+            productRatePort,
+            productFeedbackPort,
+            wishlistPort,
             productMapper
         );
     }
@@ -98,18 +104,21 @@ class ProductAdapterTest {
     @Test
     void getProductById() {
         var productRecord = new ProductsRecord();
-        var productStockDetailsRecord = List.of(new ProductStockDetailsRecord());
+        var productStockDetails = List.of(ProductStockDetails.builder().build());
         var avgRate = 0.0;
-        var productFeedbacksRecord = mock(Record5.class);
+        var productFeedbacks = List.of(ProductFeedback.builder().build());
+        var isProductInUserWishlist = true;
         var product = Product.builder().build();
 
         when(productRepository.getProductById(PRODUCT_ID)).thenReturn(productRecord);
-        when(productStockDetailsRepository.getProductStockDetailsByProductId(PRODUCT_ID)).thenReturn(productStockDetailsRecord);
-        when(productRateRepository.getAverageRateByProductId(PRODUCT_ID)).thenReturn(avgRate);
-        when(productFeedbackRepository.getFeedbacksByProductId(PRODUCT_ID)).thenReturn(List.of(productFeedbacksRecord));
-        when(productMapper.map(productRecord, productStockDetailsRecord, avgRate, List.of(productFeedbacksRecord))).thenReturn(product);
+        when(productStockDetailsPort.getProductStockDetailsByProductId(PRODUCT_ID)).thenReturn(productStockDetails);
+        when(productRatePort.getAverageRateByProductId(PRODUCT_ID)).thenReturn(avgRate);
+        when(productFeedbackPort.getFeedbacksByProductId(PRODUCT_ID)).thenReturn(productFeedbacks);
+        when(wishlistPort.isProductInUserWishlist(PRODUCT_ID, USER_ID)).thenReturn(isProductInUserWishlist);
+        when(productMapper.map(productRecord, productStockDetails, avgRate, productFeedbacks, isProductInUserWishlist))
+            .thenReturn(product);
 
-        assertThat(productAdapter.getProductById(PRODUCT_ID)).isEqualTo(product);
+        assertThat(productAdapter.getProductById(PRODUCT_ID, USER_ID)).isEqualTo(product);
     }
 
     @Test
@@ -132,5 +141,16 @@ class ProductAdapterTest {
         when(productMapper.map(isA(Record6.class))).thenReturn(product);
 
         assertThat(productAdapter.getProductsByName("name")).isEqualTo(List.of(product));
+    }
+
+    @Test
+    void getProductsByIds() {
+        var productRecord = mock(Record6.class);
+        var product = Product.builder().build();
+
+        when(productRepository.getProductsByIds(List.of(PRODUCT_ID))).thenReturn(List.of(productRecord));
+        when(productMapper.map(isA(Record6.class))).thenReturn(product);
+
+        assertThat(productAdapter.getProductsByIds(List.of(PRODUCT_ID))).isEqualTo(List.of(product));
     }
 }

@@ -99,10 +99,11 @@ class ProductControllerTest {
             .stockDetails(List.of())
             .build();
 
-        when(productUseCase.getProductById(1)).thenReturn(product);
+        when(productUseCase.getProductById(1, 11)).thenReturn(product);
         when(productConverter.convertToProductDto(product)).thenReturn(productDto);
 
-        mockMvc.perform(get("/products/1"))
+        mockMvc.perform(get("/products/1")
+                .param("userId", "11"))
             .andExpect(status().isOk())
             .andExpect(content().json(objectMapper.writeValueAsString(productDto)));
     }

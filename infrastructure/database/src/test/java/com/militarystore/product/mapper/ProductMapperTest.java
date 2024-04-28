@@ -6,18 +6,13 @@ import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSize;
 import com.militarystore.entity.product.model.ProductSizeGridType;
 import com.militarystore.entity.product.model.ProductTag;
-import com.militarystore.jooq.tables.records.ProductStockDetailsRecord;
 import com.militarystore.jooq.tables.records.ProductsRecord;
 import org.jooq.Record;
-import org.jooq.Record5;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,20 +23,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
 class ProductMapperTest {
-
-    @Mock
-    private ProductStockDetailsMapper productStockDetailsMapper;
-
-    @Mock
-    private ProductFeedbackMapper productFeedbackMapper;
 
     private ProductMapper productMapper;
 
     @BeforeEach
     void setUp() {
-        productMapper = new ProductMapper(productStockDetailsMapper, productFeedbackMapper);
+        productMapper = new ProductMapper();
     }
 
     @Test
@@ -101,7 +89,6 @@ class ProductMapperTest {
         productRecord.set(PRODUCTS.PRODUCT_TAG, "NEW");
         productRecord.set(PRODUCTS.IS_IN_STOCK, true);
 
-        var stockDetailsRecord = new ProductStockDetailsRecord();
         var stockDetail = ProductStockDetails.builder()
             .id(1)
             .productId(1)
@@ -109,7 +96,6 @@ class ProductMapperTest {
             .stockAvailability(10)
             .build();
 
-        var productFeedbackRecord = mock(Record5.class);
         var feedback = ProductFeedback.builder()
             .id(1)
             .productId(1)
@@ -118,8 +104,7 @@ class ProductMapperTest {
             .dateTime(LocalDateTime.of(2021, 1, 1, 0, 0))
             .build();
 
-        when(productStockDetailsMapper.map(stockDetailsRecord)).thenReturn(stockDetail);
-        when(productFeedbackMapper.map(productFeedbackRecord)).thenReturn(feedback);
+        var isProductInUserWishlist = true;
 
         var expectedResult = Product.builder()
             .id(1)
@@ -133,9 +118,10 @@ class ProductMapperTest {
             .avgRate(4.5)
             .stockDetails(List.of(stockDetail))
             .feedbacks(List.of(feedback))
+            .isProductInUserWishlist(isProductInUserWishlist)
             .build();
 
-        assertThat(productMapper.map(productRecord, List.of(stockDetailsRecord), 4.5, List.of(productFeedbackRecord)))
+        assertThat(productMapper.map(productRecord, List.of(stockDetail), 4.5, List.of(feedback), isProductInUserWishlist))
             .isEqualTo(expectedResult);
     }
 

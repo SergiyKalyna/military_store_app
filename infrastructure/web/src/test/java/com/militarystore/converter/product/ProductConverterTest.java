@@ -74,6 +74,7 @@ class ProductConverterTest {
                     .dateTime(LocalDateTime.of(2022, 1, 2, 0, 0))
                     .build()
             ))
+            .isProductInUserWishlist(true)
             .build();
 
 
@@ -114,6 +115,7 @@ class ProductConverterTest {
                     .feedback("Feedback")
                     .dateTime(LocalDateTime.of(2021, 1, 1, 0, 0))
                     .build()))
+            .isProductInUserWishlist(true)
             .build();
 
         assertThat(productConverter.convertToProductDto(product)).isEqualTo(expectedDto);

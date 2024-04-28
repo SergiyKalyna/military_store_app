@@ -7,6 +7,7 @@ import com.militarystore.port.out.product.ProductFeedbackPort;
 import com.militarystore.port.out.product.ProductPort;
 import com.militarystore.port.out.product.ProductRatePort;
 import com.militarystore.port.out.product.ProductStockDetailsPort;
+import com.militarystore.port.out.wishlist.WishlistPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class ProductService implements ProductUseCase {
     private final ProductStockDetailsPort productStockDetailsPort;
     private final ProductRatePort productRatePort;
     private final ProductFeedbackPort productFeedbackPort;
+    private final WishlistPort wishlistPort;
 
     @Override
     public Integer addProduct(Product product) {
@@ -37,10 +39,10 @@ public class ProductService implements ProductUseCase {
     }
 
     @Override
-    public Product getProductById(Integer productId) {
+    public Product getProductById(Integer productId,  Integer userId) {
         checkProductExisting(productId);
 
-        return productPort.getProductById(productId);
+        return productPort.getProductById(productId, userId);
     }
 
     @Override
@@ -58,6 +60,7 @@ public class ProductService implements ProductUseCase {
         checkProductExisting(productId);
 
         productStockDetailsPort.deleteProductStockDetails(productId);
+        wishlistPort.deleteProductFromWishlist(productId);
         productRatePort.deleteRate(productId);
         productFeedbackPort.deleteFeedbacksByProductId(productId);
         productPort.deleteProduct(productId);

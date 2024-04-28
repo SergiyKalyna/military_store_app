@@ -3,7 +3,10 @@ package com.militarystore.user;
 import com.militarystore.entity.user.User;
 import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.exception.MsValidationException;
+import com.militarystore.port.out.product.ProductFeedbackPort;
+import com.militarystore.port.out.product.ProductRatePort;
 import com.militarystore.port.out.user.UserPort;
+import com.militarystore.port.out.wishlist.WishlistPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,11 +32,26 @@ class UserServiceTest {
     @Mock
     private UserPort userPort;
 
+    @Mock
+    private ProductFeedbackPort productFeedbackPort;
+
+    @Mock
+    private ProductRatePort productRatePort;
+
+    @Mock
+    private WishlistPort wishlistPort;
+
     private UserService userService;
 
     @BeforeEach
     void setUp() {
-        userService = new UserService(userPort, userValidationService);
+        userService = new UserService(
+            userPort,
+            userValidationService,
+            productRatePort,
+            productFeedbackPort,
+            wishlistPort
+        );
     }
 
     @Test
@@ -70,6 +88,9 @@ class UserServiceTest {
 
         userService.deleteUser(USER_ID);
 
+        verify(productFeedbackPort).deleteFeedbacksByUserId(USER_ID);
+        verify(productRatePort).deleteRatesByUserId(USER_ID);
+        verify(wishlistPort).deleteAllUserProductsFromWishlist(USER_ID);
         verify(userPort).deleteUser(USER_ID);
     }
 

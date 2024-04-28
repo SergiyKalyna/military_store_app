@@ -47,6 +47,7 @@ public class ProductConverter {
                     .sorted(Comparator.comparing(ProductFeedbackDto::dateTime).reversed())
                     .toList()
             )
+            .isProductInUserWishlist(product.isProductInUserWishlist())
             .build();
     }
 

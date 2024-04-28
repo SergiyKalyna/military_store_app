@@ -8,7 +8,7 @@ public interface ProductPort {
 
     Integer addProduct(Product product);
 
-    Product getProductById(Integer productId);
+    Product getProductById(Integer productId,  Integer userId);
 
     List<Product> getProductsBySubcategoryId(Integer subcategoryId);
 
@@ -21,4 +21,6 @@ public interface ProductPort {
     void deleteProduct(Integer productId);
 
     boolean isProductExist(Integer productId);
+
+    List<Product> getProductsByIds(List<Integer> productIds);
 }

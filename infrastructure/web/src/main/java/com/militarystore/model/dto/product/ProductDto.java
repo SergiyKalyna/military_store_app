@@ -14,8 +14,9 @@ public record ProductDto(
     ProductSizeGridTypeDto sizeGridType,
     ProductTagDto tag,
     List<ProductStockDetailsDto> stockDetails,
-    boolean isInStock,
+    Boolean isInStock,
     double avgRate,
-    List<ProductFeedbackDto> feedbacks
+    List<ProductFeedbackDto> feedbacks,
+    Boolean isProductInUserWishlist
 ) {
 }

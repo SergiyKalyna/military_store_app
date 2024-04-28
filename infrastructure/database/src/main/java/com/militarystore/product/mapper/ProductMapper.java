@@ -1,28 +1,22 @@
 package com.militarystore.product.mapper;
 
 import com.militarystore.entity.product.Product;
+import com.militarystore.entity.product.ProductFeedback;
+import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSizeGridType;
 import com.militarystore.entity.product.model.ProductTag;
-import com.militarystore.jooq.tables.records.ProductStockDetailsRecord;
 import com.militarystore.jooq.tables.records.ProductsRecord;
-import lombok.RequiredArgsConstructor;
 import org.jooq.Record;
-import org.jooq.Record5;
 import org.jooq.RecordMapper;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.militarystore.jooq.Tables.PRODUCTS;
 import static com.militarystore.product.ProductRepository.AVG_RATE;
 
 @Component
-@RequiredArgsConstructor
 public class ProductMapper implements RecordMapper<Record, Product> {
-
-    private final ProductStockDetailsMapper productStockDetailsMapper;
-    private final ProductFeedbackMapper productFeedbackMapper;
 
     @Override
     public Product map(Record productRecord) {
@@ -38,19 +32,11 @@ public class ProductMapper implements RecordMapper<Record, Product> {
 
     public Product map(
         ProductsRecord productRecord,
-        List<ProductStockDetailsRecord> productStockDetailsRecord,
+        List<ProductStockDetails> productStockDetails,
         double avgRate,
-        List<Record5<Integer, Integer, String, LocalDateTime, String>> productFeedbacksRecord
+        List<ProductFeedback> productFeedbacks,
+        boolean isProductInUserWishlist
     ) {
-        var stockDetails = productStockDetailsRecord.stream()
-            .map(productStockDetailsMapper::map)
-            .distinct()
-            .toList();
-        var feedbacks = productFeedbacksRecord.stream()
-            .map(productFeedbackMapper::map)
-            .distinct()
-            .toList();
-
         return Product.builder()
             .id(productRecord.get(PRODUCTS.ID))
             .name(productRecord.get(PRODUCTS.NAME))
@@ -60,9 +46,10 @@ public class ProductMapper implements RecordMapper<Record, Product> {
             .sizeGridType(ProductSizeGridType.valueOf(productRecord.get(PRODUCTS.SIZE_GRID_TYPE)))
             .tag(ProductTag.valueOf(productRecord.get(PRODUCTS.PRODUCT_TAG)))
             .isInStock(productRecord.get(PRODUCTS.IS_IN_STOCK))
-            .stockDetails(stockDetails)
+            .stockDetails(productStockDetails)
             .avgRate(avgRate)
-            .feedbacks(feedbacks)
+            .feedbacks(productFeedbacks)
+            .isProductInUserWishlist(isProductInUserWishlist)
             .build();
     }
 }

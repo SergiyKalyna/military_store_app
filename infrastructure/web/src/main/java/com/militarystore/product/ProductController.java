@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -32,8 +33,11 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ProductDto getProductById(@PathVariable("productId") Integer productId) {
-        var product = productUseCase.getProductById(productId);
+    public ProductDto getProductById(
+        @PathVariable("productId") Integer productId,
+        @RequestParam("userId") Integer userId
+    ) {
+        var product = productUseCase.getProductById(productId, userId);
 
         return productConverter.convertToProductDto(product);
     }

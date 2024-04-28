@@ -112,4 +112,13 @@ class ProductFeedbackAdapterTest {
 
         assertTrue(productFeedbackAdapter.canUserChangeFeedback(feedbackId, userId));
     }
+
+    @Test
+    void deleteFeedbacksByUserId() {
+        var userId = 1;
+
+        productFeedbackAdapter.deleteFeedbacksByUserId(userId);
+
+        verify(productFeedbackRepository).deleteFeedbacksByUserId(userId);
+    }
 }

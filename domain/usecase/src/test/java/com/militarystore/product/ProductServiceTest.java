@@ -8,6 +8,7 @@ import com.militarystore.port.out.product.ProductFeedbackPort;
 import com.militarystore.port.out.product.ProductPort;
 import com.militarystore.port.out.product.ProductRatePort;
 import com.militarystore.port.out.product.ProductStockDetailsPort;
+import com.militarystore.port.out.wishlist.WishlistPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.when;
 class ProductServiceTest {
 
     private static final int PRODUCT_ID = 1;
+    private static final int USER_ID = 1;
 
     @Mock
     private ProductPort productPort;
@@ -38,11 +40,20 @@ class ProductServiceTest {
     @Mock
     private ProductRatePort productRatePort;
 
+    @Mock
+    private WishlistPort wishlistPort;
+
     private ProductService productService;
 
     @BeforeEach
     void setUp() {
-        productService = new ProductService(productPort, productStockDetailsPort, productRatePort, productFeedbackPort);
+        productService = new ProductService(
+            productPort,
+            productStockDetailsPort,
+            productRatePort,
+            productFeedbackPort,
+            wishlistPort
+        );
     }
 
     @Test
@@ -73,16 +84,16 @@ class ProductServiceTest {
         var product = Product.builder().build();
 
         when(productPort.isProductExist(PRODUCT_ID)).thenReturn(true);
-        when(productPort.getProductById(PRODUCT_ID)).thenReturn(product);
+        when(productPort.getProductById(PRODUCT_ID, USER_ID)).thenReturn(product);
 
-        assertThat(productService.getProductById(PRODUCT_ID)).isEqualTo(product);
+        assertThat(productService.getProductById(PRODUCT_ID, USER_ID)).isEqualTo(product);
     }
 
     @Test
     void getProductById_shouldThrowException_whenProductNotExist() {
         when(productPort.isProductExist(PRODUCT_ID)).thenReturn(false);
 
-        assertThatThrownBy(() -> productService.getProductById(PRODUCT_ID))
+        assertThatThrownBy(() -> productService.getProductById(PRODUCT_ID, USER_ID))
             .isInstanceOf(MsNotFoundException.class)
             .hasMessage("Product does not exist with id: 1");
     }
@@ -112,6 +123,7 @@ class ProductServiceTest {
         productService.deleteProduct(PRODUCT_ID);
 
         verify(productStockDetailsPort).deleteProductStockDetails(PRODUCT_ID);
+        verify(wishlistPort).deleteProductFromWishlist(PRODUCT_ID);
         verify(productRatePort).deleteRate(PRODUCT_ID);
         verify(productFeedbackPort).deleteFeedbacksByProductId(PRODUCT_ID);
         verify(productPort).deleteProduct(PRODUCT_ID);

@@ -22,6 +22,7 @@ import static com.militarystore.jooq.Tables.PRODUCT_RATES;
 import static com.militarystore.jooq.Tables.PRODUCT_STOCK_DETAILS;
 import static com.militarystore.jooq.Tables.SUBCATEGORIES;
 import static com.militarystore.jooq.Tables.USERS;
+import static com.militarystore.jooq.Tables.WISHLISTS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ProductIntegrationTest extends IntegrationTest {
@@ -29,6 +30,7 @@ class ProductIntegrationTest extends IntegrationTest {
     private static final int SUBCATEGORY_ID = 1;
     private static final int PRODUCT_ID = 10;
     private static final int PRODUCT_STOCK_DETAILS_ID = 11;
+    private static final int USER_ID = 1;
 
     @Autowired
     private ProductUseCase productUseCase;
@@ -52,7 +54,7 @@ class ProductIntegrationTest extends IntegrationTest {
             .build();
 
         var productId = productUseCase.addProduct(product);
-        var productFromDb = productUseCase.getProductById(productId);
+        var productFromDb = productUseCase.getProductById(productId, USER_ID);
 
         assertThat(productFromDb.name()).isEqualTo(product.name());
         assertThat(productFromDb.description()).isEqualTo(product.description());
@@ -84,9 +86,10 @@ class ProductIntegrationTest extends IntegrationTest {
             .isInStock(true)
             .avgRate(0.0)
             .feedbacks(List.of())
+            .isProductInUserWishlist(false)
             .build();
 
-        var productFromDb = productUseCase.getProductById(PRODUCT_ID);
+        var productFromDb = productUseCase.getProductById(PRODUCT_ID, USER_ID);
 
         assertThat(productFromDb).isEqualTo(product);
     }
@@ -116,9 +119,10 @@ class ProductIntegrationTest extends IntegrationTest {
             .isInStock(true)
             .avgRate(4.5)
             .feedbacks(List.of())
+            .isProductInUserWishlist(false)
             .build();
 
-        var productFromDb = productUseCase.getProductById(PRODUCT_ID);
+        var productFromDb = productUseCase.getProductById(PRODUCT_ID, USER_ID);
 
         assertThat(productFromDb).isEqualTo(product);
     }
@@ -155,9 +159,43 @@ class ProductIntegrationTest extends IntegrationTest {
                 .feedback("Feedback")
                 .dateTime(LocalDateTime.of(2021, 1, 1, 0, 0))
                 .build()))
+            .isProductInUserWishlist(false)
             .build();
 
-        var productFromDb = productUseCase.getProductById(PRODUCT_ID);
+        var productFromDb = productUseCase.getProductById(PRODUCT_ID, USER_ID);
+
+        assertThat(productFromDb).isEqualTo(product);
+    }
+
+    @Test
+    void getProductById_shouldReturnCorrectProduct_whenProductIsInUserWishlist() {
+        initializeCategories();
+        initializeProduct();
+        initializeUser();
+        initializeWishlist();
+
+        var product = Product.builder()
+            .id(PRODUCT_ID)
+            .name("Product")
+            .description("Product description")
+            .price(100)
+            .subcategoryId(SUBCATEGORY_ID)
+            .sizeGridType(ProductSizeGridType.CLOTHES)
+            .tag(ProductTag.NEW)
+            .stockDetails(List.of(
+                ProductStockDetails.builder()
+                    .id(PRODUCT_STOCK_DETAILS_ID)
+                    .productId(PRODUCT_ID)
+                    .productSize(ProductSize.M)
+                    .stockAvailability(10)
+                    .build()))
+            .isInStock(true)
+            .avgRate(0.0)
+            .feedbacks(List.of())
+            .isProductInUserWishlist(true)
+            .build();
+
+        var productFromDb = productUseCase.getProductById(PRODUCT_ID, USER_ID);
 
         assertThat(productFromDb).isEqualTo(product);
     }
@@ -221,11 +259,12 @@ class ProductIntegrationTest extends IntegrationTest {
             .isInStock(true)
             .avgRate(0.0)
             .feedbacks(List.of())
+            .isProductInUserWishlist(false)
             .build();
 
         productUseCase.updateProduct(productToUpdate);
 
-        var productFromDb = productUseCase.getProductById(PRODUCT_ID);
+        var productFromDb = productUseCase.getProductById(PRODUCT_ID, USER_ID);
 
         assertThat(productFromDb).isEqualTo(productToUpdate);
     }
@@ -293,7 +332,7 @@ class ProductIntegrationTest extends IntegrationTest {
                 USERS.BIRTHDAY_DATE,
                 USERS.ROLE,
                 USERS.IS_BANNED)
-            .values(1, "login", "password", "firstName", "secondName", "email", "phone", "gender", LocalDate.EPOCH, "role", true)
+            .values(USER_ID, "login", "password", "firstName", "secondName", "email", "phone", "gender", LocalDate.EPOCH, "role", true)
             .values(2, "login2", "password2", "firstName2", "secondName2", "email2", "phone2", "gender2", LocalDate.EPOCH, "role2", false)
             .execute();
     }
@@ -302,9 +341,17 @@ class ProductIntegrationTest extends IntegrationTest {
         dslContext.insertInto(PRODUCT_FEEDBACKS)
             .set(PRODUCT_FEEDBACKS.ID, 1)
             .set(PRODUCT_FEEDBACKS.PRODUCT_ID, PRODUCT_ID)
-            .set(PRODUCT_FEEDBACKS.USER_ID, 1)
+            .set(PRODUCT_FEEDBACKS.USER_ID, USER_ID)
             .set(PRODUCT_FEEDBACKS.FEEDBACK, "Feedback")
             .set(PRODUCT_FEEDBACKS.DATE_TIME, LocalDateTime.of(2021, 1, 1, 0, 0))
+            .execute();
+    }
+
+    private void initializeWishlist() {
+        dslContext.insertInto(WISHLISTS)
+            .set(WISHLISTS.ID, 1)
+            .set(WISHLISTS.USER_ID, USER_ID)
+            .set(WISHLISTS.PRODUCT_ID, PRODUCT_ID)
             .execute();
     }
 }

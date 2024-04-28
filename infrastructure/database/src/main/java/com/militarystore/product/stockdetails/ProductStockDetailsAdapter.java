@@ -52,4 +52,13 @@ public class ProductStockDetailsAdapter implements ProductStockDetailsPort {
     public boolean isEnoughProductStockAvailability(Integer productStockDetailsId, Integer orderedProductQuantity) {
         return productStockDetailsRepository.isEnoughProductStockAvailability(productStockDetailsId, orderedProductQuantity);
     }
+
+    @Override
+    public List<ProductStockDetails> getProductStockDetailsByProductId(Integer productId) {
+        var productStockDetailsRecords = productStockDetailsRepository.getProductStockDetailsByProductId(productId);
+
+        return productStockDetailsRecords.stream()
+            .map(productStockDetailsMapper::map)
+            .toList();
+    }
 }

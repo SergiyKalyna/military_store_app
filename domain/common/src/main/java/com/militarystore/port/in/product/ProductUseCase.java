@@ -8,7 +8,7 @@ public interface ProductUseCase {
 
     Integer addProduct(Product product);
 
-    Product getProductById(Integer productId);
+    Product getProductById(Integer productId, Integer userId);
 
     List<Product> getProductsBySubcategoryId(Integer subcategoryId);
 

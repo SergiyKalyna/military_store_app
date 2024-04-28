@@ -91,4 +91,18 @@ class ProductStockDetailsAdapterTest {
 
         assertTrue(productStockDetailsAdapter.isEnoughProductStockAvailability(productStockDetailsId, orderedProductQuantity));
     }
+
+    @Test
+    void getProductStockDetailsByProductId() {
+        var productStockDetailsRecord = new ProductStockDetailsRecord();
+        var productStockDetails = ProductStockDetails.builder().build();
+
+        when(productStockDetailsRepository.getProductStockDetailsByProductId(PRODUCT_ID))
+            .thenReturn(List.of(productStockDetailsRecord));
+        when(productStockDetailsMapper.map(productStockDetailsRecord)).thenReturn(productStockDetails);
+
+        var result = productStockDetailsAdapter.getProductStockDetailsByProductId(PRODUCT_ID);
+
+        assertTrue(result.contains(productStockDetails));
+    }
 }

@@ -73,6 +73,12 @@ public class ProductFeedbackRepository {
             .execute();
     }
 
+    public void deleteFeedbacksByUserId(Integer userId) {
+        dslContext.deleteFrom(PRODUCT_FEEDBACKS)
+            .where(PRODUCT_FEEDBACKS.USER_ID.eq(userId))
+            .execute();
+    }
+
     public void deleteFeedback(Integer feedbackId) {
         dslContext.deleteFrom(PRODUCT_FEEDBACKS)
             .where(PRODUCT_FEEDBACKS.ID.eq(feedbackId))
