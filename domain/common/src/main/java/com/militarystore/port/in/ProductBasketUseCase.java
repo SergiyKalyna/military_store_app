@@ -14,7 +14,5 @@ public interface ProductBasketUseCase {
 
     void deleteUserProductsFromBasket(Integer userId);
 
-    void deleteProductFromAllBaskets(Integer productStockDetailsId);
-
     List<ProductInBasket> getUserBasketProducts(Integer userId);
 }

@@ -36,8 +36,8 @@ public class BasketAdapter implements BasketPort {
     }
 
     @Override
-    public void deleteProductFromAllBaskets(Integer productStockDetailsId) {
-        basketRepository.deleteProductFromAllBaskets(productStockDetailsId);
+    public void deleteProductFromAllBaskets(Integer productId) {
+        basketRepository.deleteProductFromAllBaskets(productId);
     }
 
     @Override

@@ -109,13 +109,6 @@ class ProductBasketServiceTest {
     }
 
     @Test
-    void deleteProductFromAllBaskets() {
-        productBasketService.deleteProductFromAllBaskets(PRODUCT_STOCK_DETAILS_ID);
-
-        verify(basketPort).deleteProductFromAllBaskets(PRODUCT_STOCK_DETAILS_ID);
-    }
-
-    @Test
     void getUserBasketProducts() {
         var productsInBasket = List.of(ProductInBasket.builder().build());
 

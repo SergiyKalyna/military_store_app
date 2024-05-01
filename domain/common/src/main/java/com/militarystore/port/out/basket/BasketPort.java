@@ -14,7 +14,7 @@ public interface BasketPort {
 
     void deleteUserProductsFromBasket(Integer userId);
 
-    void deleteProductFromAllBaskets(Integer productStockDetailsId);
+    void deleteProductFromAllBaskets(Integer productId);
 
     List<ProductInBasket> getUserBasketProducts(Integer userId);
 }

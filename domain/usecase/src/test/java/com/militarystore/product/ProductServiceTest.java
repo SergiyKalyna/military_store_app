@@ -4,6 +4,7 @@ import com.militarystore.entity.product.Product;
 import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSize;
 import com.militarystore.exception.MsNotFoundException;
+import com.militarystore.port.out.basket.BasketPort;
 import com.militarystore.port.out.product.ProductFeedbackPort;
 import com.militarystore.port.out.product.ProductPort;
 import com.militarystore.port.out.product.ProductRatePort;
@@ -43,6 +44,9 @@ class ProductServiceTest {
     @Mock
     private WishlistPort wishlistPort;
 
+    @Mock
+    private BasketPort basketPort;
+
     private ProductService productService;
 
     @BeforeEach
@@ -52,7 +56,8 @@ class ProductServiceTest {
             productStockDetailsPort,
             productRatePort,
             productFeedbackPort,
-            wishlistPort
+            wishlistPort,
+            basketPort
         );
     }
 
@@ -122,6 +127,7 @@ class ProductServiceTest {
 
         productService.deleteProduct(PRODUCT_ID);
 
+        verify(basketPort).deleteProductFromAllBaskets(PRODUCT_ID);
         verify(productStockDetailsPort).deleteProductStockDetails(PRODUCT_ID);
         verify(wishlistPort).deleteProductFromWishlist(PRODUCT_ID);
         verify(productRatePort).deleteRate(PRODUCT_ID);

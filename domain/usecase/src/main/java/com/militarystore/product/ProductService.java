@@ -3,6 +3,7 @@ package com.militarystore.product;
 import com.militarystore.entity.product.Product;
 import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.port.in.product.ProductUseCase;
+import com.militarystore.port.out.basket.BasketPort;
 import com.militarystore.port.out.product.ProductFeedbackPort;
 import com.militarystore.port.out.product.ProductPort;
 import com.militarystore.port.out.product.ProductRatePort;
@@ -26,6 +27,7 @@ public class ProductService implements ProductUseCase {
     private final ProductRatePort productRatePort;
     private final ProductFeedbackPort productFeedbackPort;
     private final WishlistPort wishlistPort;
+    private final BasketPort basketPort;
 
     @Override
     public Integer addProduct(Product product) {
@@ -59,6 +61,7 @@ public class ProductService implements ProductUseCase {
     public void deleteProduct(Integer productId) {
         checkProductExisting(productId);
 
+        basketPort.deleteProductFromAllBaskets(productId);
         productStockDetailsPort.deleteProductStockDetails(productId);
         wishlistPort.deleteProductFromWishlist(productId);
         productRatePort.deleteRate(productId);

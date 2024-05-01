@@ -50,12 +50,6 @@ public class ProductBasketService implements ProductBasketUseCase {
     }
 
     @Override
-    public void deleteProductFromAllBaskets(Integer productStockDetailsId) {
-        basketPort.deleteProductFromAllBaskets(productStockDetailsId);
-        log.info("Product with id {} was deleted from all baskets", productStockDetailsId);
-    }
-
-    @Override
     public List<ProductInBasket> getUserBasketProducts(Integer userId) {
         return basketPort.getUserBasketProducts(userId);
     }

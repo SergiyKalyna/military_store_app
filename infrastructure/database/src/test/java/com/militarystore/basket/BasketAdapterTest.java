@@ -67,9 +67,9 @@ class BasketAdapterTest {
 
     @Test
     void deleteProductFromAllBaskets() {
-        basketAdapter.deleteProductFromAllBaskets(PRODUCT_STOCK_DETAILS_ID);
+        basketAdapter.deleteProductFromAllBaskets(1);
 
-        verify(basketRepository).deleteProductFromAllBaskets(PRODUCT_STOCK_DETAILS_ID);
+        verify(basketRepository).deleteProductFromAllBaskets(1);
     }
 
     @Test

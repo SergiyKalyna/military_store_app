@@ -49,9 +49,13 @@ public class BasketRepository {
             .execute();
     }
 
-    public void deleteProductFromAllBaskets(Integer productStockDetailsId) {
+    public void deleteProductFromAllBaskets(Integer productId) {
         dslContext.deleteFrom(BASKETS)
-            .where(BASKETS.PRODUCT_STOCK_DETAILS_ID.eq(productStockDetailsId))
+            .where(BASKETS.PRODUCT_STOCK_DETAILS_ID.in(
+                dslContext.select(PRODUCT_STOCK_DETAILS.ID)
+                    .from(PRODUCT_STOCK_DETAILS)
+                    .where(PRODUCT_STOCK_DETAILS.PRODUCT_ID.eq(productId))
+            ))
             .execute();
     }
 
