@@ -6,6 +6,7 @@ import com.militarystore.exception.MsValidationException;
 import com.militarystore.port.in.user.CreateUserUseCase;
 import com.militarystore.port.in.user.DeleteUserUseCase;
 import com.militarystore.port.in.user.GetUserUseCase;
+import com.militarystore.port.out.basket.BasketPort;
 import com.militarystore.port.out.product.ProductFeedbackPort;
 import com.militarystore.port.out.product.ProductRatePort;
 import com.militarystore.port.out.user.UserPort;
@@ -28,6 +29,7 @@ public class UserService implements CreateUserUseCase, GetUserUseCase, DeleteUse
     private final ProductRatePort productRatePort;
     private final ProductFeedbackPort productFeedbackPort;
     private final WishlistPort wishlistPort;
+    private final BasketPort basketPort;
 
     public Integer saveUser(User user) {
         checkIfLoginExist(user.login());
@@ -44,6 +46,7 @@ public class UserService implements CreateUserUseCase, GetUserUseCase, DeleteUse
 
         productFeedbackPort.deleteFeedbacksByUserId(userId);
         productRatePort.deleteRatesByUserId(userId);
+        basketPort.deleteUserProductsFromBasket(userId);
         wishlistPort.deleteAllUserProductsFromWishlist(userId);
         userPort.deleteUser(userId);
 
