@@ -25,7 +25,7 @@ public class ProductBasketService implements ProductBasketUseCase {
         validateProductStockAvailability(productStockDetailsId, quantity);
 
         basketPort.addProductToBasket(productStockDetailsId, userId, quantity);
-        log.info("Product with id {} was added to basket", productStockDetailsId);
+        log.info("Product with following stock detail id {} was added to basket", productStockDetailsId);
     }
 
     @Override
@@ -34,13 +34,13 @@ public class ProductBasketService implements ProductBasketUseCase {
         validateProductStockAvailability(productStockDetailsId, quantity);
 
         basketPort.updateProductQuantityInBasket(productStockDetailsId, userId, quantity);
-        log.info("Product quantity with id {} was updated in basket", productStockDetailsId);
+        log.info("Product quantity with following stock detail id {} was updated in basket", productStockDetailsId);
     }
 
     @Override
     public void deleteProductFromBasket(Integer productStockDetailsId, Integer userId) {
         basketPort.deleteProductFromBasket(productStockDetailsId, userId);
-        log.info("Product with id {} was deleted from basket", productStockDetailsId);
+        log.info("Product with following stock detail id {} was deleted from basket", productStockDetailsId);
     }
 
     @Override
@@ -62,7 +62,9 @@ public class ProductBasketService implements ProductBasketUseCase {
 
     private void validateProductStockAvailability(Integer productStockDetailsId, Integer quantity) {
         if (!productStockDetailsPort.isEnoughProductStockAvailability(productStockDetailsId, quantity)) {
-            throw new MsValidationException("Product with id " + productStockDetailsId + " is not available in such quantity");
+            throw new MsValidationException(
+                "Product with following stock detail id " + productStockDetailsId + " is not available in such quantity"
+            );
         }
     }
 }
