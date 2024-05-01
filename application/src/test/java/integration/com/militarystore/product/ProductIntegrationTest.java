@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.militarystore.jooq.Tables.BASKETS;
 import static com.militarystore.jooq.Tables.CATEGORIES;
 import static com.militarystore.jooq.Tables.PRODUCTS;
 import static com.militarystore.jooq.Tables.PRODUCT_FEEDBACKS;
@@ -24,6 +25,7 @@ import static com.militarystore.jooq.Tables.SUBCATEGORIES;
 import static com.militarystore.jooq.Tables.USERS;
 import static com.militarystore.jooq.Tables.WISHLISTS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class ProductIntegrationTest extends IntegrationTest {
 
@@ -279,6 +281,20 @@ class ProductIntegrationTest extends IntegrationTest {
         assertThat(productUseCase.getProductsBySubcategoryId(SUBCATEGORY_ID)).isEmpty();
     }
 
+    @Test
+    void deleteProductWithAllRelations() {
+        initializeCategories();
+        initializeProduct();
+        initializeUser();
+        initializeProductRates();
+        initializeFeedbacks();
+        initializeWishlist();
+        initializeBasket();
+
+        assertDoesNotThrow(() -> productUseCase.deleteProduct(PRODUCT_ID));
+        assertThat(productUseCase.getProductsBySubcategoryId(SUBCATEGORY_ID)).isEmpty();
+    }
+
     private void initializeCategories() {
         dslContext.insertInto(CATEGORIES)
             .set(CATEGORIES.ID, 1)
@@ -352,6 +368,14 @@ class ProductIntegrationTest extends IntegrationTest {
             .set(WISHLISTS.ID, 1)
             .set(WISHLISTS.USER_ID, USER_ID)
             .set(WISHLISTS.PRODUCT_ID, PRODUCT_ID)
+            .execute();
+    }
+
+    private void initializeBasket() {
+        dslContext.insertInto(BASKETS)
+            .set(BASKETS.PRODUCT_STOCK_DETAILS_ID, PRODUCT_STOCK_DETAILS_ID)
+            .set(BASKETS.USER_ID, USER_ID)
+            .set(BASKETS.QUANTITY, 1)
             .execute();
     }
 }
