@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.militarystore.utils.DiscountProvider.generateDiscountCode;
@@ -28,7 +28,7 @@ public class DiscountService implements DiscountUseCase {
             .discountCode(generateDiscountCode())
             .discount(DISCOUNT)
             .usageLimit(USAGE_LIMIT)
-            .expirationDate(LocalDate.now().plusDays(30))
+            .expirationDate(LocalDateTime.now().plusDays(30))
             .build();
 
         var discountCode = discountPort.createUserDiscountCode(discount);

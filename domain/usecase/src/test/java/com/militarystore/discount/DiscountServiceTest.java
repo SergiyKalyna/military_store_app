@@ -7,10 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,17 +33,22 @@ class DiscountServiceTest {
 
     @Test
     void createUserDiscountCode() {
+        var expirationDate = LocalDateTime.now();
         var discountCode = "asdajslkdjaslkdj";
         var expectedDiscount = Discount.builder()
             .userId(USER_ID)
             .discountCode(discountCode)
             .discount(0.03)
             .usageLimit(3)
-            .expirationDate(LocalDate.now().plusDays(30))
+            .expirationDate(expirationDate.plusDays(30))
             .build();
 
-        try (MockedStatic<DiscountProvider> discountProviderMockedStatic = mockStatic(DiscountProvider.class)) {
+        try (var discountProviderMockedStatic = mockStatic(DiscountProvider.class);
+             var localDateTimeMockedStatic = mockStatic(LocalDateTime.class)
+        ) {
             discountProviderMockedStatic.when(DiscountProvider::generateDiscountCode).thenReturn(discountCode);
+            localDateTimeMockedStatic.when(LocalDateTime::now).thenReturn(expirationDate);
+
             when(discountPort.createUserDiscountCode(expectedDiscount)).thenReturn(discountCode);
 
             assertThat(discountService.createUserDiscountCode(USER_ID)).isEqualTo(discountCode);

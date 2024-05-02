@@ -25,7 +25,7 @@ public class DiscountRepository {
             .set(DISCOUNTS.DISCOUNT_CODE, discount.discountCode())
             .set(DISCOUNTS.DISCOUNT, discount.discount())
             .set(DISCOUNTS.USAGE_LIMIT, discount.usageLimit())
-            .set(DISCOUNTS.EXPIRATION_DATE, discount.expirationDate().atStartOfDay())
+            .set(DISCOUNTS.EXPIRATION_DATE, discount.expirationDate())
             .returning(DISCOUNTS.DISCOUNT_CODE)
             .fetchOne(DISCOUNTS.DISCOUNT_CODE);
     }
