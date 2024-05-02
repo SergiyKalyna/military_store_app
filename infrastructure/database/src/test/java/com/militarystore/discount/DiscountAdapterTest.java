@@ -34,10 +34,11 @@ class DiscountAdapterTest {
     @Test
     void createUserDiscountCode() {
         var discount = Discount.builder().build();
+        var discountCode = "code";
 
-        discountAdapter.createUserDiscountCode(discount);
+        when(discountRepository.createUserDiscountCode(discount)).thenReturn(discountCode);
 
-        verify(discountRepository).createUserDiscountCode(discount);
+        assertThat(discountAdapter.createUserDiscountCode(discount)).isEqualTo(discountCode);
     }
 
     @Test

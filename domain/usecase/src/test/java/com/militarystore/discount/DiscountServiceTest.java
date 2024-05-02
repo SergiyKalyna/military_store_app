@@ -15,7 +15,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,10 +45,9 @@ class DiscountServiceTest {
 
         try (MockedStatic<DiscountProvider> discountProviderMockedStatic = mockStatic(DiscountProvider.class)) {
             discountProviderMockedStatic.when(DiscountProvider::generateDiscountCode).thenReturn(discountCode);
+            when(discountPort.createUserDiscountCode(expectedDiscount)).thenReturn(discountCode);
 
-            discountService.createUserDiscountCode(USER_ID);
-
-            verify(discountPort).createUserDiscountCode(expectedDiscount);
+            assertThat(discountService.createUserDiscountCode(USER_ID)).isEqualTo(discountCode);
         }
     }
 

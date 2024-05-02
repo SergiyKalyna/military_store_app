@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DiscountPort {
 
-    void createUserDiscountCode(Discount discount);
+    String createUserDiscountCode(Discount discount);
 
     void updateDiscountUsageLimit(String discountCode, Integer userId);
 

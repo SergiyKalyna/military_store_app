@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DiscountUseCase {
 
-    void createUserDiscountCode(Integer userId);
+    String createUserDiscountCode(Integer userId);
 
     List<Discount> getUserDiscounts(Integer userId);
 }

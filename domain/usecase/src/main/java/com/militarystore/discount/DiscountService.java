@@ -22,7 +22,7 @@ public class DiscountService implements DiscountUseCase {
     private final DiscountPort discountPort;
 
     @Override
-    public void createUserDiscountCode(Integer userId) {
+    public String createUserDiscountCode(Integer userId) {
         Discount discount = Discount.builder()
             .userId(userId)
             .discountCode(generateDiscountCode())
@@ -31,8 +31,10 @@ public class DiscountService implements DiscountUseCase {
             .expirationDate(LocalDate.now().plusDays(30))
             .build();
 
-        discountPort.createUserDiscountCode(discount);
+        var discountCode = discountPort.createUserDiscountCode(discount);
         log.info("Discount code created '{}' for user with id '{}'", discount.discountCode(), userId);
+
+        return discountCode;
     }
 
     @Override

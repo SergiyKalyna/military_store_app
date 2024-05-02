@@ -16,8 +16,8 @@ public class DiscountAdapter implements DiscountPort {
     private final DiscountMapper discountMapper;
 
     @Override
-    public void createUserDiscountCode(Discount discount) {
-        discountRepository.createUserDiscountCode(discount);
+    public String createUserDiscountCode(Discount discount) {
+       return discountRepository.createUserDiscountCode(discount);
     }
 
     @Override
