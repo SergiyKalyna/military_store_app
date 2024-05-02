@@ -5,7 +5,7 @@ import com.militarystore.model.dto.DiscountDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,12 +20,13 @@ class DiscountConverterTest {
 
     @Test
     void toDto() {
+        var expirationDate = LocalDateTime.of(2022, 1, 1, 0, 0);
         var discount = Discount.builder()
             .userId(1)
             .discountCode("code")
             .discount(0.03)
             .usageLimit(1)
-            .expirationDate(LocalDate.of(2022, 1, 1))
+            .expirationDate(expirationDate)
             .build();
 
         var discountDto = DiscountDto.builder()
@@ -33,7 +34,7 @@ class DiscountConverterTest {
             .discountCode("code")
             .discount(0.03)
             .usageLimit(1)
-            .expirationDate(LocalDate.of(2022, 1, 1))
+            .expirationDate(expirationDate)
             .build();
 
         assertThat(discountConverter.toDto(discount)).isEqualTo(discountDto);

@@ -58,7 +58,7 @@ public class DiscountRepository {
                 .where(DISCOUNTS.DISCOUNT_CODE.eq(discountCode)
                     .and(DISCOUNTS.USER_ID.eq(userId))
                     .and(DISCOUNTS.USAGE_LIMIT.greaterOrEqual(USAGE_LIMIT))
-                    .and(DISCOUNTS.EXPIRATION_DATE.lessOrEqual(LocalDateTime.now())))
+                    .and(DISCOUNTS.EXPIRATION_DATE.greaterOrEqual(LocalDateTime.now())))
         );
     }
 }

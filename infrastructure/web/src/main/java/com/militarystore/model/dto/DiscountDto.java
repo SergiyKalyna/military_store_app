@@ -2,7 +2,7 @@ package com.militarystore.model.dto;
 
 import lombok.Builder;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 public record DiscountDto(
@@ -10,6 +10,6 @@ public record DiscountDto(
     String discountCode,
     double discount,
     int usageLimit,
-    LocalDate expirationDate
+    LocalDateTime expirationDate
 ) {
 }
