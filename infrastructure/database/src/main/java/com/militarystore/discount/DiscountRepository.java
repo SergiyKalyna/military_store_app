@@ -47,7 +47,9 @@ public class DiscountRepository {
 
     public List<DiscountsRecord> getUserDiscounts (Integer userId) {
         return dslContext.selectFrom(DISCOUNTS)
-            .where(DISCOUNTS.USER_ID.eq(userId))
+            .where(DISCOUNTS.USER_ID.eq(userId)
+                .and(DISCOUNTS.USAGE_LIMIT.greaterOrEqual(USAGE_LIMIT))
+                .and(DISCOUNTS.EXPIRATION_DATE.greaterOrEqual(LocalDateTime.now())))
             .fetch();
     }
 
