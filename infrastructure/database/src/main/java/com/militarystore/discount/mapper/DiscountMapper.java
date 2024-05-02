@@ -17,7 +17,7 @@ public class DiscountMapper implements RecordMapper<Record, Discount> {
             .discountCode(discountRecord.get(DISCOUNTS.DISCOUNT_CODE))
             .discount(discountRecord.get(DISCOUNTS.DISCOUNT))
             .usageLimit(discountRecord.get(DISCOUNTS.USAGE_LIMIT))
-            .expirationDate(discountRecord.get(DISCOUNTS.EXPIRATION_DATE).toLocalDate())
+            .expirationDate(discountRecord.get(DISCOUNTS.EXPIRATION_DATE))
             .build();
     }
 }
