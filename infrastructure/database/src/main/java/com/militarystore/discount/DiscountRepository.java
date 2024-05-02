@@ -45,7 +45,7 @@ public class DiscountRepository {
             .execute();
     }
 
-    public List<DiscountsRecord> getUserDiscounts (Integer userId) {
+    public List<DiscountsRecord> getUserDiscounts(Integer userId) {
         return dslContext.selectFrom(DISCOUNTS)
             .where(DISCOUNTS.USER_ID.eq(userId)
                 .and(DISCOUNTS.USAGE_LIMIT.greaterOrEqual(USAGE_LIMIT))
