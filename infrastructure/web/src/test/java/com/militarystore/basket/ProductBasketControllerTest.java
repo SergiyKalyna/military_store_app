@@ -5,7 +5,7 @@ import com.militarystore.converter.ProductBasketConverter;
 import com.militarystore.entity.basket.ProductInBasket;
 import com.militarystore.model.dto.basket.ProductInBasketDto;
 import com.militarystore.model.response.ProductBasketResponse;
-import com.militarystore.port.in.ProductBasketUseCase;
+import com.militarystore.port.in.basket.ProductBasketUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

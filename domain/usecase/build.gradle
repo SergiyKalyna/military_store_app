@@ -10,4 +10,5 @@ dependencies {
     implementation libs.slf4j
 
     testImplementation libs.unitTest
+    testImplementation("org.mockito:mockito-inline:5.2.0")
 }

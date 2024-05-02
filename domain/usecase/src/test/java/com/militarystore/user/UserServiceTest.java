@@ -4,6 +4,7 @@ import com.militarystore.entity.user.User;
 import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.exception.MsValidationException;
 import com.militarystore.port.out.basket.BasketPort;
+import com.militarystore.port.out.discount.DiscountPort;
 import com.militarystore.port.out.product.ProductFeedbackPort;
 import com.militarystore.port.out.product.ProductRatePort;
 import com.militarystore.port.out.user.UserPort;
@@ -45,6 +46,9 @@ class UserServiceTest {
     @Mock
     private BasketPort basketPort;
 
+    @Mock
+    private DiscountPort discountPort;
+
     private UserService userService;
 
     @BeforeEach
@@ -55,7 +59,8 @@ class UserServiceTest {
             productRatePort,
             productFeedbackPort,
             wishlistPort,
-            basketPort
+            basketPort,
+            discountPort
         );
     }
 
@@ -94,6 +99,7 @@ class UserServiceTest {
         userService.deleteUser(USER_ID);
 
         verify(productFeedbackPort).deleteFeedbacksByUserId(USER_ID);
+        verify(discountPort).deleteUserDiscounts(USER_ID);
         verify(productRatePort).deleteRatesByUserId(USER_ID);
         verify(wishlistPort).deleteAllUserProductsFromWishlist(USER_ID);
         verify(basketPort).deleteUserProductsFromBasket(USER_ID);

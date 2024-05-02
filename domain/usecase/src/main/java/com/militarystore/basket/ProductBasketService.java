@@ -2,7 +2,7 @@ package com.militarystore.basket;
 
 import com.militarystore.entity.basket.ProductInBasket;
 import com.militarystore.exception.MsValidationException;
-import com.militarystore.port.in.ProductBasketUseCase;
+import com.militarystore.port.in.basket.ProductBasketUseCase;
 import com.militarystore.port.out.basket.BasketPort;
 import com.militarystore.port.out.product.ProductStockDetailsPort;
 import lombok.RequiredArgsConstructor;

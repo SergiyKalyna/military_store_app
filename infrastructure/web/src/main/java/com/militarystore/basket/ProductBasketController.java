@@ -2,7 +2,7 @@ package com.militarystore.basket;
 
 import com.militarystore.converter.ProductBasketConverter;
 import com.militarystore.model.response.ProductBasketResponse;
-import com.militarystore.port.in.ProductBasketUseCase;
+import com.militarystore.port.in.basket.ProductBasketUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

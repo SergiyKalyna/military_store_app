@@ -8,7 +8,7 @@ import com.militarystore.entity.product.model.ProductTag;
 import com.militarystore.entity.user.model.Gender;
 import com.militarystore.entity.user.model.Role;
 import com.militarystore.exception.MsValidationException;
-import com.militarystore.port.in.ProductBasketUseCase;
+import com.militarystore.port.in.basket.ProductBasketUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

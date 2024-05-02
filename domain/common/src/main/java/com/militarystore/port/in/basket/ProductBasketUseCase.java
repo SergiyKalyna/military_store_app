@@ -1,4 +1,4 @@
-package com.militarystore.port.in;
+package com.militarystore.port.in.basket;
 
 import com.militarystore.entity.basket.ProductInBasket;
 
