@@ -1,14 +1,12 @@
 package com.militarystore.user;
 
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber;
 import com.militarystore.entity.user.User;
 import com.militarystore.exception.MsValidationException;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
 
+import static com.militarystore.utils.PhoneNumberValidator.validatePhone;
 import static java.util.Objects.isNull;
 
 @Service
@@ -63,27 +61,6 @@ public class UserValidationService {
         var patternMatcher = Pattern.compile(EMAIL_REGEX).matcher(email);
         if (!patternMatcher.matches()) {
             throw new MsValidationException("Input email is not valid - " + email);
-        }
-    }
-
-    private void validatePhone(String phone) {
-        if (isNull(phone) || phone.isBlank()) {
-            throw new MsValidationException("Phone number should not empty, instead was: " + phone);
-        }
-
-        var isValidNumber = isValidNumber(phone);
-        if (!isValidNumber) {
-            throw new MsValidationException("Input phone number is not valid - " + phone);
-        }
-    }
-
-    private boolean isValidNumber(String phoneNumber) {
-        var numberUtil = PhoneNumberUtil.getInstance();
-        try {
-            Phonenumber.PhoneNumber parsedNumber = numberUtil.parse(phoneNumber, "");
-            return numberUtil.isValidNumber(parsedNumber);
-        } catch (NumberParseException e) {
-            return false;
         }
     }
 }
