@@ -1,4 +1,4 @@
-package com.militarystore.converter;
+package com.militarystore.converter.basket;
 
 import com.militarystore.entity.basket.ProductInBasket;
 import com.militarystore.model.dto.basket.ProductInBasketDto;

@@ -1,7 +1,7 @@
 package com.militarystore.basket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.militarystore.converter.ProductBasketConverter;
+import com.militarystore.converter.basket.ProductBasketConverter;
 import com.militarystore.entity.basket.ProductInBasket;
 import com.militarystore.model.dto.basket.ProductInBasketDto;
 import com.militarystore.model.response.ProductBasketResponse;
