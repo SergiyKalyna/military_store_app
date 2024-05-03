@@ -1,4 +1,4 @@
-package com.militarystore.model.dto;
+package com.militarystore.model.dto.discount;
 
 import lombok.Builder;
 

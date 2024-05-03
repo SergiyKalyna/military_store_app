@@ -1,7 +1,7 @@
 package com.militarystore.discount;
 
 import com.militarystore.converter.discount.DiscountConverter;
-import com.militarystore.model.dto.DiscountDto;
+import com.militarystore.model.dto.discount.DiscountDto;
 import com.militarystore.port.in.discount.DiscountUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
