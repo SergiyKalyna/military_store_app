@@ -1,6 +1,6 @@
 package com.militarystore.basket;
 
-import com.militarystore.converter.ProductBasketConverter;
+import com.militarystore.converter.basket.ProductBasketConverter;
 import com.militarystore.model.response.ProductBasketResponse;
 import com.militarystore.port.in.basket.ProductBasketUseCase;
 import lombok.RequiredArgsConstructor;

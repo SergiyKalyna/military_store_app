@@ -1,7 +1,7 @@
 package com.militarystore.converter.discount;
 
 import com.militarystore.entity.discount.Discount;
-import com.militarystore.model.dto.DiscountDto;
+import com.militarystore.model.dto.discount.DiscountDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

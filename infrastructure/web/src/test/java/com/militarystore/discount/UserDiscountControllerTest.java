@@ -3,7 +3,7 @@ package com.militarystore.discount;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.militarystore.converter.discount.DiscountConverter;
 import com.militarystore.entity.discount.Discount;
-import com.militarystore.model.dto.DiscountDto;
+import com.militarystore.model.dto.discount.DiscountDto;
 import com.militarystore.port.in.discount.DiscountUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
