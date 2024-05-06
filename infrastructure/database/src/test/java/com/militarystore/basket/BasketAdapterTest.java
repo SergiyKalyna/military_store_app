@@ -2,7 +2,7 @@ package com.militarystore.basket;
 
 import com.militarystore.basket.mapper.BasketMapper;
 import com.militarystore.entity.basket.ProductInBasket;
-import org.jooq.Record4;
+import org.jooq.Record5;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -75,7 +75,7 @@ class BasketAdapterTest {
     @Test
     void getUserBasketProducts() {
         var productsInBasket = ProductInBasket.builder().build();
-        var mockRecord = mock(Record4.class);
+        var mockRecord = mock(Record5.class);
 
         when(basketRepository.getUserBasketProducts(USER_ID)).thenReturn(List.of(mockRecord));
         when(basketMapper.map(mockRecord)).thenReturn(productsInBasket);

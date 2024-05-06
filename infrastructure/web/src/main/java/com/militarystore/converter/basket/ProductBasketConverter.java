@@ -26,6 +26,7 @@ public class ProductBasketConverter {
     private ProductInBasketDto convertToProductInBasketDto(ProductInBasket productInBasket) {
         return ProductInBasketDto.builder()
             .productId(productInBasket.productId())
+            .productStockDetailsId(productInBasket.productStockDetailsId())
             .productName(productInBasket.productName())
             .productPrice(productInBasket.productPrice())
             .quantity(productInBasket.quantity())

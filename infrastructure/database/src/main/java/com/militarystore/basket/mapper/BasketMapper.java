@@ -15,6 +15,7 @@ public class BasketMapper implements RecordMapper<Record, ProductInBasket> {
     public ProductInBasket map(Record productInBasketRecord) {
         return ProductInBasket.builder()
             .productId(productInBasketRecord.get(PRODUCTS.ID))
+            .productStockDetailsId(productInBasketRecord.get(BASKETS.PRODUCT_STOCK_DETAILS_ID))
             .productName(productInBasketRecord.get(PRODUCTS.NAME))
             .productPrice(productInBasketRecord.get(PRODUCTS.PRICE))
             .quantity(productInBasketRecord.get(BASKETS.QUANTITY))

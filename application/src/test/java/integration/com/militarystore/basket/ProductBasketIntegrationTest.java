@@ -143,6 +143,27 @@ class ProductBasketIntegrationTest extends IntegrationTest {
         assertThat(productBasketUseCase.getUserBasketProducts(USER_ID)).isEmpty();
     }
 
+    @Test
+    void getUserBasketProducts() {
+        initializeCategories();
+        initializeProduct();
+        initializeUser();
+
+        productBasketUseCase.addProductToBasket(PRODUCT_STOCK_DETAILS_ID, USER_ID, 1);
+
+        var expectedProductsInBasket = List.of(
+            ProductInBasket.builder()
+                .productId(PRODUCT_ID)
+                .productStockDetailsId(PRODUCT_STOCK_DETAILS_ID)
+                .productName("Product")
+                .productPrice(100)
+                .quantity(1)
+                .build()
+        );
+
+        assertThat(productBasketUseCase.getUserBasketProducts(USER_ID)).isEqualTo(expectedProductsInBasket);
+    }
+
     private void initializeCategories() {
         dslContext.insertInto(CATEGORIES)
             .set(CATEGORIES.ID, 1)
