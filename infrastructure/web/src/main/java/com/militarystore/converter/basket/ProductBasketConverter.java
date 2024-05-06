@@ -2,7 +2,7 @@ package com.militarystore.converter.basket;
 
 import com.militarystore.entity.basket.ProductInBasket;
 import com.militarystore.model.dto.basket.ProductInBasketDto;
-import com.militarystore.model.response.ProductBasketResponse;
+import com.militarystore.model.response.basket.ProductBasketResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
