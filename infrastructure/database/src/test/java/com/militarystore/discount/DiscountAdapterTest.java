@@ -72,4 +72,14 @@ class DiscountAdapterTest {
 
         assertThat(discountAdapter.getUserDiscounts(1)).containsExactly(discount);
     }
+
+    @Test
+    void getUserDiscountByCode() {
+        var discountCode = "code";
+        var discount = 0.03;
+
+        when(discountRepository.getDiscountByCode(discountCode, 1)).thenReturn(discount);
+
+        assertThat(discountAdapter.getUserDiscountByCode(discountCode, 1)).isEqualTo(discount);
+    }
 }

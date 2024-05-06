@@ -33,4 +33,12 @@ public class UserDiscountController {
             .map(discountConverter::toDto)
             .toList();
     }
+
+    @GetMapping("/{userId}/discount-code/{discountCode}")
+    public Double getUserDiscountByCode(
+        @PathVariable("userId") Integer userId,
+        @PathVariable("discountCode") String discountCode
+    ) {
+        return discountUseCase.getUserDiscountByCode(discountCode, userId);
+    }
 }

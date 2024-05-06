@@ -9,4 +9,6 @@ public interface DiscountUseCase {
     String createUserDiscountCode(Integer userId);
 
     List<Discount> getUserDiscounts(Integer userId);
+
+    Double getUserDiscountByCode(String discountCode, Integer userId);
 }

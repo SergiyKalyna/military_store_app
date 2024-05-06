@@ -4,6 +4,7 @@ import com.militarystore.IntegrationTest;
 import com.militarystore.entity.discount.Discount;
 import com.militarystore.entity.user.model.Gender;
 import com.militarystore.entity.user.model.Role;
+import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.port.in.discount.DiscountUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.List;
 import static com.militarystore.jooq.Tables.DISCOUNTS;
 import static com.militarystore.jooq.Tables.USERS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class DiscountIntegrationTest extends IntegrationTest {
 
@@ -73,6 +75,44 @@ class DiscountIntegrationTest extends IntegrationTest {
             .build();
 
         assertThat(discountUseCase.getUserDiscounts(USER_ID)).isEqualTo(List.of(expectedDiscount));
+    }
+
+    @Test
+    void getUserDiscountByCode() {
+        var expirationDate = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
+        initializeUser();
+        initializeDiscount(3, expirationDate);
+
+        var discountCode = "asdajslkdjaslkdj";
+        var expectedDiscount = 0.03;
+
+        assertThat(discountUseCase.getUserDiscountByCode(discountCode, USER_ID)).isEqualTo(expectedDiscount);
+    }
+
+    @Test
+    void getUserDiscountByCode_whenDiscountDateExpired_shouldThrowException() {
+        var expirationDate = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
+        initializeUser();
+        initializeDiscount(3, expirationDate);
+
+        var discountCode = "asdajslkdjaslkdj";
+
+        assertThatThrownBy(() -> discountUseCase.getUserDiscountByCode(discountCode, USER_ID))
+            .isInstanceOf(MsNotFoundException.class)
+            .hasMessage("Discount code is not available for user with id - " + USER_ID);
+    }
+
+    @Test
+    void getUserDiscountByCode_whenUsageLimitsExceeded_shouldThrowException() {
+        var expirationDate = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
+        initializeUser();
+        initializeDiscount(0, expirationDate);
+
+        var discountCode = "asdajslkdjaslkdj";
+
+        assertThatThrownBy(() -> discountUseCase.getUserDiscountByCode(discountCode, USER_ID))
+            .isInstanceOf(MsNotFoundException.class)
+            .hasMessage("Discount code is not available for user with id - " + USER_ID);
     }
 
     private void assertEquals(Discount discount, Discount discountFromDb) {

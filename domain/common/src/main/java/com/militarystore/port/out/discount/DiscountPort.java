@@ -15,4 +15,6 @@ public interface DiscountPort {
     boolean isAvailableUserDiscount(String discountCode, Integer userId);
 
     List<Discount> getUserDiscounts(Integer userId);
+
+    Double getUserDiscountByCode(String discountCode, Integer userId);
 }

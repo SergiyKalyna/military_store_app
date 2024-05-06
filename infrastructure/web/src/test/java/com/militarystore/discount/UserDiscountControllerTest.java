@@ -60,4 +60,15 @@ class UserDiscountControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().json(objectMapper.writeValueAsString(List.of(discountDto))));
     }
+
+    @Test
+    void getUserDiscountByCode() throws Exception {
+        var discount = 0.03;
+
+        when(discountUseCase.getUserDiscountByCode(DISCOUNT_CODE, USER_ID)).thenReturn(discount);
+
+        mockMvc.perform(get("/users/discount/1/discount-code/discountCode"))
+            .andExpect(status().isOk())
+            .andExpect(content().string(String.valueOf(discount)));
+    }
 }

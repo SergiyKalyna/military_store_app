@@ -1,6 +1,7 @@
 package com.militarystore.discount;
 
 import com.militarystore.entity.discount.Discount;
+import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.port.in.discount.DiscountUseCase;
 import com.militarystore.port.out.discount.DiscountPort;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,15 @@ public class DiscountService implements DiscountUseCase {
     @Override
     public List<Discount> getUserDiscounts(Integer userId) {
         return discountPort.getUserDiscounts(userId);
+    }
+
+    @Override
+    public Double getUserDiscountByCode(String discountCode, Integer userId) {
+        if (!discountPort.isAvailableUserDiscount(discountCode, userId)) {
+            throw new MsNotFoundException("Discount code is not available for user with id - " + userId);
+        }
+
+        log.info("Fetching discount by code '{}' for user with id '{}'", discountCode, userId);
+        return discountPort.getUserDiscountByCode(discountCode, userId);
     }
 }

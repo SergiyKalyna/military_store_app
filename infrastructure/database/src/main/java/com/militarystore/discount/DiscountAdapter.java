@@ -41,4 +41,9 @@ public class DiscountAdapter implements DiscountPort {
             .map(discountMapper::map)
             .toList();
     }
+
+    @Override
+    public Double getUserDiscountByCode(String discountCode, Integer userId) {
+        return discountRepository.getDiscountByCode(discountCode, userId);
+    }
 }
