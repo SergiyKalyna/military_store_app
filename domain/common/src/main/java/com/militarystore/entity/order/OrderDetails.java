@@ -6,6 +6,7 @@ import lombok.Builder;
 @Builder
 public record OrderDetails(
     Integer orderId,
+    Integer productId,
     Integer productStockDetailsId,
     String productName,
     ProductSize productSize,
