@@ -27,6 +27,7 @@ class OrderDetailsMapperTest {
     void map() {
         var orderDetailsRecord = mock(Record7.class);
         when(orderDetailsRecord.get(ORDER_DETAILS.ORDER_ID)).thenReturn(1);
+        when(orderDetailsRecord.get(PRODUCTS.ID)).thenReturn(111);
         when(orderDetailsRecord.get(ORDER_DETAILS.PRODUCT_STOCK_DETAILS_ID)).thenReturn(2);
         when(orderDetailsRecord.get(ORDER_DETAILS.QUANTITY)).thenReturn(3);
         when(orderDetailsRecord.get(PRODUCTS.NAME)).thenReturn("name");
@@ -35,6 +36,7 @@ class OrderDetailsMapperTest {
 
         var orderDetails = OrderDetails.builder()
             .orderId(1)
+            .productId(111)
             .productStockDetailsId(2)
             .quantity(3)
             .productName("name")

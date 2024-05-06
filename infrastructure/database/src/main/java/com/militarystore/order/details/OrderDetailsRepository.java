@@ -24,10 +24,10 @@ public class OrderDetailsRepository {
 
     public List<Record7<Integer, Integer, Integer, Integer, String, String, Integer>> getOrderDetailsByOrderId(Integer orderId) {
         return dslContext.select(
-                ORDER_DETAILS.ID,
                 ORDER_DETAILS.ORDER_ID,
                 ORDER_DETAILS.PRODUCT_STOCK_DETAILS_ID,
                 ORDER_DETAILS.QUANTITY,
+                PRODUCTS.ID,
                 PRODUCT_STOCK_DETAILS.PRODUCT_SIZE,
                 PRODUCTS.NAME,
                 PRODUCTS.PRICE

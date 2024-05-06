@@ -18,6 +18,7 @@ public class OrderDetailsMapper implements RecordMapper<Record, OrderDetails> {
     public OrderDetails map(Record orderDetailsRecord) {
         return OrderDetails.builder()
             .orderId(orderDetailsRecord.get(ORDER_DETAILS.ORDER_ID))
+            .productId(orderDetailsRecord.get(PRODUCTS.ID))
             .productStockDetailsId(orderDetailsRecord.get(ORDER_DETAILS.PRODUCT_STOCK_DETAILS_ID))
             .quantity(orderDetailsRecord.get(ORDER_DETAILS.QUANTITY))
             .productName(orderDetailsRecord.get(PRODUCTS.NAME))
