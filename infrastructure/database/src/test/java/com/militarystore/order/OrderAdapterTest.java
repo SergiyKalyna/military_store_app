@@ -47,10 +47,10 @@ class OrderAdapterTest {
     }
 
     @Test
-    void addOrder() {
+    void submitOrder() {
         var order = Order.builder().build();
 
-        orderAdapter.addOrder(order);
+        orderAdapter.submitOrder(order);
 
         verify(orderRepository).submitOrder(order);
     }
