@@ -23,8 +23,8 @@ public class OrderAdapter implements OrderPort {
     private final DeliveryDetailsPort deliveryDetailsPort;
 
     @Override
-    public Integer submitOrder(Order order) {
-        return orderRepository.submitOrder(order);
+    public Integer submitOrder(Integer deliveryDetailsId, Order order) {
+        return orderRepository.submitOrder(deliveryDetailsId, order);
     }
 
     @Override

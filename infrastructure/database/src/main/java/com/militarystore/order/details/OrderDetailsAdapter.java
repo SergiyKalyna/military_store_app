@@ -16,9 +16,9 @@ public class OrderDetailsAdapter implements OrderDetailsPort {
     private final OrderDetailsMapper orderDetailsMapper;
 
     @Override
-    public void addOrderDetails(List<OrderDetails> orderDetails) {
+    public void addOrderDetails(Integer orderId, List<OrderDetails> orderDetails) {
         var orderDetailsRecord = orderDetails.stream()
-            .map(orderDetailsMapper::toRecord)
+            .map(details -> orderDetailsMapper.toRecord(orderId, details))
             .toList();
 
         orderDetailsRepository.addOrderDetails(orderDetailsRecord);

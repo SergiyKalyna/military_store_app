@@ -49,10 +49,11 @@ class OrderAdapterTest {
     @Test
     void submitOrder() {
         var order = Order.builder().build();
+        var deliveryDetailsId = 1;
 
-        orderAdapter.submitOrder(order);
+        when(orderRepository.submitOrder(deliveryDetailsId, order)).thenReturn(ORDER_ID);
 
-        verify(orderRepository).submitOrder(order);
+        assertThat(orderAdapter.submitOrder(deliveryDetailsId, order)).isEqualTo(ORDER_ID);
     }
 
     @Test

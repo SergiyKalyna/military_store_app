@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OrderPort {
 
-    Integer submitOrder(Order order);
+    Integer submitOrder(Integer deliveryDetailsId, Order order);
 
     void updateOrderStatusWithShippingNumber(Integer orderId, OrderStatus status, String shippingNumber);
 

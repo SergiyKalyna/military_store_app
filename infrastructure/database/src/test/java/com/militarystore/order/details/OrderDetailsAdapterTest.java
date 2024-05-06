@@ -37,10 +37,11 @@ class OrderDetailsAdapterTest {
     void addOrderDetails() {
         var orderDetails = OrderDetails.builder().build();
         var orderDetailsRecord = new OrderDetailsRecord();
+        var orderId = 1;
 
-        when(orderDetailsMapper.toRecord(orderDetails)).thenReturn(orderDetailsRecord);
+        when(orderDetailsMapper.toRecord(orderId, orderDetails)).thenReturn(orderDetailsRecord);
 
-        orderDetailsAdapter.addOrderDetails(List.of(orderDetails));
+        orderDetailsAdapter.addOrderDetails(orderId, List.of(orderDetails));
 
         verify(orderDetailsRepository).addOrderDetails(List.of(orderDetailsRecord));
     }

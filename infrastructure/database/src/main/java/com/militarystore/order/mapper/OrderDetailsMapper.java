@@ -26,9 +26,9 @@ public class OrderDetailsMapper implements RecordMapper<Record, OrderDetails> {
             .build();
     }
 
-    public OrderDetailsRecord toRecord(OrderDetails orderDetails) {
+    public OrderDetailsRecord toRecord(Integer orderId, OrderDetails orderDetails) {
         OrderDetailsRecord orderDetailsRecord = new OrderDetailsRecord();
-        orderDetailsRecord.setOrderId(orderDetails.orderId());
+        orderDetailsRecord.setOrderId(orderId);
         orderDetailsRecord.setProductStockDetailsId(orderDetails.productStockDetailsId());
         orderDetailsRecord.setQuantity(orderDetails.quantity());
 

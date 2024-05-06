@@ -17,10 +17,10 @@ public class OrderRepository {
 
     private final DSLContext dslContext;
 
-    public Integer submitOrder(Order order) {
+    public Integer submitOrder(Integer deliveryDetailsId, Order order) {
         return dslContext.insertInto(ORDERS)
             .set(ORDERS.USER_ID, order.userId())
-            .set(ORDERS.DELIVERY_DETAILS_ID, order.deliveryDetails().id())
+            .set(ORDERS.DELIVERY_DETAILS_ID, deliveryDetailsId)
             .set(ORDERS.DISCOUNT, order.discount())
             .set(ORDERS.TOTAL_AMOUNT, order.totalAmount())
             .set(ORDERS.ORDER_DATE, order.orderDate())

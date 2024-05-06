@@ -48,16 +48,16 @@ class OrderDetailsMapperTest {
     @Test
     void toRecord() {
         var orderDetails = OrderDetails.builder()
-            .orderId(1)
             .productStockDetailsId(2)
             .quantity(3)
             .build();
+        var orderId = 1;
 
         var orderDetailsRecord = new OrderDetailsRecord();
         orderDetailsRecord.setOrderId(1);
         orderDetailsRecord.setProductStockDetailsId(2);
         orderDetailsRecord.setQuantity(3);
 
-        assertThat(orderDetailsMapper.toRecord(orderDetails)).isEqualTo(orderDetailsRecord);
+        assertThat(orderDetailsMapper.toRecord(orderId, orderDetails)).isEqualTo(orderDetailsRecord);
     }
 }

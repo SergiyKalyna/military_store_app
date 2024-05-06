@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface OrderDetailsPort {
 
-    void addOrderDetails(List<OrderDetails> orderDetails);
+    void addOrderDetails(Integer orderId, List<OrderDetails> orderDetails);
 
     List<OrderDetails> getOrderDetailsByOrderId(Integer orderId);
 }
