@@ -2,7 +2,7 @@ package com.militarystore.basket;
 
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
-import org.jooq.Record4;
+import org.jooq.Record5;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -59,9 +59,10 @@ public class BasketRepository {
             .execute();
     }
 
-    public List<Record4<Integer, Integer, String, Integer>> getUserBasketProducts(Integer userId) {
+    public List<Record5<Integer, Integer, Integer, String, Integer>> getUserBasketProducts(Integer userId) {
         return dslContext.select(
                 BASKETS.QUANTITY,
+                BASKETS.PRODUCT_STOCK_DETAILS_ID,
                 PRODUCTS.ID,
                 PRODUCTS.NAME,
                 PRODUCTS.PRICE

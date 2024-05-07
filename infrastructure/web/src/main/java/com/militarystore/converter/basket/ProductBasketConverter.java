@@ -2,7 +2,7 @@ package com.militarystore.converter.basket;
 
 import com.militarystore.entity.basket.ProductInBasket;
 import com.militarystore.model.dto.basket.ProductInBasketDto;
-import com.militarystore.model.response.ProductBasketResponse;
+import com.militarystore.model.response.basket.ProductBasketResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -26,6 +26,7 @@ public class ProductBasketConverter {
     private ProductInBasketDto convertToProductInBasketDto(ProductInBasket productInBasket) {
         return ProductInBasketDto.builder()
             .productId(productInBasket.productId())
+            .productStockDetailsId(productInBasket.productStockDetailsId())
             .productName(productInBasket.productName())
             .productPrice(productInBasket.productPrice())
             .quantity(productInBasket.quantity())

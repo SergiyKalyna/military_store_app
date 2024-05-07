@@ -1,6 +1,7 @@
 package com.militarystore.discount;
 
 import com.militarystore.entity.discount.Discount;
+import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.port.out.discount.DiscountPort;
 import com.militarystore.utils.DiscountProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
@@ -62,5 +64,27 @@ class DiscountServiceTest {
         when(discountPort.getUserDiscounts(USER_ID)).thenReturn(expectedDiscounts);
 
         assertThat(discountService.getUserDiscounts(USER_ID)).isEqualTo(expectedDiscounts);
+    }
+
+    @Test
+    void getUserDiscountByCode_shouldReturnDiscount_whenItAvailableForUser() {
+        var discountCode = "code";
+        var discount = 0.03;
+
+        when(discountPort.isAvailableUserDiscount(discountCode, USER_ID)).thenReturn(true);
+        when(discountPort.getUserDiscountByCode(discountCode, USER_ID)).thenReturn(discount);
+
+        assertThat(discountService.getUserDiscountByCode(discountCode, USER_ID)).isEqualTo(discount);
+    }
+
+    @Test
+    void getUserDiscountByCode_shouldThrowException_whenDiscountIsNotAvailableForUser() {
+        var discountCode = "code";
+
+        when(discountPort.isAvailableUserDiscount(discountCode, USER_ID)).thenReturn(false);
+
+        assertThatThrownBy(() -> discountService.getUserDiscountByCode(discountCode, USER_ID))
+            .isInstanceOf(MsNotFoundException.class)
+            .hasMessage("Discount code is not available for user with id - " + USER_ID);
     }
 }

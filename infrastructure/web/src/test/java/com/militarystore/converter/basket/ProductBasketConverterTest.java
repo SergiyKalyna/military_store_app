@@ -2,7 +2,7 @@ package com.militarystore.converter.basket;
 
 import com.militarystore.entity.basket.ProductInBasket;
 import com.militarystore.model.dto.basket.ProductInBasketDto;
-import com.militarystore.model.response.ProductBasketResponse;
+import com.militarystore.model.response.basket.ProductBasketResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,12 +24,14 @@ class ProductBasketConverterTest {
         var productsInBasket = List.of(
             ProductInBasket.builder()
                 .productId(1)
+                .productStockDetailsId(11)
                 .productName("product1")
                 .productPrice(100)
                 .quantity(2)
                 .build(),
             ProductInBasket.builder()
                 .productId(2)
+                .productStockDetailsId(22)
                 .productName("product2")
                 .productPrice(200)
                 .quantity(3)
@@ -40,6 +42,7 @@ class ProductBasketConverterTest {
             List.of(
                 ProductInBasketDto.builder()
                     .productId(1)
+                    .productStockDetailsId(11)
                     .productName("product1")
                     .productPrice(100)
                     .quantity(2)
@@ -47,6 +50,7 @@ class ProductBasketConverterTest {
                     .build(),
                 ProductInBasketDto.builder()
                     .productId(2)
+                    .productStockDetailsId(22)
                     .productName("product2")
                     .productPrice(200)
                     .quantity(3)

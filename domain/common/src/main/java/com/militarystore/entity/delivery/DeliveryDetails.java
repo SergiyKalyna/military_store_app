@@ -4,10 +4,10 @@ import lombok.Builder;
 
 @Builder
 public record DeliveryDetails(
-        Integer id,
-        String city,
-        Integer postNumber,
-        String recipientName,
-        String recipientPhone
+    Integer id,
+    String city,
+    Integer postNumber,
+    String recipientName,
+    String recipientPhone
 ) {
 }

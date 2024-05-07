@@ -1,4 +1,4 @@
-package com.militarystore.model.response;
+package com.militarystore.model.response.basket;
 
 import com.militarystore.model.dto.basket.ProductInBasketDto;
 

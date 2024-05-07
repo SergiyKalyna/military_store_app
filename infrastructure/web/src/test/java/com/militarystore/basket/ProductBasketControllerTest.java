@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.militarystore.converter.basket.ProductBasketConverter;
 import com.militarystore.entity.basket.ProductInBasket;
 import com.militarystore.model.dto.basket.ProductInBasketDto;
-import com.militarystore.model.response.ProductBasketResponse;
+import com.militarystore.model.response.basket.ProductBasketResponse;
 import com.militarystore.port.in.basket.ProductBasketUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -63,4 +63,11 @@ public class DiscountRepository {
                     .and(DISCOUNTS.EXPIRATION_DATE.greaterOrEqual(LocalDateTime.now())))
         );
     }
+
+    public Double getDiscountByCode(String discountCode, Integer userId) {
+        return dslContext.select(DISCOUNTS.DISCOUNT)
+            .from(DISCOUNTS)
+            .where(DISCOUNTS.DISCOUNT_CODE.eq(discountCode).and(DISCOUNTS.USER_ID.eq(userId)))
+            .fetchOne(DISCOUNTS.DISCOUNT);
+    }
 }

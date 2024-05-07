@@ -24,12 +24,14 @@ class BasketMapperTest {
     void map() {
         var record = mock(Record4.class);
         when(record.get(PRODUCTS.ID)).thenReturn(1);
+        when(record.get(BASKETS.PRODUCT_STOCK_DETAILS_ID)).thenReturn(2);
         when(record.get(PRODUCTS.NAME)).thenReturn("product");
         when(record.get(PRODUCTS.PRICE)).thenReturn(100);
         when(record.get(BASKETS.QUANTITY)).thenReturn(11);
 
         var expectedProductInBasket = ProductInBasket.builder()
             .productId(1)
+            .productStockDetailsId(2)
             .productName("product")
             .productPrice(100)
             .quantity(11)
