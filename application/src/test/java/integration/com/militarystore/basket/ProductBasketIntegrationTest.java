@@ -44,6 +44,7 @@ class ProductBasketIntegrationTest extends IntegrationTest {
         var expectedProductsInBasket = List.of(
             ProductInBasket.builder()
                 .productId(PRODUCT_ID)
+                .productStockDetailsId(PRODUCT_STOCK_DETAILS_ID)
                 .productName("Product")
                 .productPrice(100)
                 .quantity(1)
@@ -65,6 +66,7 @@ class ProductBasketIntegrationTest extends IntegrationTest {
         var expectedProductsInBasket = List.of(
             ProductInBasket.builder()
                 .productId(PRODUCT_ID)
+                .productStockDetailsId(PRODUCT_STOCK_DETAILS_ID)
                 .productName("Product")
                 .productPrice(100)
                 .quantity(2)
@@ -98,6 +100,7 @@ class ProductBasketIntegrationTest extends IntegrationTest {
         var expectedProductsInBasket = List.of(
             ProductInBasket.builder()
                 .productId(PRODUCT_ID)
+                .productStockDetailsId(PRODUCT_STOCK_DETAILS_ID)
                 .productName("Product")
                 .productPrice(100)
                 .quantity(2)
