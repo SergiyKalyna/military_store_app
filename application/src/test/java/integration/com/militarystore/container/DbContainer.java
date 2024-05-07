@@ -3,9 +3,11 @@ package com.militarystore.container;
 import org.jooq.DSLContext;
 import org.testcontainers.containers.PostgreSQLContainer;
 
+import static com.militarystore.jooq.Tables.BASKETS;
 import static com.militarystore.jooq.Tables.CATEGORIES;
 import static com.militarystore.jooq.Tables.DELIVERY_DETAILS;
 import static com.militarystore.jooq.Tables.DISCOUNTS;
+import static com.militarystore.jooq.Tables.ORDERS;
 import static com.militarystore.jooq.Tables.PRODUCTS;
 import static com.militarystore.jooq.Tables.USERS;
 
@@ -23,6 +25,7 @@ public class DbContainer extends PostgreSQLContainer<DbContainer> {
         dslContext.truncate(CATEGORIES).cascade().execute();
         dslContext.truncate(PRODUCTS).cascade().execute();
         dslContext.truncate(USERS).cascade().execute();
+        dslContext.truncate(ORDERS).cascade().execute();
         dslContext.truncate(DISCOUNTS).execute();
         dslContext.truncate(DELIVERY_DETAILS).execute();
     }
