@@ -3,7 +3,6 @@ package com.militarystore.container;
 import org.jooq.DSLContext;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-import static com.militarystore.jooq.Tables.BASKETS;
 import static com.militarystore.jooq.Tables.CATEGORIES;
 import static com.militarystore.jooq.Tables.DELIVERY_DETAILS;
 import static com.militarystore.jooq.Tables.DISCOUNTS;
