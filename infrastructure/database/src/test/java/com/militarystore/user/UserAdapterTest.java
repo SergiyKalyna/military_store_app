@@ -37,9 +37,11 @@ class UserAdapterTest {
 
     @Test
     void saveUser() {
-        when(userRepository.saveUser(USER)).thenReturn(USER_ID);
+        var encodedPassword = "encodedPassword";
 
-        assertThat(userAdapter.saveUser(USER)).isEqualTo(USER_ID);
+        when(userRepository.saveUser(USER, encodedPassword)).thenReturn(USER_ID);
+
+        assertThat(userAdapter.saveUser(USER, encodedPassword)).isEqualTo(USER_ID);
     }
 
     @Test

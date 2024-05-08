@@ -17,10 +17,10 @@ public class UserRepository {
 
     private final DSLContext dslContext;
 
-    public Integer saveUser(User user) {
+    public Integer saveUser(User user, String encodedPassword) {
         return dslContext.insertInto(USERS)
             .set(USERS.LOGIN, user.login())
-            .set(USERS.PASSWORD, user.password())
+            .set(USERS.PASSWORD, encodedPassword)
             .set(USERS.FIRST_NAME, user.firstName())
             .set(USERS.SECOND_NAME, user.secondName())
             .set(USERS.EMAIL, user.email())

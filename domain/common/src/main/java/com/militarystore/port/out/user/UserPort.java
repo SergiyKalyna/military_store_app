@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserPort {
 
-    Integer saveUser(User user);
+    Integer saveUser(User user, String encodedPassword);
 
     void updateUser(User user);
 

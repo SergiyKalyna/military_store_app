@@ -14,6 +14,7 @@ import com.militarystore.port.out.user.UserPort;
 import com.militarystore.port.out.wishlist.WishlistPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,12 +33,14 @@ public class UserService implements CreateUserUseCase, GetUserUseCase, DeleteUse
     private final WishlistPort wishlistPort;
     private final BasketPort basketPort;
     private final DiscountPort discountPort;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Integer saveUser(User user) {
         checkIfLoginExist(user.login());
         userValidationService.validateNewUser(user);
 
-        var userId = userPort.saveUser(user);
+        var encodedPassword = bCryptPasswordEncoder.encode(user.password());
+        var userId = userPort.saveUser(user, encodedPassword);
         log.info("User with login '{}' was created with id '{}'", user.login(), userId);
 
         return userId;
