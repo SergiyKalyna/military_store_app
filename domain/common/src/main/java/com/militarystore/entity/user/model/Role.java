@@ -1,5 +1,12 @@
 package com.militarystore.entity.user.model;
 
-public enum Role {
-    SUPER_ADMIN, ADMIN, USER
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
+    SUPER_ADMIN, ADMIN, USER;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }
