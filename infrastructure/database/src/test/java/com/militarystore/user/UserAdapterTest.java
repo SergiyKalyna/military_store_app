@@ -137,4 +137,14 @@ class UserAdapterTest {
 
         assertThat(userAdapter.getUserPassword(USER_ID)).isEqualTo(password);
     }
+
+    @Test
+    void getUserByLogin() {
+        var userRecord = new UsersRecord();
+
+        when(userRepository.getUserByLogin("login")).thenReturn(userRecord);
+        when(userMapper.map(userRecord)).thenReturn(USER);
+
+        assertThat(userAdapter.getUserByLogin("login")).isEqualTo(USER);
+    }
 }

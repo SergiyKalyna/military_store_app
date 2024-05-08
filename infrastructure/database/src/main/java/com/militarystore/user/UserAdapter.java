@@ -61,4 +61,8 @@ public class UserAdapter implements UserPort {
     public String getUserPassword(int id) {
         return userRepository.getPassword(id);
     }
+
+    public User getUserByLogin(String login) {
+        return userMapper.map(userRepository.getUserByLogin(login));
+    }
 }

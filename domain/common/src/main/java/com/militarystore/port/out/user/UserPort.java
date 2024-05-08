@@ -28,4 +28,6 @@ public interface UserPort {
     boolean isUserExist(int id);
 
     String getUserPassword(int id);
+
+    User getUserByLogin(String login);
 }

@@ -55,6 +55,12 @@ public class UserRepository {
             .fetchOne();
     }
 
+    public UsersRecord getUserByLogin(String login) {
+        return dslContext.selectFrom(USERS)
+            .where(USERS.LOGIN.eq(login))
+            .fetchOne();
+    }
+
     public List<UsersRecord> getUsers() {
         return dslContext.selectFrom(USERS)
             .fetch();
