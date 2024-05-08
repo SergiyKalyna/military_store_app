@@ -1,6 +1,5 @@
 dependencies {
     implementation("org.springframework:spring-web")
-    implementation("org.springframework.security:spring-security-core:${spring_security_version}")
 
     compileOnly libs.lombok
     annotationProcessor libs.lombok
