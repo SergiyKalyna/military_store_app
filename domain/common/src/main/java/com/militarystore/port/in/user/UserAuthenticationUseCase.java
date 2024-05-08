@@ -5,4 +5,6 @@ import com.militarystore.entity.user.User;
 public interface UserAuthenticationUseCase {
 
     User getUserByLogin(String login);
+
+    boolean isPasswordMatches(String password, String encodedPassword);
 }

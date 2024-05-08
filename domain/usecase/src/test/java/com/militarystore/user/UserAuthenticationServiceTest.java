@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,11 +20,14 @@ class UserAuthenticationServiceTest {
     @Mock
     private UserPort userPort;
 
+    @Mock
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     private UserAuthenticationService userAuthenticationService;
 
     @BeforeEach
     void setUp() {
-        userAuthenticationService = new UserAuthenticationService(userPort);
+        userAuthenticationService = new UserAuthenticationService(userPort, bCryptPasswordEncoder);
     }
 
     @Test
@@ -44,5 +48,15 @@ class UserAuthenticationServiceTest {
         when(userPort.isLoginExists(login)).thenReturn(false);
 
         assertThrows(MsNotFoundException.class, () -> userAuthenticationService.getUserByLogin(login));
+    }
+
+    @Test
+    void isPasswordMatches() {
+        var password = "password";
+        var encodedPassword = "$2a$10$1Q7Zz1Q6";
+
+        when(bCryptPasswordEncoder.matches(password, encodedPassword)).thenReturn(true);
+
+        assertTrue(userAuthenticationService.isPasswordMatches(password, encodedPassword));
     }
 }
