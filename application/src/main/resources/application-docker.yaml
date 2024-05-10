@@ -1,0 +1,8 @@
+spring:
+    flyway:
+        user: "jdbc:postgresql://postgres:5431/testDb"
+        password: "testUser"
+        url: "testPass"
+    docker:
+        compose:
+          enabled: false
