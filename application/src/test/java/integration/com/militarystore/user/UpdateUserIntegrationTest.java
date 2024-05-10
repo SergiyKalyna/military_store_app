@@ -9,6 +9,7 @@ import com.militarystore.port.in.user.GetUserUseCase;
 import com.militarystore.port.in.user.UpdateUserUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
 
@@ -24,6 +25,9 @@ class UpdateUserIntegrationTest extends IntegrationTest {
 
     @Autowired
     private GetUserUseCase getUserUseCase;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Test
     void updateUser_userShouldBeProperlyUpdated() {
@@ -46,7 +50,22 @@ class UpdateUserIntegrationTest extends IntegrationTest {
 
         updateUserUseCase.updateUser(updatedUser);
 
-        assertThat(getUserUseCase.getUserById(userId)).isEqualTo(updatedUser);
+        var userFromDb = getUserUseCase.getUserById(userId);
+        var expectedUser = User.builder()
+            .id(userId)
+            .login("login")
+            .password(userFromDb.password())
+            .firstName("newFirstName")
+            .secondName("newSecondName")
+            .email("new-email@gmail.com")
+            .phone("+(380)935334711")
+            .gender(Gender.FEMALE)
+            .role(Role.USER)
+            .birthdayDate(LocalDate.EPOCH)
+            .isBanned(false)
+            .build();
+
+        assertThat(userFromDb).isEqualTo(expectedUser);
     }
 
     @Test
@@ -66,7 +85,9 @@ class UpdateUserIntegrationTest extends IntegrationTest {
 
         updateUserUseCase.changePassword(userId, "password", "newPassword", "newPassword");
 
-        assertThat(getUserUseCase.getUserById(userId).password()).isEqualTo("newPassword");
+        var passwordFromDb = getUserUseCase.getUserById(userId).password();
+
+        assertThat(passwordEncoder.matches("newPassword", passwordFromDb)).isTrue();
     }
 
     @Test
