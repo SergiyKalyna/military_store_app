@@ -5,6 +5,7 @@ dependencies {
     implementation project(":infrastructure:database")
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-docker-compose'
 
     testImplementation libs.unitTest
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
