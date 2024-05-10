@@ -7,6 +7,7 @@ import com.militarystore.model.request.user.UserUpdatePasswordRequest;
 import com.militarystore.model.request.user.UserUpdateRequest;
 import com.militarystore.port.in.user.UpdateUserUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +36,7 @@ public class UpdateUserProfileController {
     }
 
     @PutMapping("/{userId}/role")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public void changeRole(@PathVariable("userId") Integer userId, @RequestParam("roleDto") RoleDto roleDto) {
         var role = Role.valueOf(roleDto.name());
 
@@ -42,6 +44,7 @@ public class UpdateUserProfileController {
     }
 
     @PutMapping("/{userId}/ban-status")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public void changeBanStatus(@PathVariable("userId") Integer userId, @RequestParam("isBanned") Boolean isBanned) {
         updateUserUseCase.changeBanStatus(userId, isBanned);
     }
