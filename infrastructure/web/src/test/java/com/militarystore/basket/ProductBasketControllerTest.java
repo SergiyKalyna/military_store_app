@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.militarystore.config.TestSecurityConfig;
 import com.militarystore.converter.basket.ProductBasketConverter;
 import com.militarystore.entity.basket.ProductInBasket;
+import com.militarystore.entity.user.User;
+import com.militarystore.entity.user.model.Role;
 import com.militarystore.model.dto.basket.ProductInBasketDto;
 import com.militarystore.model.response.basket.ProductBasketResponse;
 import com.militarystore.port.in.basket.ProductBasketUseCase;
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -50,30 +53,34 @@ class ProductBasketControllerTest {
     @Test
     void addProductToBasket() throws Exception {
         mockMvc.perform(
-            post("/products/basket/user/{userId}/product-details-id/{product-details-id}", USER_ID, PRODUCT_DETAILS_ID)
-            .param("quantity", "1"))
+                post("/products/basket/product-details-id/{product-details-id}", PRODUCT_DETAILS_ID)
+                    .with(user(User.builder().id(USER_ID).role(Role.USER).build()))
+                    .param("quantity", "1"))
             .andExpect(status().isOk());
     }
 
     @Test
     void updateProductQuantityInBasket() throws Exception {
         mockMvc.perform(
-            put("/products/basket/user/{userId}/product-details-id/{product-details-id}", USER_ID, PRODUCT_DETAILS_ID)
-            .param("quantity", "1"))
+                put("/products/basket/product-details-id/{product-details-id}", PRODUCT_DETAILS_ID)
+                    .with(user(User.builder().id(USER_ID).role(Role.USER).build()))
+                    .param("quantity", "1"))
             .andExpect(status().isOk());
     }
 
     @Test
     void deleteProductFromBasket() throws Exception {
         mockMvc.perform(
-            delete("/products/basket/user/{userId}/product-details-id/{product-details-id}", USER_ID, PRODUCT_DETAILS_ID)
-            .param("quantity", "1"))
+                delete("/products/basket/product-details-id/{product-details-id}", PRODUCT_DETAILS_ID)
+                    .with(user(User.builder().id(USER_ID).role(Role.USER).build()))
+                    .param("quantity", "1"))
             .andExpect(status().isOk());
     }
 
     @Test
     void deleteUserProductsFromBasket() throws Exception {
-        mockMvc.perform(delete("/products/basket/user/{userId}", USER_ID))
+        mockMvc.perform(delete("/products/basket")
+                .with(user(User.builder().id(USER_ID).role(Role.USER).build())))
             .andExpect(status().isOk());
     }
 
@@ -85,7 +92,8 @@ class ProductBasketControllerTest {
         when(productBasketUseCase.getUserBasketProducts(USER_ID)).thenReturn(productsInBasket);
         when(productBasketConverter.convertToProductBasketResponse(productsInBasket)).thenReturn(productBasketResponse);
 
-        mockMvc.perform(get("/products/basket/user/{userId}", USER_ID))
+        mockMvc.perform(get("/products/basket")
+                .with(user(User.builder().id(USER_ID).role(Role.USER).build())))
             .andExpect(status().isOk())
             .andExpect(content().json(objectMapper.writeValueAsString(productBasketResponse)));
     }

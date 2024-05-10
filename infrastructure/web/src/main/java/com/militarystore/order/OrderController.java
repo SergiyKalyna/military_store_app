@@ -1,6 +1,7 @@
 package com.militarystore.order;
 
 import com.militarystore.converter.order.OrderConverter;
+import com.militarystore.entity.user.User;
 import com.militarystore.model.dto.order.OrderDto;
 import com.militarystore.model.dto.order.OrderStatusDto;
 import com.militarystore.model.request.order.SubmitOrderRequest;
@@ -10,6 +11,7 @@ import com.militarystore.port.in.order.SubmitOrderUseCase;
 import com.militarystore.port.in.order.UpdateOrderUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,12 +33,12 @@ public class OrderController {
     private final UpdateOrderUseCase updateOrderUseCase;
     private final OrderConverter orderConverter;
 
-    @PostMapping("/user/{userId}")
+    @PostMapping
     public Integer submitOrder(
-        @PathVariable("userId") Integer userId,
+        @AuthenticationPrincipal User user,
         @RequestBody SubmitOrderRequest submitOrderRequest
     ) {
-        var order = orderConverter.convertToOrder(submitOrderRequest, userId);
+        var order = orderConverter.convertToOrder(submitOrderRequest, user.id());
 
         return submitOrderUseCase.submitOrder(order, submitOrderRequest.discountCode());
     }
@@ -64,9 +66,9 @@ public class OrderController {
         updateOrderUseCase.updateOrderStatusWithShippingNumber(orderId, orderStatus, shippingNumber);
     }
 
-    @GetMapping("/user/{userId}")
-    public List<OrderDto> getUserOrders(@PathVariable("userId") Integer userId) {
-        return getOrderUseCase.getUserOrders(userId).stream()
+    @GetMapping
+    public List<OrderDto> getUserOrders(@AuthenticationPrincipal User user) {
+        return getOrderUseCase.getUserOrders(user.id()).stream()
             .map(orderConverter::convertToOrderDto)
             .toList();
     }

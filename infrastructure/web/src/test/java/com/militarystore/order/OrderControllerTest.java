@@ -5,6 +5,8 @@ import com.militarystore.config.TestSecurityConfig;
 import com.militarystore.converter.order.OrderConverter;
 import com.militarystore.entity.order.Order;
 import com.militarystore.entity.order.OrderStatus;
+import com.militarystore.entity.user.User;
+import com.militarystore.entity.user.model.Role;
 import com.militarystore.model.dto.order.OrderDto;
 import com.militarystore.model.dto.order.OrderStatusDto;
 import com.militarystore.model.request.order.SubmitOrderRequest;
@@ -25,6 +27,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -66,7 +69,8 @@ class OrderControllerTest {
         when(orderConverter.convertToOrder(submitOrderRequest, USER_ID)).thenReturn(order);
         when(submitOrderUseCase.submitOrder(order, submitOrderRequest.discountCode())).thenReturn(ORDER_ID);
 
-        mockMvc.perform(post("/orders/user/{userId}", USER_ID)
+        mockMvc.perform(post("/orders")
+                .with(user(User.builder().id(USER_ID).role(Role.USER).build()))
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(submitOrderRequest)))
             .andExpect(status().isOk())
@@ -150,7 +154,8 @@ class OrderControllerTest {
         when(getOrderUseCase.getUserOrders(USER_ID)).thenReturn(orders);
 
 
-        mockMvc.perform(get("/orders/user/{userId}", USER_ID))
+        mockMvc.perform(get("/orders")
+                .with(user(User.builder().id(USER_ID).role(Role.USER).build())))
             .andExpect(status().isOk())
             .andExpect(content().json(objectMapper.writeValueAsString(List.of(orderDto))));
     }

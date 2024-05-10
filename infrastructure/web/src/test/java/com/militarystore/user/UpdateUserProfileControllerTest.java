@@ -24,6 +24,7 @@ import java.time.LocalDate;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -62,7 +63,8 @@ class UpdateUserProfileControllerTest {
 
         when(userConverter.convertToUser(updateRequest, USER_ID)).thenReturn(user);
 
-        mockMvc.perform(put("/profile/user/1")
+        mockMvc.perform(put("/profile/user")
+                .with(user(User.builder().id(USER_ID).role(Role.USER).build()))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)))
             .andExpect(status().isOk());
@@ -79,7 +81,8 @@ class UpdateUserProfileControllerTest {
             .when(updateUserUseCase)
             .changePassword(USER_ID, "old password", "new password", "new password");
 
-        mockMvc.perform(put("/profile/user/1/password")
+        mockMvc.perform(put("/profile/user/password")
+                .with(user(User.builder().id(USER_ID).role(Role.USER).build()))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatePasswordRequest)))
             .andExpect(status().isOk());
