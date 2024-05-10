@@ -1,6 +1,7 @@
 package com.militarystore.discount;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.militarystore.config.TestSecurityConfig;
 import com.militarystore.converter.discount.DiscountConverter;
 import com.militarystore.entity.discount.Discount;
 import com.militarystore.model.dto.discount.DiscountDto;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,6 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(UserDiscountController.class)
 @ContextConfiguration(classes = {UserDiscountController.class})
+@Import(TestSecurityConfig.class)
+@WithMockUser
 class UserDiscountControllerTest {
 
     private static final int USER_ID = 1;
