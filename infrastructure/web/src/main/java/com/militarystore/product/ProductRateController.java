@@ -1,7 +1,9 @@
 package com.militarystore.product;
 
+import com.militarystore.entity.user.User;
 import com.militarystore.port.in.product.ProductRateUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,14 +18,13 @@ public class ProductRateController {
 
     private final ProductRateUseCase productRateUseCase;
 
-    //@TODO: User id should be replaced with user context after adding security
     @PostMapping("/{productId}")
     public void rateProduct(
         @PathVariable("productId") Integer productId,
-        @RequestParam("userId") Integer userId,
-        @RequestParam("productRate") double productRate
+        @RequestParam("productRate") double productRate,
+        @AuthenticationPrincipal User user
     ) {
-        productRateUseCase.rateProduct(productId, userId, productRate);
+        productRateUseCase.rateProduct(productId, user.id(), productRate);
     }
 
     @GetMapping("/{productId}")
