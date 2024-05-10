@@ -1,9 +1,11 @@
 package com.militarystore.wishlist;
 
 import com.militarystore.converter.product.ProductConverter;
+import com.militarystore.entity.user.User;
 import com.militarystore.model.dto.product.ProductDto;
 import com.militarystore.port.in.wishlist.UserWishlistUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,30 +23,30 @@ public class UserWishlistController {
     private final UserWishlistUseCase userWishlistUseCase;
     private final ProductConverter productConverter;
 
-    @PostMapping("/product/{productId}/user/{userId}")
+    @PostMapping("/product/{productId}")
     public void addProductToUserWishlist(
         @PathVariable("productId") Integer productId,
-        @PathVariable("userId") Integer userId
+        @AuthenticationPrincipal User user
     ) {
-        userWishlistUseCase.addProductToUserWishlist(productId, userId);
+        userWishlistUseCase.addProductToUserWishlist(productId, user.id());
     }
 
-    @DeleteMapping("/product/{productId}/user/{userId}")
+    @DeleteMapping("/product/{productId}")
     public void deleteProductFromUserWishlist(
         @PathVariable("productId") Integer productId,
-        @PathVariable("userId") Integer userId
+        @AuthenticationPrincipal User user
     ) {
-        userWishlistUseCase.deleteProductFromUserWishlist(productId, userId);
+        userWishlistUseCase.deleteProductFromUserWishlist(productId, user.id());
     }
 
-    @DeleteMapping("/user/{userId}")
-    public void deleteAllUserProductsFromWishlist(@PathVariable("userId") Integer userId) {
-        userWishlistUseCase.deleteAllUserProductsFromWishlist(userId);
+    @DeleteMapping
+    public void deleteAllUserProductsFromWishlist(@AuthenticationPrincipal User user) {
+        userWishlistUseCase.deleteAllUserProductsFromWishlist(user.id());
     }
 
-    @GetMapping("/user/{userId}")
-    public List<ProductDto> getUserWishlistProducts(@PathVariable("userId") Integer userId) {
-        var products = userWishlistUseCase.getUserWishlistProducts(userId);
+    @GetMapping
+    public List<ProductDto> getUserWishlistProducts(@AuthenticationPrincipal User user) {
+        var products = userWishlistUseCase.getUserWishlistProducts(user.id());
 
         return products.stream()
             .map(productConverter::convertToSearchProductDto)

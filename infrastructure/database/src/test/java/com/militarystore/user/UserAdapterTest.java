@@ -37,9 +37,11 @@ class UserAdapterTest {
 
     @Test
     void saveUser() {
-        when(userRepository.saveUser(USER)).thenReturn(USER_ID);
+        var encodedPassword = "encodedPassword";
 
-        assertThat(userAdapter.saveUser(USER)).isEqualTo(USER_ID);
+        when(userRepository.saveUser(USER, encodedPassword)).thenReturn(USER_ID);
+
+        assertThat(userAdapter.saveUser(USER, encodedPassword)).isEqualTo(USER_ID);
     }
 
     @Test
@@ -136,5 +138,15 @@ class UserAdapterTest {
         when(userRepository.getPassword(USER_ID)).thenReturn(password);
 
         assertThat(userAdapter.getUserPassword(USER_ID)).isEqualTo(password);
+    }
+
+    @Test
+    void getUserByLogin() {
+        var userRecord = new UsersRecord();
+
+        when(userRepository.getUserByLogin("login")).thenReturn(userRecord);
+        when(userMapper.map(userRecord)).thenReturn(USER);
+
+        assertThat(userAdapter.getUserByLogin("login")).isEqualTo(USER);
     }
 }

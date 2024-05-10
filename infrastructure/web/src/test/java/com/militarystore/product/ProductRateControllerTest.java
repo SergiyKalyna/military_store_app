@@ -1,14 +1,20 @@
 package com.militarystore.product;
 
+import com.militarystore.config.TestSecurityConfig;
+import com.militarystore.entity.user.User;
+import com.militarystore.entity.user.model.Role;
 import com.militarystore.port.in.product.ProductRateUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -16,6 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ProductRateController.class)
 @ContextConfiguration(classes = {ProductRateController.class})
+@Import(TestSecurityConfig.class)
+@WithMockUser
 class ProductRateControllerTest {
 
     @MockBean
@@ -27,10 +35,9 @@ class ProductRateControllerTest {
     @Test
     void rateProduct() throws Exception {
         var productRate = 4.5;
-        var userId = 1;
 
         mockMvc.perform(post("/products/rate/1")
-                .param("userId", String.valueOf(userId))
+                .with(user(User.builder().id(1).role(Role.USER).build()))
                 .param("productRate", String.valueOf(productRate)))
             .andExpect(status().isOk());
     }

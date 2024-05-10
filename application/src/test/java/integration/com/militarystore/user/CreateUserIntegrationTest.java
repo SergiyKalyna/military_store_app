@@ -36,7 +36,6 @@ class CreateUserIntegrationTest extends IntegrationTest {
 
         assertThat(userId).isNotNull();
         assertThat(userFromDb.get(USERS.LOGIN)).isEqualTo("login");
-        assertThat(userFromDb.get(USERS.PASSWORD)).isEqualTo("password");
         assertThat(userFromDb.get(USERS.FIRST_NAME)).isEqualTo("firstName");
         assertThat(userFromDb.get(USERS.SECOND_NAME)).isEqualTo("secondName");
         assertThat(userFromDb.get(USERS.EMAIL)).isEqualTo("email@gmail.com");

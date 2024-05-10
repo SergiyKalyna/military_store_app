@@ -16,8 +16,8 @@ public class UserAdapter implements UserPort {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public Integer saveUser(User user) {
-        return userRepository.saveUser(user);
+    public Integer saveUser(User user, String encodedPassword) {
+        return userRepository.saveUser(user, encodedPassword);
     }
 
     public void updateUser(User user) {
@@ -60,5 +60,9 @@ public class UserAdapter implements UserPort {
 
     public String getUserPassword(int id) {
         return userRepository.getPassword(id);
+    }
+
+    public User getUserByLogin(String login) {
+        return userMapper.map(userRepository.getUserByLogin(login));
     }
 }

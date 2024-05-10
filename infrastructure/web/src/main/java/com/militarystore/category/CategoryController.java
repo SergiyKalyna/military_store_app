@@ -6,6 +6,7 @@ import com.militarystore.model.dto.category.SubcategoryDto;
 import com.militarystore.port.in.category.CategoryUseCase;
 import com.militarystore.port.in.subcategory.SubcategoryUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +44,7 @@ public class CategoryController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public void addCategory(@RequestParam ("categoryName") String categoryName) {
         var category = categoryConverter.convertToCategory(categoryName);
 
@@ -50,6 +52,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{categoryId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public void updateCategory(@PathVariable ("categoryId") int categoryId, @RequestParam ("categoryName") String categoryName) {
         var category = categoryConverter.convertToCategory(categoryId, categoryName);
 
@@ -57,6 +60,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{categoryId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public void deleteCategory(@PathVariable ("categoryId") int categoryId) {
         categoryUseCase.deleteCategory(categoryId);
     }
@@ -71,6 +75,7 @@ public class CategoryController {
     }
 
     @PostMapping("/{categoryId}/subcategories")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public void addSubcategory(
         @PathVariable ("categoryId") int categoryId,
         @RequestParam ("subcategoryName") String subcategoryName
@@ -81,6 +86,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{categoryId}/subcategories/{subcategoryId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public void updateSubcategory(
         @PathVariable ("categoryId") int categoryId,
         @PathVariable ("subcategoryId") int subcategoryId,
@@ -92,6 +98,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/subcategories/{subcategoryId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public void deleteSubcategory(@PathVariable ("subcategoryId") int subcategoryId) {
         subcategoryUseCase.deleteSubcategory(subcategoryId);
     }

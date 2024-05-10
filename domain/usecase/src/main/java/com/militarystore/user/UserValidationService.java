@@ -12,6 +12,7 @@ import static java.util.Objects.isNull;
 @Service
 public class UserValidationService {
 
+    static final int PASSWORD_MIN_LENGTH = 6;
     private static final int MIN_LENGTH = 3;
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
 
@@ -37,9 +38,8 @@ public class UserValidationService {
     }
 
     void validatePassword(String password) {
-        if (isNull(password) || password.isBlank() || password.length() < MIN_LENGTH) {
-            throw new MsValidationException("Password should not be empty or less than 3 characters, "
-                + "instead was: " + password);
+        if (isNull(password) || password.isBlank() || password.length() < PASSWORD_MIN_LENGTH) {
+            throw new MsValidationException("Password should not be empty or less than 6 characters");
         }
     }
 

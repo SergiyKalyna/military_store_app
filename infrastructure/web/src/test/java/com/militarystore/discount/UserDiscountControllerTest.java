@@ -1,20 +1,26 @@
 package com.militarystore.discount;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.militarystore.config.TestSecurityConfig;
 import com.militarystore.converter.discount.DiscountConverter;
 import com.militarystore.entity.discount.Discount;
+import com.militarystore.entity.user.User;
+import com.militarystore.entity.user.model.Role;
 import com.militarystore.model.dto.discount.DiscountDto;
 import com.militarystore.port.in.discount.DiscountUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -22,6 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(UserDiscountController.class)
 @ContextConfiguration(classes = {UserDiscountController.class})
+@Import(TestSecurityConfig.class)
+@WithMockUser
 class UserDiscountControllerTest {
 
     private static final int USER_ID = 1;
@@ -43,7 +51,8 @@ class UserDiscountControllerTest {
     void createUserDiscountCode() throws Exception {
         when(discountUseCase.createUserDiscountCode(USER_ID)).thenReturn(DISCOUNT_CODE);
 
-        mockMvc.perform(post("/users/discount/1"))
+        mockMvc.perform(post("/users/discount")
+                .with(user(User.builder().id(USER_ID).role(Role.USER).build())))
             .andExpect(status().isOk())
             .andExpect(content().string(DISCOUNT_CODE));
     }
@@ -56,7 +65,8 @@ class UserDiscountControllerTest {
         when(discountUseCase.getUserDiscounts(USER_ID)).thenReturn(List.of(discount));
         when(discountConverter.toDto(discount)).thenReturn(discountDto);
 
-        mockMvc.perform(get("/users/discount/1"))
+        mockMvc.perform(get("/users/discount")
+                .with(user(User.builder().id(USER_ID).role(Role.USER).build())))
             .andExpect(status().isOk())
             .andExpect(content().json(objectMapper.writeValueAsString(List.of(discountDto))));
     }
@@ -67,7 +77,8 @@ class UserDiscountControllerTest {
 
         when(discountUseCase.getUserDiscountByCode(DISCOUNT_CODE, USER_ID)).thenReturn(discount);
 
-        mockMvc.perform(get("/users/discount/1/discount-code/discountCode"))
+        mockMvc.perform(get("/users/discount/discount-code/discountCode")
+            .with(user(User.builder().id(USER_ID).role(Role.USER).build())))
             .andExpect(status().isOk())
             .andExpect(content().string(String.valueOf(discount)));
     }

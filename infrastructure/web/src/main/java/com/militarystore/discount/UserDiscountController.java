@@ -1,9 +1,11 @@
 package com.militarystore.discount;
 
 import com.militarystore.converter.discount.DiscountConverter;
+import com.militarystore.entity.user.User;
 import com.militarystore.model.dto.discount.DiscountDto;
 import com.militarystore.port.in.discount.DiscountUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,25 +22,25 @@ public class UserDiscountController {
     private final DiscountUseCase discountUseCase;
     private final DiscountConverter discountConverter;
 
-    @PostMapping("/{userId}")
-    public String createUserDiscountCode(@PathVariable("userId") Integer userId) {
-       return discountUseCase.createUserDiscountCode(userId);
+    @PostMapping
+    public String createUserDiscountCode(@AuthenticationPrincipal User user) {
+       return discountUseCase.createUserDiscountCode(user.id());
     }
 
-    @GetMapping("/{userId}")
-    public List<DiscountDto> getUserDiscounts(@PathVariable("userId") Integer userId) {
-        var userDiscounts = discountUseCase.getUserDiscounts(userId);
+    @GetMapping
+    public List<DiscountDto> getUserDiscounts(@AuthenticationPrincipal User user) {
+        var userDiscounts = discountUseCase.getUserDiscounts(user.id());
 
         return userDiscounts.stream()
             .map(discountConverter::toDto)
             .toList();
     }
 
-    @GetMapping("/{userId}/discount-code/{discountCode}")
+    @GetMapping("/discount-code/{discountCode}")
     public Double getUserDiscountByCode(
-        @PathVariable("userId") Integer userId,
-        @PathVariable("discountCode") String discountCode
+        @PathVariable("discountCode") String discountCode,
+        @AuthenticationPrincipal User user
     ) {
-        return discountUseCase.getUserDiscountByCode(discountCode, userId);
+        return discountUseCase.getUserDiscountByCode(discountCode, user.id());
     }
 }

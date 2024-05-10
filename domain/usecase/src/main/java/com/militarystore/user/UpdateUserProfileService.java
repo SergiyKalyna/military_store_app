@@ -8,6 +8,7 @@ import com.militarystore.port.in.user.UpdateUserUseCase;
 import com.militarystore.port.out.user.UserPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static java.util.Objects.isNull;
@@ -20,6 +21,7 @@ public class UpdateUserProfileService implements UpdateUserUseCase {
     private final UserPort userPort;
     private final UserValidationService userValidationService;
     private final UserService userService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void updateUser(User user) {
         userService.checkIfUserExist(user.id());
@@ -35,7 +37,8 @@ public class UpdateUserProfileService implements UpdateUserUseCase {
         var databasePassword = getDataBasePassword(userId);
         matchPasswords(oldPassword, databasePassword);
 
-        userPort.changePassword(userId, newPassword);
+        var encodedNewPassword = bCryptPasswordEncoder.encode(newPassword);
+        userPort.changePassword(userId, encodedNewPassword);
         log.info("Password for user with id '{}' was changed", userId);
     }
 
@@ -71,7 +74,7 @@ public class UpdateUserProfileService implements UpdateUserUseCase {
     }
 
     private void matchPasswords(String oldPassword, String databasePassword) {
-        var isPasswordMatches = oldPassword.equals(databasePassword);
+        var isPasswordMatches = bCryptPasswordEncoder.matches(oldPassword, databasePassword);
 
         if (!isPasswordMatches) {
             throw new WrongPasswordException("Old password is incorrect");

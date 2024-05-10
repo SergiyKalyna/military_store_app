@@ -91,7 +91,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateUser_whenUserPasswordLessThan3Chars_shouldThrowUserValidationException() {
+    void validateUser_whenUserPasswordLessThan6Chars_shouldThrowUserValidationException() {
         var user = User.builder()
             .login("login")
             .password("ab")

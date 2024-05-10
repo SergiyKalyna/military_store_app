@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
@@ -32,11 +33,14 @@ class UpdateUserProfileServiceTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     private UpdateUserProfileService updateUserProfileService;
 
     @BeforeEach
     void setUp() {
-        updateUserProfileService = new UpdateUserProfileService(userPort, userValidationService, userService);
+        updateUserProfileService = new UpdateUserProfileService(userPort, userValidationService, userService, bCryptPasswordEncoder);
     }
 
     @Test
@@ -101,6 +105,7 @@ class UpdateUserProfileServiceTest {
     @Test
     void changePassword_whenOldPasswordDoesntMatchDatabasePassword_shouldThrowException() {
         when(userPort.getUserPassword(USER_ID)).thenReturn("databasePassword");
+        when(bCryptPasswordEncoder.matches("old", "databasePassword")).thenReturn(false);
 
         assertThrows(
             WrongPasswordException.class,
@@ -110,11 +115,15 @@ class UpdateUserProfileServiceTest {
 
     @Test
     void changePassword_whenOldPasswordMatchesDatabasePassword_shouldChangePassword() {
+        var encodedPassword = "encodedPassword";
+
         when(userPort.getUserPassword(USER_ID)).thenReturn("old");
+        when(bCryptPasswordEncoder.matches("old", "old")).thenReturn(true);
+        when(bCryptPasswordEncoder.encode("new")).thenReturn(encodedPassword);
 
         updateUserProfileService.changePassword(USER_ID, "old", "new", "new");
 
-        verify(userPort).changePassword(USER_ID, "new");
+        verify(userPort).changePassword(USER_ID, encodedPassword);
     }
 
     @Test

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
     private static final int USER_ID = 1;
-    private static final User USER = User.builder().id(USER_ID).login("login").build();
+    private static final User USER = User.builder().id(USER_ID).login("login").password("password").build();
 
     @Mock
     private UserValidationService userValidationService;
@@ -49,6 +50,9 @@ class UserServiceTest {
     @Mock
     private DiscountPort discountPort;
 
+    @Mock
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     private UserService userService;
 
     @BeforeEach
@@ -60,7 +64,8 @@ class UserServiceTest {
             productFeedbackPort,
             wishlistPort,
             basketPort,
-            discountPort
+            discountPort,
+            bCryptPasswordEncoder
         );
     }
 
@@ -84,8 +89,11 @@ class UserServiceTest {
 
     @Test
     void saveUser_whenUserIsValid_shouldSaveUser() {
+        var encodedPassword = "encodedPassword";
+
         when(userPort.isLoginExists("login")).thenReturn(false);
-        when(userPort.saveUser(USER)).thenReturn(USER_ID);
+        when(bCryptPasswordEncoder.encode("password")).thenReturn(encodedPassword);
+        when(userPort.saveUser(USER, encodedPassword)).thenReturn(USER_ID);
 
         var userId = userService.saveUser(USER);
 

@@ -1,9 +1,11 @@
 package com.militarystore.basket;
 
 import com.militarystore.converter.basket.ProductBasketConverter;
+import com.militarystore.entity.user.User;
 import com.militarystore.model.response.basket.ProductBasketResponse;
 import com.militarystore.port.in.basket.ProductBasketUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,40 +23,40 @@ public class ProductBasketController {
     private final ProductBasketUseCase productBasketUseCase;
     private final ProductBasketConverter productBasketConverter;
 
-    @PostMapping("/user/{userId}/product-details-id/{product-details-id}")
+    @PostMapping("/product-details-id/{product-details-id}")
     public void addProductToBasket(
         @PathVariable("product-details-id") Integer productStockDetailsId,
-        @PathVariable("userId") Integer userId,
-        @RequestParam("quantity") Integer quantity
+        @RequestParam("quantity") Integer quantity,
+        @AuthenticationPrincipal User user
     ) {
-        productBasketUseCase.addProductToBasket(productStockDetailsId, userId, quantity);
+        productBasketUseCase.addProductToBasket(productStockDetailsId, user.id(), quantity);
     }
 
-    @PutMapping("/user/{userId}/product-details-id/{product-details-id}")
+    @PutMapping("/product-details-id/{product-details-id}")
     public void updateProductQuantityInBasket(
         @PathVariable("product-details-id") Integer productStockDetailsId,
-        @PathVariable("userId") Integer userId,
-        @RequestParam("quantity") Integer quantity
+        @RequestParam("quantity") Integer quantity,
+        @AuthenticationPrincipal User user
     ) {
-        productBasketUseCase.updateProductQuantityInBasket(productStockDetailsId, userId, quantity);
+        productBasketUseCase.updateProductQuantityInBasket(productStockDetailsId, user.id(), quantity);
     }
 
-    @DeleteMapping("/user/{userId}/product-details-id/{product-details-id}")
+    @DeleteMapping("/product-details-id/{product-details-id}")
     public void deleteProductFromBasket(
         @PathVariable("product-details-id") Integer productStockDetailsId,
-        @PathVariable("userId") Integer userId
+        @AuthenticationPrincipal User user
     ) {
-        productBasketUseCase.deleteProductFromBasket(productStockDetailsId, userId);
+        productBasketUseCase.deleteProductFromBasket(productStockDetailsId, user.id());
     }
 
-    @DeleteMapping("/user/{userId}")
-    public void deleteUserProductsFromBasket(@PathVariable("userId") Integer userId) {
-        productBasketUseCase.deleteUserProductsFromBasket(userId);
+    @DeleteMapping
+    public void deleteUserProductsFromBasket(@AuthenticationPrincipal User user) {
+        productBasketUseCase.deleteUserProductsFromBasket(user.id());
     }
 
-    @GetMapping("/user/{userId}")
-    public ProductBasketResponse getUserBasketProducts(@PathVariable("userId") Integer userId) {
-       var basketProducts = productBasketUseCase.getUserBasketProducts(userId);
+    @GetMapping
+    public ProductBasketResponse getUserBasketProducts(@AuthenticationPrincipal User user) {
+       var basketProducts = productBasketUseCase.getUserBasketProducts(user.id());
 
        return productBasketConverter.convertToProductBasketResponse(basketProducts);
     }

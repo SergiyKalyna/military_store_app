@@ -1,10 +1,12 @@
 package com.militarystore.product;
 
 import com.militarystore.converter.product.ProductFeedbackConverter;
+import com.militarystore.entity.user.User;
 import com.militarystore.model.dto.product.ProductFeedbackDto;
 import com.militarystore.model.request.product.ProductFeedbackRequest;
 import com.militarystore.port.in.product.ProductFeedbackUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,36 +26,33 @@ public class ProductFeedbackController {
     private final ProductFeedbackUseCase productFeedbackUseCase;
     private final ProductFeedbackConverter productFeedbackConverter;
 
-    //@TODO: User id should be replaced with user context after adding security
     @PostMapping()
     public Integer saveFeedback(
-        @RequestParam("userId") Integer userId,
-        @RequestBody ProductFeedbackRequest productFeedbackRequest
-    ) {
-        var productFeedback = productFeedbackConverter.convertToProductFeedback(productFeedbackRequest, userId);
+        @RequestBody ProductFeedbackRequest productFeedbackRequest,
+        @AuthenticationPrincipal User user
+        ) {
+        var productFeedback = productFeedbackConverter.convertToProductFeedback(productFeedbackRequest, user.id());
 
         return productFeedbackUseCase.saveFeedback(productFeedback);
     }
 
-    //@TODO: User id should be replaced with user context after adding security
     @PutMapping("/{feedbackId}")
     public void updateFeedback(
         @PathVariable("feedbackId") Integer feedbackId,
-        @RequestParam("userId") Integer userId,
-        @RequestBody ProductFeedbackRequest productFeedbackRequest
-    ) {
-        var productFeedback = productFeedbackConverter.convertToProductFeedback(productFeedbackRequest, feedbackId, userId);
+        @RequestBody ProductFeedbackRequest productFeedbackRequest,
+        @AuthenticationPrincipal User user
+        ) {
+        var productFeedback = productFeedbackConverter.convertToProductFeedback(productFeedbackRequest, feedbackId, user.id());
 
         productFeedbackUseCase.updateFeedback(productFeedback);
     }
 
-    //@TODO: User id should be replaced with user context after adding security
     @DeleteMapping("/{feedbackId}")
     public void deleteFeedback(
         @PathVariable("feedbackId") Integer feedbackId,
-        @RequestParam("userId") Integer userId
+        @AuthenticationPrincipal User user
     ) {
-        productFeedbackUseCase.deleteFeedback(feedbackId, userId);
+        productFeedbackUseCase.deleteFeedback(feedbackId, user.id());
     }
 
     @GetMapping("/{feedbackId}")

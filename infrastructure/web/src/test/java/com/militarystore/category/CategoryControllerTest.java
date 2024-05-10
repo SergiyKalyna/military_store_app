@@ -1,6 +1,7 @@
 package com.militarystore.category;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.militarystore.config.TestSecurityConfig;
 import com.militarystore.converter.category.CategoryConverter;
 import com.militarystore.entity.category.Category;
 import com.militarystore.entity.subcategory.Subcategory;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -28,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(CategoryController.class)
 @ContextConfiguration(classes = {CategoryController.class})
+@Import(TestSecurityConfig.class)
 class CategoryControllerTest {
 
     @MockBean
@@ -75,7 +79,8 @@ class CategoryControllerTest {
     }
 
     @Test
-    void addCategory() throws Exception {
+    @WithMockUser(roles = "ADMIN")
+    void addCategory_whenUserHasRoleAdmin_shouldAddCategory() throws Exception {
         var category = Category.builder().name("category").build();
 
         doNothing().when(categoryUseCase).addCategory(category);
@@ -86,7 +91,32 @@ class CategoryControllerTest {
     }
 
     @Test
-    void updateCategory() throws Exception {
+    @WithMockUser(roles = "SUPER_ADMIN")
+    void addCategory_whenUserHasRoleSuperAdmin_shouldAddCategory() throws Exception {
+        var category = Category.builder().name("category").build();
+
+        doNothing().when(categoryUseCase).addCategory(category);
+
+        mockMvc.perform(post("/categories")
+                .param("categoryName", "category"))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void addCategory_whenUserHasRoleUser_shouldReturnAccessDenied() throws Exception {
+        var category = Category.builder().name("category").build();
+
+        doNothing().when(categoryUseCase).addCategory(category);
+
+        mockMvc.perform(post("/categories")
+                .param("categoryName", "category"))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void updateCategory_whenUserHasRoleAdmin_shouldUpdate() throws Exception {
         var category = Category.builder().id(1).name("category").build();
 
         doNothing().when(categoryUseCase).updateCategory(category);
@@ -97,11 +127,54 @@ class CategoryControllerTest {
     }
 
     @Test
-    void deleteCategory() throws Exception {
+    @WithMockUser(roles = "SUPER_ADMIN")
+    void updateCategory_whenUserHasRoleSuperAdmin_shouldUpdate() throws Exception {
+        var category = Category.builder().id(1).name("category").build();
+
+        doNothing().when(categoryUseCase).updateCategory(category);
+
+        mockMvc.perform(put("/categories/1")
+                .param("categoryName", "category"))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void updateCategory_whenUserHasRoleUser_shouldReturnAccessDenied() throws Exception {
+        var category = Category.builder().id(1).name("category").build();
+
+        doNothing().when(categoryUseCase).updateCategory(category);
+
+        mockMvc.perform(put("/categories/1")
+                .param("categoryName", "category"))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void deleteCategory_whenUserHasRoleAdmin_shouldDeleteCategory() throws Exception {
         doNothing().when(categoryUseCase).deleteCategory(1);
 
         mockMvc.perform(delete("/categories/1"))
             .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "SUPER_ADMIN")
+    void deleteCategory_whenUserHasRoleSuperAdmin_shouldDeleteCategory() throws Exception {
+        doNothing().when(categoryUseCase).deleteCategory(1);
+
+        mockMvc.perform(delete("/categories/1"))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void deleteCategory_whenUserHasRoleUser_shouldReturnAccessDenied() throws Exception {
+        doNothing().when(categoryUseCase).deleteCategory(1);
+
+        mockMvc.perform(delete("/categories/1"))
+            .andExpect(status().isForbidden());
     }
 
     @Test
@@ -121,7 +194,8 @@ class CategoryControllerTest {
     }
 
     @Test
-    void addSubcategory() throws Exception {
+    @WithMockUser(roles = "ADMIN")
+    void addSubcategory_whenUserHasRoleAdmin_shouldAddCategory() throws Exception {
         var subcategory = Subcategory.builder().name("subcategory").categoryId(1).build();
 
         doNothing().when(subcategoryUseCase).addSubcategory(subcategory);
@@ -132,7 +206,32 @@ class CategoryControllerTest {
     }
 
     @Test
-    void updateSubcategory() throws Exception {
+    @WithMockUser(roles = "SUPER_ADMIN")
+    void addSubcategory_whenUserHasRoleSuperAdmin_shouldAddCategory() throws Exception {
+        var subcategory = Subcategory.builder().name("subcategory").categoryId(1).build();
+
+        doNothing().when(subcategoryUseCase).addSubcategory(subcategory);
+
+        mockMvc.perform(post("/categories/1/subcategories")
+                .param("subcategoryName", "subcategory"))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void addSubcategory_whenUserHasRoleUser_shouldReturnAccessDenied() throws Exception {
+        var subcategory = Subcategory.builder().name("subcategory").categoryId(1).build();
+
+        doNothing().when(subcategoryUseCase).addSubcategory(subcategory);
+
+        mockMvc.perform(post("/categories/1/subcategories")
+                .param("subcategoryName", "subcategory"))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void updateSubcategory_whenUserHasRoleAdmin_shouldUpdateSubcategory() throws Exception {
         var subcategory = Subcategory.builder().id(1).name("subcategory").categoryId(1).build();
 
         doNothing().when(subcategoryUseCase).updateSubcategory(subcategory);
@@ -143,11 +242,54 @@ class CategoryControllerTest {
     }
 
     @Test
-    void deleteSubcategory() throws Exception {
+    @WithMockUser(roles = "SUPER_ADMIN")
+    void updateSubcategory_whenUserHasRoleSuperAdmin_shouldUpdateSubcategory() throws Exception {
+        var subcategory = Subcategory.builder().id(1).name("subcategory").categoryId(1).build();
+
+        doNothing().when(subcategoryUseCase).updateSubcategory(subcategory);
+
+        mockMvc.perform(put("/categories/1/subcategories/1")
+                .param("subcategoryName", "subcategory"))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void updateSubcategory_whenUserHasRoleUser_shouldReturnAccessDenied() throws Exception {
+        var subcategory = Subcategory.builder().id(1).name("subcategory").categoryId(1).build();
+
+        doNothing().when(subcategoryUseCase).updateSubcategory(subcategory);
+
+        mockMvc.perform(put("/categories/1/subcategories/1")
+                .param("subcategoryName", "subcategory"))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void deleteSubcategory_whenUserHasRoleAdmin_shouldDeleteSubcategory() throws Exception {
         doNothing().when(subcategoryUseCase).deleteSubcategory(1);
 
         mockMvc.perform(delete("/categories/subcategories/1"))
             .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "SUPER_ADMIN")
+    void deleteSubcategory_whenUserHasRoleSuperAdmin_shouldDeleteSubcategory() throws Exception {
+        doNothing().when(subcategoryUseCase).deleteSubcategory(1);
+
+        mockMvc.perform(delete("/categories/subcategories/1"))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void deleteSubcategory_whenUserHasRoleUser_shouldReturnAccessDenied() throws Exception {
+        doNothing().when(subcategoryUseCase).deleteSubcategory(1);
+
+        mockMvc.perform(delete("/categories/subcategories/1"))
+            .andExpect(status().isForbidden());
     }
 
     @Test

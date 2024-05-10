@@ -2,7 +2,6 @@ dependencies {
     implementation project(':domain:common')
 
     implementation("org.springframework:spring-context")
-
     implementation("com.googlecode.libphonenumber:libphonenumber:8.13.32")
 
     compileOnly libs.lombok
