@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static com.militarystore.user.UserValidationService.PASSWORD_MIN_LENGTH;
 import static java.util.Objects.isNull;
 
 @Service
