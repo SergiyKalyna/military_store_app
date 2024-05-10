@@ -1,0 +1,10 @@
+services:
+    db:
+        image: postgres:15.2
+        environment:
+            POSTGRES_DB: testDb
+            POSTGRES_USER: testUser
+            POSTGRES_PASSWORD: testPass
+        ports:
+            -   target: 5432
+                published: 5431
