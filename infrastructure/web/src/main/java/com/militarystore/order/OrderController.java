@@ -9,6 +9,7 @@ import com.militarystore.port.in.order.GetOrderUseCase;
 import com.militarystore.port.in.order.SubmitOrderUseCase;
 import com.militarystore.port.in.order.UpdateOrderUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,7 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public void updateOrderStatus(
         @PathVariable("orderId") Integer orderId,
         @RequestParam("status") OrderStatusDto status
@@ -51,6 +53,7 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}/shipping")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public void updateOrderStatusWithShippingNumber(
         @PathVariable("orderId") Integer orderId,
         @RequestParam("status") OrderStatusDto status,
@@ -69,6 +72,7 @@ public class OrderController {
     }
 
     @GetMapping("/status")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public List<OrderDto> getOrdersByStatus(@RequestParam("status") OrderStatusDto status) {
         var orderStatus = orderConverter.convertToOrderStatus(status);
 

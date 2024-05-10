@@ -1,6 +1,7 @@
 package com.militarystore.order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.militarystore.config.TestSecurityConfig;
 import com.militarystore.converter.order.OrderConverter;
 import com.militarystore.entity.order.Order;
 import com.militarystore.entity.order.OrderStatus;
@@ -15,6 +16,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -30,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(OrderController.class)
 @ContextConfiguration(classes = OrderController.class)
+@Import(TestSecurityConfig.class)
 class OrderControllerTest {
 
     private static final Integer USER_ID = 1;
@@ -54,6 +58,7 @@ class OrderControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @WithMockUser
     void submitOrder() throws Exception {
         var submitOrderRequest = SubmitOrderRequest.builder().build();
         var order = Order.builder().build();
@@ -69,7 +74,8 @@ class OrderControllerTest {
     }
 
     @Test
-    void updateOrderStatus() throws Exception {
+    @WithMockUser(roles = "ADMIN")
+    void updateOrderStatus_whenUserHasRoleAdmin_shouldUpdateOrderStatus() throws Exception {
         when(orderConverter.convertToOrderStatus(OrderStatusDto.COMPLETED)).thenReturn(OrderStatus.COMPLETED);
 
         mockMvc.perform(put("/orders/{orderId}", ORDER_ID)
@@ -80,7 +86,28 @@ class OrderControllerTest {
     }
 
     @Test
-    void updateOrderStatusWithShippingNumber() throws Exception {
+    @WithMockUser(roles = "SUPER_ADMIN")
+    void updateOrderStatus_whenUserHasRoleSuperAdmin_shouldUpdateOrderStatus() throws Exception {
+        when(orderConverter.convertToOrderStatus(OrderStatusDto.COMPLETED)).thenReturn(OrderStatus.COMPLETED);
+
+        mockMvc.perform(put("/orders/{orderId}", ORDER_ID)
+                .param("status", OrderStatusDto.COMPLETED.name()))
+            .andExpect(status().isOk());
+
+        verify(updateOrderUseCase).updateOrderStatus(ORDER_ID, OrderStatus.COMPLETED);
+    }
+
+    @Test
+    @WithMockUser
+    void updateOrderStatus_whenUserHasRoleUser_shouldReturnForbidden() throws Exception {
+        mockMvc.perform(put("/orders/{orderId}", ORDER_ID)
+                .param("status", OrderStatusDto.COMPLETED.name()))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void updateOrderStatusWithShippingNumber_whenUserHasRoleAdmin_shouldUpdateOrderStatus() throws Exception {
         var shippingNumber = "shippingNumber";
 
         when(orderConverter.convertToOrderStatus(OrderStatusDto.SHIPPED)).thenReturn(OrderStatus.SHIPPED);
@@ -92,6 +119,29 @@ class OrderControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "SUPER_ADMIN")
+    void updateOrderStatusWithShippingNumber_whenUserHasRoleSuperAdmin_shouldUpdateOrderStatus() throws Exception {
+        var shippingNumber = "shippingNumber";
+
+        when(orderConverter.convertToOrderStatus(OrderStatusDto.SHIPPED)).thenReturn(OrderStatus.SHIPPED);
+
+        mockMvc.perform(put("/orders/{orderId}/shipping", ORDER_ID)
+                .param("status", OrderStatusDto.SHIPPED.name())
+                .param("shippingNumber", shippingNumber))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser
+    void updateOrderStatusWithShippingNumber_whenUserHasRoleUser_shouldReturnForbidden() throws Exception {
+        mockMvc.perform(put("/orders/{orderId}/shipping", ORDER_ID)
+                .param("status", OrderStatusDto.SHIPPED.name())
+                .param("shippingNumber", "shippingNumber"))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser
     void getUserOrders() throws Exception {
         var orders = List.of(Order.builder().id(1).userId(USER_ID).build());
         var orderDto = OrderDto.builder().id(1).build();
@@ -106,7 +156,8 @@ class OrderControllerTest {
     }
 
     @Test
-    void getOrdersByStatus() throws Exception {
+    @WithMockUser(roles = "ADMIN")
+    void getOrdersByStatus_whenUserHasRoleAdmin_shouldReturnOrders() throws Exception {
         var status = OrderStatusDto.COMPLETED;
         var order = Order.builder().id(1).userId(USER_ID).build();
         var orderDto = OrderDto.builder().id(1).build();
@@ -122,6 +173,32 @@ class OrderControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "SUPER_ADMIN")
+    void getOrdersByStatus_whenUserHasRoleSuperAdmin_shouldReturnOrders() throws Exception {
+        var status = OrderStatusDto.COMPLETED;
+        var order = Order.builder().id(1).userId(USER_ID).build();
+        var orderDto = OrderDto.builder().id(1).build();
+
+        when(orderConverter.convertToOrderStatus(status)).thenReturn(OrderStatus.COMPLETED);
+        when(getOrderUseCase.getOrdersByStatus(OrderStatus.COMPLETED)).thenReturn(List.of(order));
+        when(orderConverter.convertToOrderDto(order)).thenReturn(orderDto);
+
+        mockMvc.perform(get("/orders/status")
+                .param("status", status.name()))
+            .andExpect(status().isOk())
+            .andExpect(content().json(objectMapper.writeValueAsString(List.of(orderDto))));
+    }
+
+    @Test
+    @WithMockUser
+    void getOrdersByStatus_whenUserHasRoleUser_shouldReturnForbidden() throws Exception {
+        mockMvc.perform(get("/orders/status")
+                .param("status", OrderStatusDto.COMPLETED.name()))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser
     void getOrderById() throws Exception {
         var order = Order.builder().id(2).userId(USER_ID).build();
         var response = GetOrderResponse.builder().orderId(2).userId(USER_ID).build();
