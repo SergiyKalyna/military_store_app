@@ -5,6 +5,7 @@ import com.militarystore.model.dto.user.UserDto;
 import com.militarystore.port.in.user.DeleteUserUseCase;
 import com.militarystore.port.in.user.GetUserUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ public class UserController {
     private final UserConverter userConverter;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public List<UserDto> getUsers() {
         var users = getUserUseCase.getUsers();
 
@@ -39,6 +41,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public void deleteUser(@PathVariable("userId") Integer userId) {
         deleteUserUseCase.deleteUser(userId);
     }
