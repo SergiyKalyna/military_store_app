@@ -35,7 +35,6 @@ class ProductRateControllerTest {
     @Test
     void rateProduct() throws Exception {
         var productRate = 4.5;
-        var userId = 1;
 
         mockMvc.perform(post("/products/rate/1")
                 .with(user(User.builder().id(1).role(Role.USER).build()))
