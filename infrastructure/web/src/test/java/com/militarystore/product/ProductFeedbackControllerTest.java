@@ -1,8 +1,11 @@
 package com.militarystore.product;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.militarystore.config.TestSecurityConfig;
 import com.militarystore.converter.product.ProductFeedbackConverter;
 import com.militarystore.entity.product.ProductFeedback;
+import com.militarystore.entity.user.User;
+import com.militarystore.entity.user.model.Role;
 import com.militarystore.model.dto.product.ProductFeedbackDto;
 import com.militarystore.model.request.product.ProductFeedbackRequest;
 import com.militarystore.port.in.product.ProductFeedbackUseCase;
@@ -10,13 +13,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -26,6 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ProductFeedbackController.class)
 @ContextConfiguration(classes = ProductFeedbackController.class)
+@Import(TestSecurityConfig.class)
+@WithMockUser
 class ProductFeedbackControllerTest {
 
     private static final Integer USER_ID = 1;
@@ -55,9 +63,9 @@ class ProductFeedbackControllerTest {
         when(productFeedbackUseCase.saveFeedback(productFeedback)).thenReturn(1);
 
         mockMvc.perform(post("/products/feedback")
-            .param("userId", USER_ID.toString())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(productFeedbackRequest)))
+                .with(user(User.builder().id(1).role(Role.USER).build()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(productFeedbackRequest)))
             .andExpect(status().isOk())
             .andExpect(content().string("1"));
     }
@@ -71,16 +79,17 @@ class ProductFeedbackControllerTest {
             .thenReturn(productFeedback);
 
         mockMvc.perform(put("/products/feedback/{feedbackId}", FEEDBACK_ID)
-            .param("userId", USER_ID.toString())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(productFeedbackRequest)))
+                .with(user(User.builder().id(1).role(Role.USER).build()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(productFeedbackRequest)))
             .andExpect(status().isOk());
     }
 
     @Test
     void deleteFeedback() throws Exception {
         mockMvc.perform(delete("/products/feedback/{feedbackId}", FEEDBACK_ID)
-            .param("userId", USER_ID.toString()))
+                .with(user(User.builder().id(1).role(Role.USER).build()))
+                .param("userId", USER_ID.toString()))
             .andExpect(status().isOk());
     }
 
