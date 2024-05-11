@@ -1,6 +1,6 @@
 spring:
     flyway:
-        user: "jdbc:postgresql://postgres:5431/testDb"
+        user: "jdbc:postgresql://localhost:5431/testDb"
         password: "testUser"
         url: "testPass"
     docker:
