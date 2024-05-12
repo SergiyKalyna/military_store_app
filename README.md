@@ -31,6 +31,22 @@ java -Dspring.profiles.active=local -jar ./application/build/libs/application.ja
 docker-compose -f docker-compose-full-app.yaml up
 ```
 
+## How To Run Project from Docker Hub
+1. Login to Docker Hub
+```shell
+docker login
+```
+
+2. Pull the image from Docker Hub
+```shell
+docker pull seryjk452/military-store
+```
+
+3. Run the image
+```shell
+docker run -e "SPRING_PROFILES_ACTIVE=dev" -p 8080:8080 seryjk452/military-store
+```
+
 ## How To Run Tests
 ```shell
 ./gradlew test
