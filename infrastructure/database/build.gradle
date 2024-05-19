@@ -30,14 +30,14 @@ sourceSets {
 }
 
 flyway {
-    url = 'jdbc:postgresql://localhost:5431/testDb'
+    url = 'jdbc:postgresql://localhost:5432/testDb'
     user = 'testUser'
     password = 'testPass'
     schemas = ['public']
 }
 
 generateJooqData {
-    jdbcUrl = "jdbc:postgresql://localhost:5431"
+    jdbcUrl = "jdbc:postgresql://localhost:5432"
     username = "testUser"
     password = "testPass"
     dbName = "testDb"
