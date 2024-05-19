@@ -9,7 +9,10 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest(
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    properties = {
+        "spring.main.allow-bean-definition-overriding=true"
+    }
 )
 @Testcontainers
 public abstract class IntegrationTest {
