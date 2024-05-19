@@ -43,7 +43,7 @@ tasks.register('migrateDatabase', FlywayMigrateTask) {
 }
 
 generateJooqData {
-    jdbcUrl = "jdbc:postgresql://localhost:5431"
+    jdbcUrl = "jdbc:postgresql://localhost:5432"
     username = "testUser"
     password = "testPass"
     dbName = "testDb"
