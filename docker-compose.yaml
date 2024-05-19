@@ -6,5 +6,5 @@ services:
             POSTGRES_USER: testUser
             POSTGRES_PASSWORD: testPass
         ports:
-            -   target: 5432
+            -   target: 5431
                 published: 5431
