@@ -1,5 +1,4 @@
 import com.militarystore.gradle.jooq.JooqGeneratorPlugin
-import org.flywaydb.gradle.task.FlywayMigrateTask
 
 plugins {
     id 'org.flywaydb.flyway' version '10.0.0'
