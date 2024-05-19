@@ -5,6 +5,8 @@ spring:
         name: "military-store-app"
     jooq:
         sql-dialect: postgres
+    config:
+        import: "optional:configserver:"
     docker:
         compose:
             enabled: false
