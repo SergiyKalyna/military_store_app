@@ -11,6 +11,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-docker-compose'
 
+    implementation "org.springframework.cloud:spring-cloud-starter-vault-config:${spring_cloud_vault_version}"
+
     testImplementation libs.unitTest
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.jooq:jooq'
