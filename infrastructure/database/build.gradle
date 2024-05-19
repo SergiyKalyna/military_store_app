@@ -37,13 +37,8 @@ flyway {
     schemas = ['public']
 }
 
-tasks.register('migrateDatabase', FlywayMigrateTask) {
-    group = 'database'
-    description = 'Migrates the database'
-}
-
 generateJooqData {
-    jdbcUrl = "jdbc:postgresql://localhost:5432"
+    jdbcUrl = "jdbc:postgresql://localhost:5431"
     username = "testUser"
     password = "testPass"
     dbName = "testDb"
