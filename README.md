@@ -31,7 +31,7 @@ java -Dspring.profiles.active=local -jar ./application/build/libs/application.ja
 docker-compose -f docker-compose-full-app.yaml up
 ```
 
-## How To Run Project from Docker Hub
+## How To Run Project from  Docker Hub
 1. Login to Docker Hub
 ```shell
 docker login
