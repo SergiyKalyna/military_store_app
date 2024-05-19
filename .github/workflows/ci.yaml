@@ -41,8 +41,15 @@ jobs:
                     key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
                     restore-keys: ${{ runner.os }}-gradle
 
+            -   name: Run Flyway Migrations
+                run: ./gradlew flywayMigrate -i -Pflyway.url=${{ env.JDBC_URL }} -Pflyway.user=${{ env.JDBC_USER }} -Pflyway.password=${{ env.JDBC_PASSWORD }}
+                env:
+                    JDBC_URL: jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}
+                    JDBC_USER: ${{ secrets.DB_USER_NAME }}
+                    JDBC_PASSWORD: ${{ secrets.DB_USER_PASSWORD }}
+
             -   name: Build with Gradle
-                run: ./gradlew generateJooqData assemble
+                run: ./gradlew assemble
 
             -   name: Checkstyle
                 run: ./gradlew checkstyleMain checkstyleTest
