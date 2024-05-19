@@ -7,8 +7,8 @@ services:
             VAULT_DEV_ROOT_TOKEN_ID: myroot
             VAULT_ADDR: http://127.0.0.1:8200
             VAULT_TOKEN: myroot
-            DATABASE_URL: jdbc:postgresql://localhost:5432/military_store
-            DATABASE_USER: sergiy_kalyna
-            DATABASE_PASSWORD: mySuperDbPassw0rd
+#            DATABASE_URL: vault
+#            DATABASE_USER: vault
+#            DATABASE_PASSWORD: vault
         ports:
             - "8200:8200"
