@@ -12,7 +12,7 @@ import static com.militarystore.jooq.Tables.USERS;
 
 public class DbContainer extends PostgreSQLContainer<DbContainer> {
 
-    private static final Integer DEFAULT_PORT = 5432;
+    private static final Integer DEFAULT_PORT = 5433;
 
     public DbContainer() {
         super("postgres:15.2");
