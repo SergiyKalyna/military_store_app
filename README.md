@@ -41,9 +41,9 @@ docker-compose up
 ./gradlew flywayMigrate generateJooqData
 ```
 
-3. Build the project
+3. Assemble jar file
 ```shell
-./gradlew build
+./gradlew :application:bootJar
 ```
 
 4. Run app inside docker container
@@ -64,7 +64,7 @@ docker pull seryjk452/military-store
 
 3. Run the image
 ```shell
-docker run -e "SPRING_PROFILES_ACTIVE=local" -p 8080:8080 seryjk452/military-store
+docker run -e "SPRING_PROFILES_ACTIVE=docker" -p 8080:8080 seryjk452/military-store
 ```
 
 ## How To Run Tests
