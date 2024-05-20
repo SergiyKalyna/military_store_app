@@ -1,8 +1,0 @@
-spring:
-    flyway:
-        user: "jdbc:postgresql://localhost:5431/testDb"
-        password: "testUser"
-        url: "testPass"
-    docker:
-        compose:
-          enabled: false
