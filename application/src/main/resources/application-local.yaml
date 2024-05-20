@@ -10,5 +10,4 @@ spring:
         url: ${spring.datasource.url}
     docker:
         compose:
-            enabled: true
-            lifecycle-management: start_and_stop
+            enabled: false
