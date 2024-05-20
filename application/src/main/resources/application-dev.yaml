@@ -1,10 +1,21 @@
 spring:
     datasource:
         driver-class-name: "org.postgresql.Driver"
-        url: "jdbc:postgresql://localhost:5432/military_store"
-        username: "sergiy_kalyna"
-        password: "mySuperDbPassw0rd"
+        url: ${DB_URL}
+        username: ${DB_USER}
+        password: ${DB_PASSWORD}
     flyway:
         user: ${spring.datasource.username}
         password: ${spring.datasource.password}
         url: ${spring.datasource.url}
+    cloud:
+        vault:
+            authentication: token
+            token: myroot
+            scheme: http
+            host: localhost
+            port: 8200
+            kv:
+                enabled: true
+    config:
+        import: optional:vault://
