@@ -13,7 +13,7 @@ spring:
             authentication: token
             token: myroot
             scheme: http
-            host: seryjk452/military-store:vault
+            host: vault
             port: 8200
             kv:
                 enabled: true
