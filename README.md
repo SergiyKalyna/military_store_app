@@ -9,7 +9,7 @@ The main responsibility of this application is to provide for users the ability 
 - Spring Boot 3.2.3
 - PostgreSQL 42.7.2
 
-## How To Run Project Locally (with docker DB)
+## How To Run Project Locally
 1. Run the docker-compose file
 ```shell
 docker-compose up
@@ -30,13 +30,23 @@ docker-compose up
 java -Dspring.profiles.active=local -jar ./application/build/libs/application.jar
 ```
 
-## How To Run Project inside Docker
-1. Assemble jar file
+## How To Run App inside Docker Container
+1. Run the docker-compose file
 ```shell
-./gradlew :application:bootJar
+docker-compose up
 ```
 
-2. Run app inside docker container
+2. Generate jooq data
+```shell
+./gradlew flywayMigrate generateJooqData
+```
+
+3. Build the project
+```shell
+./gradlew build
+```
+
+4. Run app inside docker container
 ```shell
 docker-compose -f docker-compose-full-app.yaml up
 ```
@@ -54,7 +64,7 @@ docker pull seryjk452/military-store
 
 3. Run the image
 ```shell
-docker run -e "SPRING_PROFILES_ACTIVE=dev" -p 8080:8080 seryjk452/military-store
+docker run -e "SPRING_PROFILES_ACTIVE=local" -p 8080:8080 seryjk452/military-store
 ```
 
 ## How To Run Tests

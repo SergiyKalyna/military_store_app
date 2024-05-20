@@ -1,0 +1,15 @@
+services:
+    app:
+        image: docker-spring-boot-postgres:latest
+        build: ./
+        environment:
+            SPRING_PROFILES_ACTIVE: docker
+            SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/testDb
+            SPRING_DATASOURCE_USERNAME: testUser
+            SPRING_DATASOURCE_PASSWORD: testPass
+            SPRING_FLYWAY_USER: testUser
+            SPRING_FLYWAY_PASSWORD: testPass
+            SPRING_FLYWAY_URL: jdbc:postgresql://db:5432/testDb
+        ports:
+            -   target: 8080
+                published: 8080
