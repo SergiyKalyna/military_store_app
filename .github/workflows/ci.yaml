@@ -14,16 +14,16 @@ jobs:
             postgres:
                 image: postgres:latest
                 env:
-                    POSTGRES_USER: ${{ secrets.DB_USER_NAME }}
-                    POSTGRES_PASSWORD: ${{ secrets.DB_USER_PASSWORD }}
-                    POSTGRES_DB: ${{ secrets.DB_NAME }}
+                    POSTGRES_USER: ${{ secrets.DATABASE_USER }}
+                    POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+                    POSTGRES_DB: ${{ secrets.DATABASE_NAME }}
                 options: >-
                     --health-cmd pg_isready
                     --health-interval 10s
                     --health-timeout 5s
                     --health-retries 3
                 ports:
-                    - 5432:5432
+                    - 5431:5432
 
         steps:
             -   uses: actions/checkout@v2
@@ -42,11 +42,7 @@ jobs:
                     restore-keys: ${{ runner.os }}-gradle
 
             -   name: Run Flyway Migrations
-                run: ./gradlew flywayMigrate -i -Pflyway.url=${{ env.JDBC_URL }} -Pflyway.user=${{ env.JDBC_USER }} -Pflyway.password=${{ env.JDBC_PASSWORD }}
-                env:
-                    JDBC_URL: jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}
-                    JDBC_USER: ${{ secrets.DB_USER_NAME }}
-                    JDBC_PASSWORD: ${{ secrets.DB_USER_PASSWORD }}
+                run: ./gradlew flywayMigrate
 
             -   name: Build with Gradle
                 run: ./gradlew assemble

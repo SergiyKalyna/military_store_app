@@ -29,11 +29,18 @@ sourceSets {
     }
 }
 
+flyway {
+    url = 'jdbc:postgresql://localhost:5431/testDb'
+    user = 'testUser'
+    password = 'testPass'
+    schemas = ['public']
+}
+
 generateJooqData {
-    jdbcUrl = "jdbc:postgresql://localhost:5432"
-    username = "sergiy_kalyna"
-    password = "mySuperDbPassw0rd"
-    dbName = "military_store"
+    jdbcUrl = "jdbc:postgresql://localhost:5431"
+    username = "testUser"
+    password = "testPass"
+    dbName = "testDb"
     sqlDriver = "org.postgresql.Driver"
 }
 
