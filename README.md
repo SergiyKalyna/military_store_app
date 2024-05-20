@@ -10,12 +10,22 @@ The main responsibility of this application is to provide for users the ability 
 - PostgreSQL 42.7.2
 
 ## How To Run Project Locally (with docker DB)
-1. Build the project
+1. Run the docker-compose file
+```shell
+docker-compose up
+```
+
+2. Generate jooq data
+```shell
+./gradlew flywayMigrate generateJooqData
+```
+
+3. Build the project
 ```shell
 ./gradlew build
 ```
 
-2. Run the project
+4. Run the project
 ```shell
 java -Dspring.profiles.active=local -jar ./application/build/libs/application.jar
 ```
