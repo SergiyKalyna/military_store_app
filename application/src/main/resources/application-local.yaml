@@ -11,3 +11,6 @@ spring:
     docker:
         compose:
             enabled: false
+    cloud:
+        vault:
+            enabled: false
