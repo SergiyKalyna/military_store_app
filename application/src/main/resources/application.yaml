@@ -17,6 +17,6 @@ springdoc:
 google:
     drive:
         credentials:
-            path: "google-drive-credentials.json"
+            path: "config/google-drive/google-drive-credentials.json"
         folder:
             id: "1lEg2OeZmYbIJZoF0kp0azWnKs3034h9V"
