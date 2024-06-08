@@ -16,3 +16,6 @@ build/
 classes
 
 **/generated-jooq-src/
+
+### Google Drive Credentials ###
+google-drive-credentials.json

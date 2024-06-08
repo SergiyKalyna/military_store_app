@@ -7,6 +7,7 @@ dependencies {
     implementation project(':domain:usecase')
     implementation project(":infrastructure:web")
     implementation project(":infrastructure:database")
+    implementation project(":infrastructure:google-drive")
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-docker-compose'

@@ -10,7 +10,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    properties = "spring.cloud.vault.enabled=false"
+    properties = {
+        "spring.cloud.vault.enabled=false",
+        "google.drive.credentials.path=src/test/resources/mock-google-drive-credentials.json"
+    }
 )
 @Testcontainers
 public abstract class IntegrationTest {
