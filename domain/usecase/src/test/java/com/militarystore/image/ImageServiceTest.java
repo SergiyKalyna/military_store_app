@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,10 +60,18 @@ class ImageServiceTest {
         var googleDriveImageIds = List.of("googleDriveImageId");
         var images = List.of(new byte[]{1, 2, 3});
 
+        when(imagePort.isImageExist(PRODUCT_ID)).thenReturn(true);
         when(imagePort.getImageIdsByProductId(PRODUCT_ID)).thenReturn(googleDriveImageIds);
         when(googleDrivePort.downloadFiles(googleDriveImageIds)).thenReturn(images);
 
         assertThat(imageService.downloadProductImages(PRODUCT_ID)).isEqualTo(images);
+    }
+
+    @Test
+    void downloadProductImages_whenImagesDoesNotExists_shouldReturnEmptyList() {
+        when(imagePort.isImageExist(PRODUCT_ID)).thenReturn(false);
+
+        assertThat(imageService.downloadProductImages(PRODUCT_ID)).isEmpty();
     }
 
     @Test
@@ -88,6 +97,16 @@ class ImageServiceTest {
     }
 
     @Test
+    void getPrimaryProductsImages_whenImagesDoesNotExists_shouldReturnEmptyMap() {
+        var productIds = List.of(PRODUCT_ID, 2, 3);
+        var productsImageIds = new HashMap<Integer, String>();
+
+        when(imagePort.getPrimaryImageIdsByProductIds(productIds)).thenReturn(productsImageIds);
+
+        assertThat(imageService.getPrimaryProductsImages(productIds)).isEmpty();
+    }
+
+    @Test
     void deleteProductImages() {
         var googleDriveImageIds = List.of("googleDriveImageId");
 
@@ -97,12 +116,5 @@ class ImageServiceTest {
 
         verify(googleDrivePort).deleteFiles(googleDriveImageIds);
         verify(imagePort).deleteImagesByProductId(PRODUCT_ID);
-    }
-
-    @Test
-    void isImageExist() {
-        when(imagePort.isImageExist(PRODUCT_ID)).thenReturn(true);
-
-        assertThat(imageService.isImageExist(PRODUCT_ID)).isTrue();
     }
 }

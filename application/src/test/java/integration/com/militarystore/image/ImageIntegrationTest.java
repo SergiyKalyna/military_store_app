@@ -71,6 +71,11 @@ class ImageIntegrationTest extends IntegrationTest {
     }
 
     @Test
+    void downloadProductImages_whenImagesDoesNotExist_shouldReturnEmptyList() {
+        assertThat(imageUseCase.downloadProductImages(PRODUCT_ID)).isEmpty();
+    }
+
+    @Test
     void getPrimaryProductsImages() {
         initializeCategories();
         initializeProduct();
@@ -87,6 +92,11 @@ class ImageIntegrationTest extends IntegrationTest {
     }
 
     @Test
+    void getPrimaryProductsImages_whenImagesDoesNotExist_shouldReturnEmptyMap() {
+        assertThat(imageUseCase.getPrimaryProductsImages(List.of(PRODUCT_ID))).isEmpty();
+    }
+
+    @Test
     void deleteProductImages() {
         initializeCategories();
         initializeProduct();
@@ -94,21 +104,7 @@ class ImageIntegrationTest extends IntegrationTest {
 
         imageUseCase.deleteProductImages(PRODUCT_ID);
 
-        assertThat(imageUseCase.isImageExist(PRODUCT_ID)).isFalse();
-    }
-
-    @Test
-    void isImageExist_whenImageExist_shouldReturnTrue() {
-        initializeCategories();
-        initializeProduct();
-        initializeImages();
-
-        assertThat(imageUseCase.isImageExist(PRODUCT_ID)).isTrue();
-    }
-
-    @Test
-    void isImageExist_whenImageDoesntExist_shouldReturnFalse() {
-        assertThat(imageUseCase.isImageExist(PRODUCT_ID)).isFalse();
+        assertThat(getProductImageFromDb()).isNull();
     }
 
     private void initializeCategories() {

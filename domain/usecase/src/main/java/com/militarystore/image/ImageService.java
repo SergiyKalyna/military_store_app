@@ -34,6 +34,10 @@ public class ImageService implements ImageUseCase {
 
     @Override
     public List<byte[]> downloadProductImages(Integer productId) {
+        if (!imagePort.isImageExist(productId)) {
+            return List.of();
+        }
+
         var googleDriveImageIds = imagePort.getImageIdsByProductId(productId);
         var images = googleDrivePort.downloadFiles(googleDriveImageIds);
 
@@ -66,10 +70,6 @@ public class ImageService implements ImageUseCase {
         imagePort.deleteImagesByProductId(productId);
 
         log.info("Images for product with id {} deleted", productId);
-    }
-
-    public boolean isImageExist(Integer productId) {
-        return imagePort.isImageExist(productId);
     }
 
     private List<ProductImage> toProductImages(List<String> googleDriveIds, Integer productId) {
