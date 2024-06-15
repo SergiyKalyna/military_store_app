@@ -52,4 +52,16 @@ public class ProductMapper implements RecordMapper<Record, Product> {
             .isProductInUserWishlist(isProductInUserWishlist)
             .build();
     }
+
+    public Product.ProductBuilder map(ProductsRecord productRecord) {
+        return Product.builder()
+            .id(productRecord.get(PRODUCTS.ID))
+            .name(productRecord.get(PRODUCTS.NAME))
+            .description(productRecord.get(PRODUCTS.DESCRIPTION))
+            .price(productRecord.get(PRODUCTS.PRICE))
+            .subcategoryId(productRecord.get(PRODUCTS.SUBCATEGORY_ID))
+            .sizeGridType(ProductSizeGridType.valueOf(productRecord.get(PRODUCTS.SIZE_GRID_TYPE)))
+            .tag(ProductTag.valueOf(productRecord.get(PRODUCTS.PRODUCT_TAG)))
+            .isInStock(productRecord.get(PRODUCTS.IS_IN_STOCK));
+    }
 }

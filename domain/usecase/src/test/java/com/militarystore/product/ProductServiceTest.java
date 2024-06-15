@@ -1,6 +1,7 @@
 package com.militarystore.product;
 
 import com.militarystore.entity.product.Product;
+import com.militarystore.entity.product.ProductFeedback;
 import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSize;
 import com.militarystore.exception.MsNotFoundException;
@@ -86,12 +87,27 @@ class ProductServiceTest {
 
     @Test
     void getProductById_shouldReturnProduct() {
-        var product = Product.builder().build();
+        var product = Product.builder();
+        var productStockDetails = List.of(ProductStockDetails.builder().build());
+        var avgRate = 0.0;
+        var productFeedbacks = List.of(ProductFeedback.builder().build());
+        var isProductInUserWishlist = true;
 
         when(productPort.isProductExist(PRODUCT_ID)).thenReturn(true);
-        when(productPort.getProductById(PRODUCT_ID, USER_ID)).thenReturn(product);
+        when(productPort.getProductById(PRODUCT_ID)).thenReturn(product);
+        when(productStockDetailsPort.getProductStockDetailsByProductId(PRODUCT_ID)).thenReturn(productStockDetails);
+        when(productRatePort.getAverageRateByProductId(PRODUCT_ID)).thenReturn(avgRate);
+        when(productFeedbackPort.getFeedbacksByProductId(PRODUCT_ID)).thenReturn(productFeedbacks);
+        when(wishlistPort.isProductInUserWishlist(PRODUCT_ID, USER_ID)).thenReturn(isProductInUserWishlist);
 
-        assertThat(productService.getProductById(PRODUCT_ID, USER_ID)).isEqualTo(product);
+        var expectedProduct = product
+            .stockDetails(productStockDetails)
+            .avgRate(avgRate)
+            .feedbacks(productFeedbacks)
+            .isProductInUserWishlist(isProductInUserWishlist)
+            .build();
+
+        assertThat(productService.getProductById(PRODUCT_ID, USER_ID)).isEqualTo(expectedProduct);
     }
 
     @Test

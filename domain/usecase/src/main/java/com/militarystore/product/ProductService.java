@@ -44,7 +44,18 @@ public class ProductService implements ProductUseCase {
     public Product getProductById(Integer productId,  Integer userId) {
         checkProductExisting(productId);
 
-        return productPort.getProductById(productId, userId);
+        var product = productPort.getProductById(productId);
+        var stockDetails = productStockDetailsPort.getProductStockDetailsByProductId(productId);
+        var avgRate = productRatePort.getAverageRateByProductId(productId);
+        var feedbacks = productFeedbackPort.getFeedbacksByProductId(productId);
+        var isProductInUserWishlist = wishlistPort.isProductInUserWishlist(productId, userId);
+
+        return product
+            .stockDetails(stockDetails)
+            .avgRate(avgRate)
+            .feedbacks(feedbacks)
+            .isProductInUserWishlist(isProductInUserWishlist)
+            .build();
     }
 
     @Override
