@@ -73,7 +73,7 @@ public class ImageService implements ImageUseCase {
             .mapToObj(index -> ProductImage.builder()
                 .productId(productId)
                 .googleDriveId(googleDriveIds.get(index))
-                .ordinalNumber(++index)
+                .ordinalNumber(index + 1)
                 .build())
             .toList();
     }
