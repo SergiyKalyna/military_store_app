@@ -29,7 +29,7 @@ public class ImageRepository {
     }
 
     public Map<Integer, String> getPrimaryImagesByProductIds(List<Integer> productIds) {
-        return dslContext.select(IMAGES.GOOGLE_DRIVE_ID)
+        return dslContext.select(IMAGES.PRODUCT_ID, IMAGES.GOOGLE_DRIVE_ID)
             .from(IMAGES)
             .where(IMAGES.PRODUCT_ID.in(productIds))
             .and(IMAGES.ORDINAL_NUMBER.eq(1))
