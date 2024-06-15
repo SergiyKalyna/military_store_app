@@ -14,4 +14,6 @@ public interface ImageUseCase {
     Map<Integer, byte[]> getPrimaryProductsImages(List<Integer> productIds);
 
     void deleteProductImages(Integer productId);
+
+    boolean isImageExist(Integer productId);
 }

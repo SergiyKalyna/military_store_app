@@ -98,4 +98,11 @@ class ImageServiceTest {
         verify(googleDrivePort).deleteFiles(googleDriveImageIds);
         verify(imagePort).deleteImagesByProductId(PRODUCT_ID);
     }
+
+    @Test
+    void isImageExist() {
+        when(imagePort.isImageExist(PRODUCT_ID)).thenReturn(true);
+
+        assertThat(imageService.isImageExist(PRODUCT_ID)).isTrue();
+    }
 }

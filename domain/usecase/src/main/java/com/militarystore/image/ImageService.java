@@ -68,6 +68,10 @@ public class ImageService implements ImageUseCase {
         log.info("Images for product with id {} deleted", productId);
     }
 
+    public boolean isImageExist(Integer productId) {
+        return imagePort.isImageExist(productId);
+    }
+
     private List<ProductImage> toProductImages(List<String> googleDriveIds, Integer productId) {
         return IntStream.range(0, googleDriveIds.size())
             .mapToObj(index -> ProductImage.builder()
