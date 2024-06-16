@@ -1,10 +1,12 @@
 package com.militarystore.product;
 
 import com.militarystore.entity.product.Product;
+import com.militarystore.entity.product.ProductDetails;
 import com.militarystore.entity.product.ProductFeedback;
 import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSize;
 import com.militarystore.exception.MsNotFoundException;
+import com.militarystore.port.in.image.ImageUseCase;
 import com.militarystore.port.out.basket.BasketPort;
 import com.militarystore.port.out.product.ProductFeedbackPort;
 import com.militarystore.port.out.product.ProductPort;
@@ -16,11 +18,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -48,6 +53,9 @@ class ProductServiceTest {
     @Mock
     private BasketPort basketPort;
 
+    @Mock
+    private ImageUseCase imageUseCase;
+
     private ProductService productService;
 
     @BeforeEach
@@ -58,12 +66,14 @@ class ProductServiceTest {
             productRatePort,
             productFeedbackPort,
             wishlistPort,
-            basketPort
+            basketPort,
+            imageUseCase
         );
     }
 
     @Test
     void addProduct_shouldAddProduct() {
+        var multipartFiles = List.of(mock(MultipartFile.class));
         var stockDetails = List.of(
             ProductStockDetails.builder()
                 .productSize(ProductSize.M)
@@ -81,8 +91,9 @@ class ProductServiceTest {
 
         when(productPort.addProduct(product)).thenReturn(PRODUCT_ID);
 
-        assertThat(productService.addProduct(product)).isEqualTo(PRODUCT_ID);
+        assertThat(productService.addProduct(product, multipartFiles)).isEqualTo(PRODUCT_ID);
         verify(productStockDetailsPort).addProductStockDetails(PRODUCT_ID, stockDetails);
+        verify(imageUseCase).saveProductImages(PRODUCT_ID, multipartFiles);
     }
 
     @Test
@@ -92,6 +103,7 @@ class ProductServiceTest {
         var avgRate = 0.0;
         var productFeedbacks = List.of(ProductFeedback.builder().build());
         var isProductInUserWishlist = true;
+        var images = List.of(new byte[]{1, 2, 3});
 
         when(productPort.isProductExist(PRODUCT_ID)).thenReturn(true);
         when(productPort.getProductById(PRODUCT_ID)).thenReturn(product);
@@ -99,6 +111,7 @@ class ProductServiceTest {
         when(productRatePort.getAverageRateByProductId(PRODUCT_ID)).thenReturn(avgRate);
         when(productFeedbackPort.getFeedbacksByProductId(PRODUCT_ID)).thenReturn(productFeedbacks);
         when(wishlistPort.isProductInUserWishlist(PRODUCT_ID, USER_ID)).thenReturn(isProductInUserWishlist);
+        when(imageUseCase.downloadProductImages(PRODUCT_ID)).thenReturn(images);
 
         var expectedProduct = product
             .stockDetails(productStockDetails)
@@ -106,8 +119,12 @@ class ProductServiceTest {
             .feedbacks(productFeedbacks)
             .isProductInUserWishlist(isProductInUserWishlist)
             .build();
+        var expectedResult = ProductDetails.builder()
+            .product(expectedProduct)
+            .images(images)
+            .build();
 
-        assertThat(productService.getProductById(PRODUCT_ID, USER_ID)).isEqualTo(expectedProduct);
+        assertThat(productService.getProductById(PRODUCT_ID, USER_ID)).isEqualTo(expectedResult);
     }
 
     @Test
@@ -121,20 +138,52 @@ class ProductServiceTest {
 
     @Test
     void getProductsBySubcategoryId_shouldReturnProducts() {
-        var products = List.of(Product.builder().build());
+        var product1 = Product.builder().id(PRODUCT_ID).build();
+        var product2 = Product.builder().id(2).build();
+        var products = List.of(product1, product2);
+        var image = new byte[]{1, 2, 3};
+        var primaryImages = Map.of(PRODUCT_ID, image);
 
         when(productPort.getProductsBySubcategoryId(1)).thenReturn(products);
+        when(imageUseCase.getPrimaryProductsImages(List.of(PRODUCT_ID, 2))).thenReturn(primaryImages);
 
-        assertThat(productService.getProductsBySubcategoryId(1)).isEqualTo(products);
+        var expectedResult = List.of(
+            ProductDetails.builder()
+                .product(product1)
+                .images(List.of(image))
+                .build(),
+            ProductDetails.builder()
+                .product(product2)
+                .images(List.of())
+                .build()
+        );
+
+        assertThat(productService.getProductsBySubcategoryId(1)).isEqualTo(expectedResult);
     }
 
     @Test
     void getProductsByName_shouldReturnProducts() {
-        var products = List.of(Product.builder().build());
+        var product1 = Product.builder().id(PRODUCT_ID).build();
+        var product2 = Product.builder().id(2).build();
+        var products = List.of(product1, product2);
+        var image = new byte[]{1, 2, 3};
+        var primaryImages = Map.of(PRODUCT_ID, image);
 
         when(productPort.getProductsByName("product")).thenReturn(products);
+        when(imageUseCase.getPrimaryProductsImages(List.of(PRODUCT_ID, 2))).thenReturn(primaryImages);
 
-        assertThat(productService.getProductsByName("product")).isEqualTo(products);
+        var expectedResult = List.of(
+            ProductDetails.builder()
+                .product(product1)
+                .images(List.of(image))
+                .build(),
+            ProductDetails.builder()
+                .product(product2)
+                .images(List.of())
+                .build()
+        );
+
+        assertThat(productService.getProductsByName("product")).isEqualTo(expectedResult);
     }
 
     @Test
@@ -148,6 +197,7 @@ class ProductServiceTest {
         verify(wishlistPort).deleteProductFromWishlist(PRODUCT_ID);
         verify(productRatePort).deleteRate(PRODUCT_ID);
         verify(productFeedbackPort).deleteFeedbacksByProductId(PRODUCT_ID);
+        verify(imageUseCase).deleteProductImages(PRODUCT_ID);
         verify(productPort).deleteProduct(PRODUCT_ID);
     }
 

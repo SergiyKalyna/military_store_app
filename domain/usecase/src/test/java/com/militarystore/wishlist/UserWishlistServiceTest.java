@@ -1,7 +1,9 @@
 package com.militarystore.wishlist;
 
 import com.militarystore.entity.product.Product;
+import com.militarystore.entity.product.ProductDetails;
 import com.militarystore.exception.MsNotFoundException;
+import com.militarystore.port.in.image.ImageUseCase;
 import com.militarystore.port.out.product.ProductPort;
 import com.militarystore.port.out.wishlist.WishlistPort;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,11 +33,14 @@ class UserWishlistServiceTest {
     @Mock
     private ProductPort productPort;
 
+    @Mock
+    private ImageUseCase imageUseCase;
+
     private UserWishlistService userWishlistService;
 
     @BeforeEach
     void setUp() {
-        userWishlistService = new UserWishlistService(wishlistPort, productPort);
+        userWishlistService = new UserWishlistService(wishlistPort, productPort, imageUseCase);
     }
 
     @Test
@@ -89,11 +95,22 @@ class UserWishlistServiceTest {
 
     @Test
     void getUserWishlistProducts() {
-        var products = List.of(Product.builder().build());
+        var product = Product.builder().id(PRODUCT_ID).build();
+        var products = List.of(product);
+        var image = new byte[]{1, 2, 3};
+        var primaryImages = Map.of(PRODUCT_ID, image);
 
         when(wishlistPort.getUserWishlistProductIds(USER_ID)).thenReturn(List.of(PRODUCT_ID));
         when(productPort.getProductsByIds(List.of(PRODUCT_ID))).thenReturn(products);
+        when(imageUseCase.getPrimaryProductsImages(List.of(PRODUCT_ID))).thenReturn(primaryImages);
 
-        assertThat(userWishlistService.getUserWishlistProducts(USER_ID)).isEqualTo(products);
+        var expectedResult = List.of(
+            ProductDetails.builder()
+                .product(product)
+                .images(List.of(image))
+                .build()
+        );
+
+        assertThat(userWishlistService.getUserWishlistProducts(USER_ID)).isEqualTo(expectedResult);
     }
 }

@@ -1,6 +1,6 @@
 package com.militarystore.port.in.wishlist;
 
-import com.militarystore.entity.product.Product;
+import com.militarystore.entity.product.ProductDetails;
 
 import java.util.List;
 
@@ -12,5 +12,5 @@ public interface UserWishlistUseCase {
 
     void deleteAllUserProductsFromWishlist(Integer userId);
 
-    List<Product> getUserWishlistProducts(Integer userId);
+    List<ProductDetails> getUserWishlistProducts(Integer userId);
 }
