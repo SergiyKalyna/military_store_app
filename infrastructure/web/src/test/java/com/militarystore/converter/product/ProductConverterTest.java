@@ -1,6 +1,7 @@
 package com.militarystore.converter.product;
 
 import com.militarystore.entity.product.Product;
+import com.militarystore.entity.product.ProductDetails;
 import com.militarystore.entity.product.ProductFeedback;
 import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSize;
@@ -76,7 +77,11 @@ class ProductConverterTest {
             ))
             .isProductInUserWishlist(true)
             .build();
-
+        var images = List.of(new byte[0]);
+        var productDetails = ProductDetails.builder()
+            .product(product)
+            .images(images)
+            .build();
 
         var expectedDto = ProductDto.builder()
             .id(1)
@@ -116,9 +121,10 @@ class ProductConverterTest {
                     .dateTime(LocalDateTime.of(2021, 1, 1, 0, 0))
                     .build()))
             .isProductInUserWishlist(true)
+            .images(images)
             .build();
 
-        assertThat(productConverter.convertToProductDto(product)).isEqualTo(expectedDto);
+        assertThat(productConverter.convertToProductDto(productDetails)).isEqualTo(expectedDto);
     }
 
     @Test
@@ -149,6 +155,11 @@ class ProductConverterTest {
             .avgRate(4.5)
             .feedbacks(List.of())
             .build();
+        var images = List.of(new byte[0]);
+        var productDetails = ProductDetails.builder()
+            .product(product)
+            .images(images)
+            .build();
 
         var expectedDto = ProductDto.builder()
             .id(1)
@@ -175,9 +186,10 @@ class ProductConverterTest {
             .isInStock(true)
             .avgRate(4.5)
             .feedbacks(List.of())
+            .images(images)
             .build();
 
-        assertThat(productConverter.convertToProductDto(product)).isEqualTo(expectedDto);
+        assertThat(productConverter.convertToProductDto(productDetails)).isEqualTo(expectedDto);
     }
 
     @Test
@@ -189,6 +201,11 @@ class ProductConverterTest {
             .tag(ProductTag.NEW)
             .isInStock(true)
             .build();
+        var images = List.of(new byte[0]);
+        var productDetails = ProductDetails.builder()
+            .product(product)
+            .images(images)
+            .build();
 
         var expectedDto = ProductDto.builder()
             .id(1)
@@ -197,9 +214,10 @@ class ProductConverterTest {
             .tag(ProductTagDto.NEW)
             .isInStock(true)
             .avgRate(0.0)
+            .images(images)
             .build();
 
-        assertThat(productConverter.convertToSearchProductDto(product)).isEqualTo(expectedDto);
+        assertThat(productConverter.convertToSearchProductDto(productDetails)).isEqualTo(expectedDto);
     }
 
     @Test
@@ -212,6 +230,11 @@ class ProductConverterTest {
             .isInStock(true)
             .avgRate(4.5)
             .build();
+        var images = List.of(new byte[0]);
+        var productDetails = ProductDetails.builder()
+            .product(product)
+            .images(images)
+            .build();
 
         var expectedDto = ProductDto.builder()
             .id(1)
@@ -220,9 +243,10 @@ class ProductConverterTest {
             .tag(ProductTagDto.NEW)
             .isInStock(true)
             .avgRate(4.5)
+            .images(images)
             .build();
 
-        assertThat(productConverter.convertToSearchProductDto(product)).isEqualTo(expectedDto);
+        assertThat(productConverter.convertToSearchProductDto(productDetails)).isEqualTo(expectedDto);
     }
 
     @Test

@@ -6,6 +6,7 @@ import com.militarystore.model.dto.product.ProductDto;
 import com.militarystore.model.request.product.ProductRequest;
 import com.militarystore.port.in.product.ProductUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -31,12 +34,15 @@ public class ProductController {
     private final ProductUseCase productUseCase;
     private final ProductConverter productConverter;
 
-    @PostMapping
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    public Integer addProduct(@RequestBody ProductRequest request) {
+    public Integer addProduct(
+        @RequestPart("request") ProductRequest request,
+        @RequestPart("images") List<MultipartFile> images
+    ) {
         var product = productConverter.convertToProduct(request);
 
-        return productUseCase.addProduct(product);
+        return productUseCase.addProduct(product, images);
     }
 
     @GetMapping("/{productId}")
@@ -45,9 +51,9 @@ public class ProductController {
         @AuthenticationPrincipal User user
     ) {
         var userId = nonNull(user) ? user.id() : UNAUTHORIZED_USER_ID;
-        var product = productUseCase.getProductById(productId, userId);
+        var productDetails = productUseCase.getProductById(productId, userId);
 
-        return productConverter.convertToProductDto(product);
+        return productConverter.convertToProductDto(productDetails);
     }
 
     @GetMapping("/subcategory-id/{subcategoryId}")

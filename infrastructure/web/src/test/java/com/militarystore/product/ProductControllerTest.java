@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.militarystore.config.TestSecurityConfig;
 import com.militarystore.converter.product.ProductConverter;
 import com.militarystore.entity.product.Product;
+import com.militarystore.entity.product.ProductDetails;
 import com.militarystore.entity.product.model.ProductSizeGridType;
 import com.militarystore.entity.product.model.ProductTag;
 import com.militarystore.entity.user.User;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,7 +31,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,13 +75,16 @@ class ProductControllerTest {
             .tag(ProductTag.NEW)
             .stockDetails(List.of())
             .build();
+        var mockMultipartFile = new MockMultipartFile("images", "test.jpg", "image/jpeg", "test image content".getBytes());
+        var requestJson = new MockMultipartFile("request", "", "application/json", objectMapper.writeValueAsString(productRequest).getBytes());
 
         when(productConverter.convertToProduct(productRequest)).thenReturn(product);
-        when(productUseCase.addProduct(product)).thenReturn(1);
+        when(productUseCase.addProduct(product, List.of(mockMultipartFile))).thenReturn(1);
 
-        mockMvc.perform(post("/products")
-            .contentType("application/json")
-            .content(objectMapper.writeValueAsString(productRequest)))
+        mockMvc.perform(multipart("/products")
+                .file(mockMultipartFile)
+                .file(requestJson)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
             .andExpect(status().isOk())
             .andExpect(content().string("1"));
     }
@@ -95,10 +101,13 @@ class ProductControllerTest {
             ProductTagDto.NEW,
             List.of()
         );
+        var mockMultipartFile = new MockMultipartFile("images", "test.jpg", "image/jpeg", "test image content".getBytes());
+        var requestJson = new MockMultipartFile("request", "", "application/json", objectMapper.writeValueAsString(productRequest).getBytes());
 
-        mockMvc.perform(post("/products")
-            .contentType("application/json")
-            .content(objectMapper.writeValueAsString(productRequest)))
+        mockMvc.perform(multipart("/products")
+                .file(mockMultipartFile)
+                .file(requestJson)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
             .andExpect(status().isForbidden());
     }
 
@@ -123,13 +132,16 @@ class ProductControllerTest {
             .tag(ProductTag.NEW)
             .stockDetails(List.of())
             .build();
+        var mockMultipartFile = new MockMultipartFile("images", "test.jpg", "image/jpeg", "test image content".getBytes());
+        var requestJson = new MockMultipartFile("request", "", "application/json", objectMapper.writeValueAsString(productRequest).getBytes());
 
         when(productConverter.convertToProduct(productRequest)).thenReturn(product);
-        when(productUseCase.addProduct(product)).thenReturn(1);
+        when(productUseCase.addProduct(product, List.of(mockMultipartFile))).thenReturn(1);
 
-        mockMvc.perform(post("/products")
-            .contentType("application/json")
-            .content(objectMapper.writeValueAsString(productRequest)))
+        mockMvc.perform(multipart("/products")
+                .file(mockMultipartFile)
+                .file(requestJson)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
             .andExpect(status().isOk())
             .andExpect(content().string("1"));
     }
@@ -146,6 +158,11 @@ class ProductControllerTest {
             .tag(ProductTag.NEW)
             .stockDetails(List.of())
             .build();
+        var image = new byte[0];
+        var productDetails = ProductDetails.builder()
+            .product(product)
+            .images(List.of(image))
+            .build();
 
         var productDto = ProductDto.builder()
             .id(1)
@@ -156,10 +173,11 @@ class ProductControllerTest {
             .sizeGridType(ProductSizeGridTypeDto.CLOTHES)
             .tag(ProductTagDto.NEW)
             .stockDetails(List.of())
+            .images(List.of(image))
             .build();
 
-        when(productUseCase.getProductById(1, 0)).thenReturn(product);
-        when(productConverter.convertToProductDto(product)).thenReturn(productDto);
+        when(productUseCase.getProductById(1, 0)).thenReturn(productDetails);
+        when(productConverter.convertToProductDto(productDetails)).thenReturn(productDto);
 
         mockMvc.perform(get("/products/1"))
             .andExpect(status().isOk())
@@ -178,6 +196,11 @@ class ProductControllerTest {
             .tag(ProductTag.NEW)
             .stockDetails(List.of())
             .build();
+        var image = new byte[0];
+        var productDetails = ProductDetails.builder()
+            .product(product)
+            .images(List.of(image))
+            .build();
 
         var productDto = ProductDto.builder()
             .id(1)
@@ -188,10 +211,11 @@ class ProductControllerTest {
             .sizeGridType(ProductSizeGridTypeDto.CLOTHES)
             .tag(ProductTagDto.NEW)
             .stockDetails(List.of())
+            .images(List.of(image))
             .build();
 
-        when(productUseCase.getProductById(1, 1)).thenReturn(product);
-        when(productConverter.convertToProductDto(product)).thenReturn(productDto);
+        when(productUseCase.getProductById(1, 1)).thenReturn(productDetails);
+        when(productConverter.convertToProductDto(productDetails)).thenReturn(productDto);
 
         mockMvc.perform(get("/products/1")
                 .with(user(User.builder().id(1).role(Role.USER).build())))
@@ -233,6 +257,12 @@ class ProductControllerTest {
             .stockDetails(List.of())
             .build();
 
+        var image = new byte[0];
+        var productDetails = ProductDetails.builder()
+            .product(product)
+            .images(List.of(image))
+            .build();
+
         var productDto = ProductDto.builder()
             .id(1)
             .name("Product")
@@ -242,10 +272,11 @@ class ProductControllerTest {
             .sizeGridType(ProductSizeGridTypeDto.CLOTHES)
             .tag(ProductTagDto.NEW)
             .stockDetails(List.of())
+            .images(List.of(image))
             .build();
 
-        when(productUseCase.getProductsBySubcategoryId(1)).thenReturn(List.of(product));
-        when(productConverter.convertToSearchProductDto(product)).thenReturn(productDto);
+        when(productUseCase.getProductsBySubcategoryId(1)).thenReturn(List.of(productDetails));
+        when(productConverter.convertToSearchProductDto(productDetails)).thenReturn(productDto);
 
         mockMvc.perform(get("/products/subcategory-id/1"))
             .andExpect(status().isOk())
@@ -265,6 +296,12 @@ class ProductControllerTest {
             .stockDetails(List.of())
             .build();
 
+        var image = new byte[0];
+        var productDetails = ProductDetails.builder()
+            .product(product)
+            .images(List.of(image))
+            .build();
+
         var productDto = ProductDto.builder()
             .id(1)
             .name("Product")
@@ -274,10 +311,11 @@ class ProductControllerTest {
             .sizeGridType(ProductSizeGridTypeDto.CLOTHES)
             .tag(ProductTagDto.NEW)
             .stockDetails(List.of())
+            .images(List.of(image))
             .build();
 
-        when(productUseCase.getProductsByName("Product")).thenReturn(List.of(product));
-        when(productConverter.convertToSearchProductDto(product)).thenReturn(productDto);
+        when(productUseCase.getProductsByName("Product")).thenReturn(List.of(productDetails));
+        when(productConverter.convertToSearchProductDto(productDetails)).thenReturn(productDto);
 
         mockMvc.perform(get("/products/product-name/Product"))
             .andExpect(status().isOk())

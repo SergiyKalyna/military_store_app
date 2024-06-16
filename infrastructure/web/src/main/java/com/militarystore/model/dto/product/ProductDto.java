@@ -17,6 +17,7 @@ public record ProductDto(
     Boolean isInStock,
     double avgRate,
     List<ProductFeedbackDto> feedbacks,
-    Boolean isProductInUserWishlist
+    Boolean isProductInUserWishlist,
+    List<byte[]> images
 ) {
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.militarystore.config.TestSecurityConfig;
 import com.militarystore.converter.product.ProductConverter;
 import com.militarystore.entity.product.Product;
+import com.militarystore.entity.product.ProductDetails;
 import com.militarystore.entity.user.User;
 import com.militarystore.entity.user.model.Role;
 import com.militarystore.model.dto.product.ProductDto;
@@ -71,11 +72,13 @@ class UserWishlistControllerTest {
 
     @Test
     void getUserWishlistProducts() throws Exception {
+        var images = List.of(new byte[0]);
         var product = Product.builder().build();
-        var productDto = ProductDto.builder().build();
+        var productDetails = ProductDetails.builder().product(product).images(images).build();
+        var productDto = ProductDto.builder().images(images).build();
 
-        when(userWishlistUseCase.getUserWishlistProducts(USER_ID)).thenReturn(List.of(product));
-        when(productConverter.convertToSearchProductDto(product)).thenReturn(productDto);
+        when(userWishlistUseCase.getUserWishlistProducts(USER_ID)).thenReturn(List.of(productDetails));
+        when(productConverter.convertToSearchProductDto(productDetails)).thenReturn(productDto);
 
         mockMvc.perform(get("/users/wishlist")
                 .with(user(User.builder().id(USER_ID).role(Role.USER).build())))

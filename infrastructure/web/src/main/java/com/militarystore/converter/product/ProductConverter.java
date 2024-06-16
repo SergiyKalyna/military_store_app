@@ -1,6 +1,7 @@
 package com.militarystore.converter.product;
 
 import com.militarystore.entity.product.Product;
+import com.militarystore.entity.product.ProductDetails;
 import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSize;
 import com.militarystore.entity.product.model.ProductSizeGridType;
@@ -25,7 +26,8 @@ public class ProductConverter {
 
     private final ProductFeedbackConverter productFeedbackConverter;
 
-    public ProductDto convertToProductDto(Product product) {
+    public ProductDto convertToProductDto(ProductDetails productDetails) {
+        var product = productDetails.product();
         return ProductDto.builder()
             .id(product.id())
             .name(product.name())
@@ -48,10 +50,12 @@ public class ProductConverter {
                     .toList()
             )
             .isProductInUserWishlist(product.isProductInUserWishlist())
+            .images(productDetails.images())
             .build();
     }
 
-    public ProductDto convertToSearchProductDto(Product product) {
+    public ProductDto convertToSearchProductDto(ProductDetails productDetails) {
+        var product = productDetails.product();
         return ProductDto.builder()
             .id(product.id())
             .name(product.name())
@@ -59,6 +63,7 @@ public class ProductConverter {
             .tag(ProductTagDto.valueOf(product.tag().name()))
             .isInStock(product.isInStock())
             .avgRate(isNull(product.avgRate()) ? 0.0 : product.avgRate())
+            .images(productDetails.images())
             .build();
     }
 
