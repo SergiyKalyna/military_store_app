@@ -8,7 +8,7 @@ public interface ProductPort {
 
     Integer addProduct(Product product);
 
-    Product getProductById(Integer productId,  Integer userId);
+    Product.ProductBuilder getProductById(Integer productId);
 
     List<Product> getProductsBySubcategoryId(Integer subcategoryId);
 

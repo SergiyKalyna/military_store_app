@@ -1,9 +1,6 @@
 package com.militarystore.product.mapper;
 
 import com.militarystore.entity.product.Product;
-import com.militarystore.entity.product.ProductFeedback;
-import com.militarystore.entity.product.ProductStockDetails;
-import com.militarystore.entity.product.model.ProductSize;
 import com.militarystore.entity.product.model.ProductSizeGridType;
 import com.militarystore.entity.product.model.ProductTag;
 import com.militarystore.jooq.tables.records.ProductsRecord;
@@ -14,8 +11,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static com.militarystore.jooq.Tables.PRODUCTS;
@@ -89,23 +84,6 @@ class ProductMapperTest {
         productRecord.set(PRODUCTS.PRODUCT_TAG, "NEW");
         productRecord.set(PRODUCTS.IS_IN_STOCK, true);
 
-        var stockDetail = ProductStockDetails.builder()
-            .id(1)
-            .productId(1)
-            .productSize(ProductSize.M)
-            .stockAvailability(10)
-            .build();
-
-        var feedback = ProductFeedback.builder()
-            .id(1)
-            .productId(1)
-            .userId(1)
-            .feedback("comment")
-            .dateTime(LocalDateTime.of(2021, 1, 1, 0, 0))
-            .build();
-
-        var isProductInUserWishlist = true;
-
         var expectedResult = Product.builder()
             .id(1)
             .name("product")
@@ -115,14 +93,9 @@ class ProductMapperTest {
             .sizeGridType(ProductSizeGridType.CLOTHES)
             .tag(ProductTag.NEW)
             .isInStock(true)
-            .avgRate(4.5)
-            .stockDetails(List.of(stockDetail))
-            .feedbacks(List.of(feedback))
-            .isProductInUserWishlist(isProductInUserWishlist)
             .build();
 
-        assertThat(productMapper.map(productRecord, List.of(stockDetail), 4.5, List.of(feedback), isProductInUserWishlist))
-            .isEqualTo(expectedResult);
+        assertThat(productMapper.map(productRecord).build()).isEqualTo(expectedResult);
     }
 
     private static Stream<Arguments> productTagTestSource() {

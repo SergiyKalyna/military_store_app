@@ -2,14 +2,18 @@ package com.militarystore.product;
 
 import com.militarystore.IntegrationTest;
 import com.militarystore.entity.product.Product;
+import com.militarystore.entity.product.ProductDetails;
 import com.militarystore.entity.product.ProductFeedback;
 import com.militarystore.entity.product.ProductStockDetails;
 import com.militarystore.entity.product.model.ProductSize;
 import com.militarystore.entity.product.model.ProductSizeGridType;
 import com.militarystore.entity.product.model.ProductTag;
 import com.militarystore.port.in.product.ProductUseCase;
+import com.militarystore.port.out.googledrive.GoogleDrivePort;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,6 +21,7 @@ import java.util.List;
 
 import static com.militarystore.jooq.Tables.BASKETS;
 import static com.militarystore.jooq.Tables.CATEGORIES;
+import static com.militarystore.jooq.Tables.IMAGES;
 import static com.militarystore.jooq.Tables.PRODUCTS;
 import static com.militarystore.jooq.Tables.PRODUCT_FEEDBACKS;
 import static com.militarystore.jooq.Tables.PRODUCT_RATES;
@@ -26,6 +31,7 @@ import static com.militarystore.jooq.Tables.USERS;
 import static com.militarystore.jooq.Tables.WISHLISTS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.when;
 
 class ProductIntegrationTest extends IntegrationTest {
 
@@ -33,14 +39,20 @@ class ProductIntegrationTest extends IntegrationTest {
     private static final int PRODUCT_ID = 10;
     private static final int PRODUCT_STOCK_DETAILS_ID = 11;
     private static final int USER_ID = 1;
+    private static final String GOOGLE_DRIVE_FILE_ID = "fileId";
 
     @Autowired
     private ProductUseCase productUseCase;
+
+    @MockBean
+    private GoogleDrivePort googleDrivePort;
 
     @Test
     void addProduct_shouldCorrectStoreProduct() {
         initializeCategories();
 
+        var multipartFile = new MockMultipartFile("file", "test.txt", "text/plain", "test".getBytes());
+        var image = new byte[]{1, 2, 3};
         var product = Product.builder()
             .name("Product")
             .description("Product description")
@@ -55,20 +67,25 @@ class ProductIntegrationTest extends IntegrationTest {
                     .build()))
             .build();
 
-        var productId = productUseCase.addProduct(product);
+        when(googleDrivePort.uploadFiles(List.of(multipartFile))).thenReturn(List.of(GOOGLE_DRIVE_FILE_ID));
+        when(googleDrivePort.downloadFiles(List.of(GOOGLE_DRIVE_FILE_ID))).thenReturn(List.of(image));
+
+        var productId = productUseCase.addProduct(product, List.of(multipartFile));
         var productFromDb = productUseCase.getProductById(productId, USER_ID);
 
-        assertThat(productFromDb.name()).isEqualTo(product.name());
-        assertThat(productFromDb.description()).isEqualTo(product.description());
-        assertThat(productFromDb.price()).isEqualTo(product.price());
-        assertThat(productFromDb.stockDetails().get(0).productSize()).isEqualTo(product.stockDetails().get(0).productSize());
-        assertThat(productFromDb.stockDetails().get(0).stockAvailability()).isEqualTo(product.stockDetails().get(0).stockAvailability());
+        assertThat(productFromDb.product().name()).isEqualTo(product.name());
+        assertThat(productFromDb.product().description()).isEqualTo(product.description());
+        assertThat(productFromDb.product().price()).isEqualTo(product.price());
+        assertThat(productFromDb.product().stockDetails().get(0).productSize()).isEqualTo(product.stockDetails().get(0).productSize());
+        assertThat(productFromDb.product().stockDetails().get(0).stockAvailability()).isEqualTo(product.stockDetails().get(0).stockAvailability());
+        assertThat(productFromDb.images()).isEqualTo(List.of(image));
     }
 
     @Test
     void getProductById_shouldReturnCorrectProduct() {
         initializeCategories();
         initializeProduct();
+        initializeImages();
 
         var product = Product.builder()
             .id(PRODUCT_ID)
@@ -90,10 +107,17 @@ class ProductIntegrationTest extends IntegrationTest {
             .feedbacks(List.of())
             .isProductInUserWishlist(false)
             .build();
+        var images = List.of(new byte[]{1, 2, 3});
+        var expectedResults = ProductDetails.builder()
+            .product(product)
+            .images(images)
+            .build();
+
+        when(googleDrivePort.downloadFiles(List.of(GOOGLE_DRIVE_FILE_ID, "googleDriveId2"))).thenReturn(images);
 
         var productFromDb = productUseCase.getProductById(PRODUCT_ID, USER_ID);
 
-        assertThat(productFromDb).isEqualTo(product);
+        assertThat(productFromDb).isEqualTo(expectedResults);
     }
 
     @Test
@@ -102,6 +126,7 @@ class ProductIntegrationTest extends IntegrationTest {
         initializeProduct();
         initializeUser();
         initializeProductRates();
+        initializeImages();
 
         var product = Product.builder()
             .id(PRODUCT_ID)
@@ -123,10 +148,17 @@ class ProductIntegrationTest extends IntegrationTest {
             .feedbacks(List.of())
             .isProductInUserWishlist(false)
             .build();
+        var images = List.of(new byte[]{1, 2, 3});
+        var expectedResults = ProductDetails.builder()
+            .product(product)
+            .images(images)
+            .build();
+
+        when(googleDrivePort.downloadFiles(List.of(GOOGLE_DRIVE_FILE_ID, "googleDriveId2"))).thenReturn(images);
 
         var productFromDb = productUseCase.getProductById(PRODUCT_ID, USER_ID);
 
-        assertThat(productFromDb).isEqualTo(product);
+        assertThat(productFromDb).isEqualTo(expectedResults);
     }
 
     @Test
@@ -136,6 +168,7 @@ class ProductIntegrationTest extends IntegrationTest {
         initializeUser();
         initializeProductRates();
         initializeFeedbacks();
+        initializeImages();
 
         var product = Product.builder()
             .id(PRODUCT_ID)
@@ -164,9 +197,17 @@ class ProductIntegrationTest extends IntegrationTest {
             .isProductInUserWishlist(false)
             .build();
 
+        var images = List.of(new byte[]{1, 2, 3});
+        var expectedResults = ProductDetails.builder()
+            .product(product)
+            .images(images)
+            .build();
+
+        when(googleDrivePort.downloadFiles(List.of(GOOGLE_DRIVE_FILE_ID, "googleDriveId2"))).thenReturn(images);
+
         var productFromDb = productUseCase.getProductById(PRODUCT_ID, USER_ID);
 
-        assertThat(productFromDb).isEqualTo(product);
+        assertThat(productFromDb).isEqualTo(expectedResults);
     }
 
     @Test
@@ -175,6 +216,7 @@ class ProductIntegrationTest extends IntegrationTest {
         initializeProduct();
         initializeUser();
         initializeWishlist();
+        initializeImages();
 
         var product = Product.builder()
             .id(PRODUCT_ID)
@@ -196,16 +238,24 @@ class ProductIntegrationTest extends IntegrationTest {
             .feedbacks(List.of())
             .isProductInUserWishlist(true)
             .build();
+        var images = List.of(new byte[]{1, 2, 3});
+        var expectedResults = ProductDetails.builder()
+            .product(product)
+            .images(images)
+            .build();
+
+        when(googleDrivePort.downloadFiles(List.of(GOOGLE_DRIVE_FILE_ID, "googleDriveId2"))).thenReturn(images);
 
         var productFromDb = productUseCase.getProductById(PRODUCT_ID, USER_ID);
 
-        assertThat(productFromDb).isEqualTo(product);
+        assertThat(productFromDb).isEqualTo(expectedResults);
     }
 
     @Test
     void getProductsBySubcategoryId_shouldReturnCorrectProducts() {
         initializeCategories();
         initializeProduct();
+        initializeImages();
 
         var product = Product.builder()
             .id(PRODUCT_ID)
@@ -214,16 +264,24 @@ class ProductIntegrationTest extends IntegrationTest {
             .tag(ProductTag.NEW)
             .isInStock(true)
             .build();
+        var image = new byte[]{1, 2, 3};
+        var expectedResults = ProductDetails.builder()
+            .product(product)
+            .images(List.of(image))
+            .build();
+
+        when(googleDrivePort.downloadFile(GOOGLE_DRIVE_FILE_ID)).thenReturn(image);
 
         var products = productUseCase.getProductsBySubcategoryId(SUBCATEGORY_ID);
 
-        assertThat(products).isEqualTo(List.of(product));
+        assertThat(products).isEqualTo(List.of(expectedResults));
     }
 
     @Test
     void getProductsByName_shouldReturnCorrectProducts() {
         initializeCategories();
         initializeProduct();
+        initializeImages();
 
         var product = Product.builder()
             .id(PRODUCT_ID)
@@ -232,10 +290,17 @@ class ProductIntegrationTest extends IntegrationTest {
             .tag(ProductTag.NEW)
             .isInStock(true)
             .build();
+        var image = new byte[]{1, 2, 3};
+        var expectedResults = ProductDetails.builder()
+            .product(product)
+            .images(List.of(image))
+            .build();
+
+        when(googleDrivePort.downloadFile(GOOGLE_DRIVE_FILE_ID)).thenReturn(image);
 
         var products = productUseCase.getProductsByName("Product");
 
-        assertThat(products).isEqualTo(List.of(product));
+        assertThat(products).isEqualTo(List.of(expectedResults));
     }
 
     @Test
@@ -266,7 +331,7 @@ class ProductIntegrationTest extends IntegrationTest {
 
         productUseCase.updateProduct(productToUpdate);
 
-        var productFromDb = productUseCase.getProductById(PRODUCT_ID, USER_ID);
+        var productFromDb = productUseCase.getProductById(PRODUCT_ID, USER_ID).product();
 
         assertThat(productFromDb).isEqualTo(productToUpdate);
     }
@@ -376,6 +441,17 @@ class ProductIntegrationTest extends IntegrationTest {
             .set(BASKETS.PRODUCT_STOCK_DETAILS_ID, PRODUCT_STOCK_DETAILS_ID)
             .set(BASKETS.USER_ID, USER_ID)
             .set(BASKETS.QUANTITY, 1)
+            .execute();
+    }
+
+    private void initializeImages() {
+        dslContext.insertInto(IMAGES,
+                IMAGES.PRODUCT_ID,
+                IMAGES.GOOGLE_DRIVE_ID,
+                IMAGES.ORDINAL_NUMBER
+            )
+            .values(PRODUCT_ID, GOOGLE_DRIVE_FILE_ID, 1)
+            .values(PRODUCT_ID, "googleDriveId2", 2)
             .execute();
     }
 }
