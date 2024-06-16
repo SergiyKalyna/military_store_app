@@ -19,11 +19,6 @@ public record Product(
     Double avgRate,
     Boolean isInStock,
     List<ProductFeedback> feedbacks,
-    Boolean isProductInUserWishlist,
-    List<byte[]> images
+    Boolean isProductInUserWishlist
 ) {
-
-    public byte[] getPrimaryImage() {
-        return images.get(0);
-    }
 }
