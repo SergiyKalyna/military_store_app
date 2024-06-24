@@ -8,6 +8,7 @@ dependencies {
     implementation project(":infrastructure:web")
     implementation project(":infrastructure:database")
     implementation project(":infrastructure:google-drive")
+    implementation project(":infrastructure:smtp")
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-docker-compose'
