@@ -92,7 +92,7 @@ class SmtpServiceTest {
             "    <p>Dear Mr Smith,</p>\n" +
             "    <p>We are glad to notify you that your order is ready.</p>\n" +
             "    <p>Thank you for your order.</p>\n" +
-            "    <p>If you have any questions, please emailDetails us at <a href=\"mailto:militarystorenotificator@gmail.com\">militarystorenotificator@gmail.com</a>.</p>\n" +
+            "    <p>If you have any questions, please email us at <a href=\"mailto:militarystorenotificator@gmail.com\">militarystorenotificator@gmail.com</a>.</p>\n" +
             "    <div class=\"footer\">\n" +
             "        <p>Best regards,<br>\n" +
             "            Administration of the Military Store</p>\n" +
