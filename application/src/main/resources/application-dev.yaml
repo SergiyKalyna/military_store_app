@@ -19,3 +19,13 @@ spring:
                 enabled: true
     config:
         import: optional:vault://
+    mail:
+        host: "smtp.gmail.com"
+        port: 587
+        password: "isfo wmwf ovqo ckbc"
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true

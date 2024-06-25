@@ -22,3 +22,6 @@ spring:
     docker:
         compose:
             enabled: false
+    mail:
+        host: "localhost"
+        port: 1025
