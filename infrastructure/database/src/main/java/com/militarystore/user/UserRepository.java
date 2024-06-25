@@ -5,10 +5,12 @@ import com.militarystore.entity.user.model.Role;
 import com.militarystore.jooq.tables.records.UsersRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.militarystore.jooq.Tables.ORDERS;
 import static com.militarystore.jooq.Tables.USERS;
 
 @Repository
@@ -104,5 +106,16 @@ public class UserRepository {
         return dslContext.fetchExists(dslContext.selectFrom(USERS)
                 .where(USERS.ID.eq(id))
         );
+    }
+
+    public Record getUserDetailsByOrderId(Integer orderId) {
+        return dslContext.select(
+            USERS.EMAIL,
+            USERS.FIRST_NAME,
+            USERS.SECOND_NAME
+        ).from(USERS)
+            .join(ORDERS).on(USERS.ID.eq(ORDERS.USER_ID))
+            .where(ORDERS.ID.eq(orderId))
+            .fetchOne();
     }
 }

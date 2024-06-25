@@ -2,6 +2,7 @@ package com.militarystore.order;
 
 import com.militarystore.IntegrationTest;
 import com.militarystore.entity.delivery.DeliveryDetails;
+import com.militarystore.entity.email.EmailDetails;
 import com.militarystore.entity.order.Order;
 import com.militarystore.entity.order.OrderDetails;
 import com.militarystore.entity.order.OrderStatus;
@@ -30,6 +31,8 @@ import static com.militarystore.jooq.Tables.SUBCATEGORIES;
 import static com.militarystore.jooq.Tables.USERS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 class OrderIntegrationTest extends IntegrationTest {
 
@@ -67,6 +70,7 @@ class OrderIntegrationTest extends IntegrationTest {
             .build();
 
         assertThrows(MsValidationException.class, () -> submitOrderUseCase.submitOrder(order, null));
+        verifyNoInteractions(sendEmailPort);
     }
 
     @Test
@@ -86,6 +90,7 @@ class OrderIntegrationTest extends IntegrationTest {
             .build();
 
         assertThrows(MsValidationException.class, () -> submitOrderUseCase.submitOrder(order, null));
+        verifyNoInteractions(sendEmailPort);
     }
 
     @Test
@@ -142,8 +147,16 @@ class OrderIntegrationTest extends IntegrationTest {
             .totalAmount(100)
             .build();
 
+        var emailDetails = EmailDetails.builder()
+            .message("your order has been submitted successfully, your order id is - " + orderId)
+            .recipientEmail("email")
+            .subject("Military Store Order Details")
+            .username("firstName secondName")
+            .build();
+
         assertEquals(expectedOrder, orderFromDb);
         assertThat(getProductStockDetailsQuantity()).isEqualTo(9);
+        verify(sendEmailPort).sendEmail(emailDetails);
     }
 
     @Test
@@ -202,9 +215,17 @@ class OrderIntegrationTest extends IntegrationTest {
             .discount(0.03)
             .build();
 
+        var emailDetails = EmailDetails.builder()
+            .message("your order has been submitted successfully, your order id is - " + orderId)
+            .recipientEmail("email")
+            .subject("Military Store Order Details")
+            .username("firstName secondName")
+            .build();
+
         assertEquals(expectedOrder, orderFromDb);
         assertThat(getProductStockDetailsQuantity()).isEqualTo(9);
         assertThat(getDiscountUsageLimit()).isZero();
+        verify(sendEmailPort).sendEmail(emailDetails);
     }
 
     @Test
@@ -226,7 +247,15 @@ class OrderIntegrationTest extends IntegrationTest {
                 .build()
         );
 
+        var emailDetails = EmailDetails.builder()
+            .message("your order with id #2 has changed status to 'In progress'")
+            .recipientEmail("email")
+            .subject("Military Store Order Details")
+            .username("firstName secondName")
+            .build();
+
         assertThat(ordersFromDb).isEqualTo(expectedResult);
+        verify(sendEmailPort).sendEmail(emailDetails);
     }
 
     @Test
@@ -249,9 +278,16 @@ class OrderIntegrationTest extends IntegrationTest {
                 .shippingNumber(shippingNumber)
                 .build()
         );
+        var emailDetails = EmailDetails.builder()
+            .message("your order with id #2 has changed status to 'Shipped', your shipping number - shippingNumber")
+            .recipientEmail("email")
+            .subject("Military Store Order Details")
+            .username("firstName secondName")
+            .build();
 
         assertThat(ordersFromDb).isEqualTo(expectedResult);
         assertThat(getOrderUseCase.getOrdersByStatus(OrderStatus.NEW)).isEmpty();
+        verify(sendEmailPort).sendEmail(emailDetails);
     }
 
     private void initializeCategories() {

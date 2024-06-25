@@ -1,6 +1,7 @@
 package com.militarystore.order;
 
 import com.militarystore.delivery.DeliveryDetailsValidator;
+import com.militarystore.email.EmailSendingService;
 import com.militarystore.entity.delivery.DeliveryDetails;
 import com.militarystore.entity.order.Order;
 import com.militarystore.entity.order.OrderDetails;
@@ -31,6 +32,7 @@ public class SubmitOrderService implements SubmitOrderUseCase {
     private final DeliveryDetailsValidator deliveryDetailsValidator;
     private final ProductOrderUseCase productOrderUseCase;
     private final DiscountPort discountPort;
+    private final EmailSendingService emailSendingService;
 
     @Override
     public Integer submitOrder(Order order, String discountCode) {
@@ -44,6 +46,8 @@ public class SubmitOrderService implements SubmitOrderUseCase {
         updateProductStock(order.orderDetails());
 
         log.info("Order with id {} was submitted by user with id {}", orderId, order.userId());
+
+        emailSendingService.sendEmail(orderId, "your order has been submitted successfully, your order id is - " + orderId);
 
         return orderId;
     }

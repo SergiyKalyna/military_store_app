@@ -61,4 +61,25 @@ class UserMapperTest {
 
         assertThat(userMapper.map(userRecord)).isEqualTo(expectedUser);
     }
+
+    @Test
+    void mapToUserForEmail_whenRecordIsNull_shouldReturnNull() {
+        assertThat(userMapper.mapToUserForEmail(null)).isNull();
+    }
+
+    @Test
+    void mapToUserForEmail_shouldCorrectMapRecord() {
+        var userRecord = DSL_CONTEXT.newRecord(USERS.fields());
+        userRecord.setValue(USERS.FIRST_NAME, "first_name");
+        userRecord.setValue(USERS.SECOND_NAME, "second_name");
+        userRecord.setValue(USERS.EMAIL, "email");
+
+        var expectedUser = User.builder()
+            .firstName("first_name")
+            .secondName("second_name")
+            .email("email")
+            .build();
+
+        assertThat(userMapper.mapToUserForEmail(userRecord)).isEqualTo(expectedUser);
+    }
 }

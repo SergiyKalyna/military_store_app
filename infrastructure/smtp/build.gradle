@@ -1,0 +1,12 @@
+dependencies {
+    implementation project(":domain:common")
+
+    implementation 'com.stepstone.inbucket:inbucket-client:2.0.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    testImplementation libs.unitTest
+}

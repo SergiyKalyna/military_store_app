@@ -8,3 +8,8 @@ services:
         ports:
             -   target: 5432
                 published: 5431
+    mailhog:
+        image: mailhog/mailhog
+        ports:
+            - 1025:1025 # smtp server
+            - 8025:8025 # web ui

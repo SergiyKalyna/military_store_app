@@ -149,4 +149,14 @@ class UserAdapterTest {
 
         assertThat(userAdapter.getUserByLogin("login")).isEqualTo(USER);
     }
+
+    @Test
+    void getUserByOrderId() {
+        var userRecord = new UsersRecord();
+
+        when(userRepository.getUserDetailsByOrderId(1)).thenReturn(userRecord);
+        when(userMapper.mapToUserForEmail(userRecord)).thenReturn(USER);
+
+        assertThat(userAdapter.getUserByOrderId(1)).isEqualTo(USER);
+    }
 }

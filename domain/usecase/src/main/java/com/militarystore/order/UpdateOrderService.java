@@ -1,5 +1,6 @@
 package com.militarystore.order;
 
+import com.militarystore.email.EmailSendingService;
 import com.militarystore.entity.order.OrderStatus;
 import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.exception.MsValidationException;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import static java.lang.String.format;
 import static java.util.Objects.isNull;
 
 @Service
@@ -17,6 +19,7 @@ import static java.util.Objects.isNull;
 public class UpdateOrderService implements UpdateOrderUseCase {
 
     private final OrderPort orderPort;
+    private final EmailSendingService emailSendingService;
 
     @Override
     public void updateOrderStatus(Integer orderId, OrderStatus status) {
@@ -24,6 +27,11 @@ public class UpdateOrderService implements UpdateOrderUseCase {
 
         orderPort.updateOrderStatus(orderId, status);
         log.info("Order with id '{}' has changed status to - {}", orderId, status.name());
+
+        emailSendingService.sendEmail(
+            orderId,
+            format("your order with id #%d has changed status to '%s'", orderId, status.getStatus())
+        );
     }
 
     @Override
@@ -33,6 +41,11 @@ public class UpdateOrderService implements UpdateOrderUseCase {
 
         orderPort.updateOrderStatusWithShippingNumber(orderId, status, shippingNumber);
         log.info("Order with id '{}' has changed status to - {} and shipping number to - {}", orderId, status.name(), shippingNumber);
+
+        emailSendingService.sendEmail(
+            orderId,
+            format("your order with id #%d has changed status to '%s', your shipping number - %s", orderId, status.getStatus(), shippingNumber)
+        );
     }
 
     private void checkIfOrderExists(Integer orderId) {

@@ -8,6 +8,8 @@ spring:
     docker:
         compose:
             enabled: false
+    mail:
+        username: "militarystorenotificator@gmail.com"
 
 springdoc:
     swagger-ui:
