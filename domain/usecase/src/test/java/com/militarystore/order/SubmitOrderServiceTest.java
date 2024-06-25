@@ -1,6 +1,7 @@
 package com.militarystore.order;
 
 import com.militarystore.delivery.DeliveryDetailsValidator;
+import com.militarystore.email.EmailSendingService;
 import com.militarystore.entity.delivery.DeliveryDetails;
 import com.militarystore.entity.order.Order;
 import com.militarystore.entity.order.OrderDetails;
@@ -47,6 +48,9 @@ class SubmitOrderServiceTest {
     @Mock
     private DiscountPort discountPort;
 
+    @Mock
+    private EmailSendingService emailSendingService;
+
     private SubmitOrderService submitOrderService;
 
     @BeforeEach
@@ -57,7 +61,8 @@ class SubmitOrderServiceTest {
             deliveryDetailsPort,
             deliveryDetailsValidator,
             productOrderUseCase,
-            discountPort
+            discountPort,
+            emailSendingService
         );
     }
 
@@ -81,6 +86,8 @@ class SubmitOrderServiceTest {
             MsValidationException.class,
             () -> submitOrderService.submitOrder(order, DISCOUNT_CODE)
         );
+
+        verifyNoInteractions(emailSendingService);
     }
 
     @Test
@@ -108,6 +115,8 @@ class SubmitOrderServiceTest {
             MsValidationException.class,
             () -> submitOrderService.submitOrder(order, DISCOUNT_CODE)
         );
+
+        verifyNoInteractions(emailSendingService);
     }
 
     @Test
@@ -138,6 +147,7 @@ class SubmitOrderServiceTest {
         verify(orderDetailsPort).addOrderDetails(11, order.orderDetails());
         verify(discountPort).updateDiscountUsageLimit(DISCOUNT_CODE, order.userId());
         verify(productOrderUseCase).updateProductStockAvailability(10, 1, 1);
+        verify(emailSendingService).sendEmail(11, "your order has been submitted successfully, your order id is - 11");
     }
 
     @Test
@@ -167,6 +177,7 @@ class SubmitOrderServiceTest {
 
         verify(orderDetailsPort).addOrderDetails(11, order.orderDetails());
         verify(productOrderUseCase).updateProductStockAvailability(10, 1, 1);
+        verify(emailSendingService).sendEmail(11, "your order has been submitted successfully, your order id is - 11");
         verifyNoInteractions(discountPort);
     }
 }
