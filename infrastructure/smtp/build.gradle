@@ -1,5 +1,5 @@
 dependencies {
-    implementation project(":domain")
+    implementation project(":domain:common")
 
     implementation 'com.stepstone.inbucket:inbucket-client:2.0.0'
 
