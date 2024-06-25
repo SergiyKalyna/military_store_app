@@ -30,4 +30,6 @@ public interface UserPort {
     String getUserPassword(int id);
 
     User getUserByLogin(String login);
+
+    User getUserByOrderId(Integer orderId);
 }

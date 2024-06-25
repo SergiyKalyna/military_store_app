@@ -33,4 +33,16 @@ public class UserMapper implements RecordMapper<Record, User> {
             .isBanned(userRecord.get(USERS.IS_BANNED))
             .build();
     }
+
+    public User mapToUserForEmail(Record userRecord) {
+        if (isNull(userRecord)) {
+            return null;
+        }
+
+        return User.builder()
+            .firstName(userRecord.get(USERS.FIRST_NAME))
+            .secondName(userRecord.get(USERS.SECOND_NAME))
+            .email(userRecord.get(USERS.EMAIL))
+            .build();
+    }
 }
