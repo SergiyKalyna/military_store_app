@@ -1,5 +1,6 @@
 package com.militarystore.order;
 
+import com.militarystore.email.EmailSendingService;
 import com.militarystore.entity.order.OrderStatus;
 import com.militarystore.exception.MsNotFoundException;
 import com.militarystore.exception.MsValidationException;
@@ -22,11 +23,14 @@ class UpdateOrderServiceTest {
     @Mock
     private OrderPort orderPort;
 
+    @Mock
+    private EmailSendingService emailSendingService;
+
     private UpdateOrderService updateOrderService;
 
     @BeforeEach
     void setUp() {
-        updateOrderService = new UpdateOrderService(orderPort);
+        updateOrderService = new UpdateOrderService(orderPort, emailSendingService);
     }
 
     @Test
@@ -36,6 +40,7 @@ class UpdateOrderServiceTest {
         updateOrderService.updateOrderStatus(ORDER_ID, OrderStatus.IN_PROGRESS);
 
         verify(orderPort).updateOrderStatus(ORDER_ID, OrderStatus.IN_PROGRESS);
+        verify(emailSendingService).sendEmail(ORDER_ID, "your order with id #1 has changed status to 'In progress'");
     }
 
     @Test
@@ -54,6 +59,7 @@ class UpdateOrderServiceTest {
         updateOrderService.updateOrderStatusWithShippingNumber(ORDER_ID, OrderStatus.SHIPPED, shippingNumber);
 
         verify(orderPort).updateOrderStatusWithShippingNumber(ORDER_ID, OrderStatus.SHIPPED, shippingNumber);
+        verify(emailSendingService).sendEmail(ORDER_ID, "your order with id #1 has changed status to 'Shipped', your shipping number - 123456");
     }
 
     @Test
