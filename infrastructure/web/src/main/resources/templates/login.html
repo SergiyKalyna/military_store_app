@@ -3,48 +3,50 @@
 <head>
     <meta charset="utf-8">
     <title>Login Page</title>
-    <link rel="stylesheet" href="./../styles/auth.css">
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" sizes="16x16 32x32 48x48" type="image/png" href="./../images/icon.png" />
+    <link rel="stylesheet" href="../styles/auth.css">
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="icon" sizes="16x16 32x32 48x48" type="image/png" href="../images/icon.png"/>
 </head>
 <body class="auth-background">
-<div class="centered-form">
-    <div class="form-container">
-        <form method="post" action="/login">
-            <div>
-                <h1 class="title">Login Form</h1>
-            </div>
 
-            <div class="img-container">
-                <img src="../images/login-avatar.png" alt="Avatar" class="avatar">
-            </div>
+<main>
+    <section class="centered-form">
+        <div class="form-container">
+            <form method="post" action="/login">
 
-            <div class="container">
-                <label class="input-field" for="login">Login</label>
-                <input type="text" id="login" name="login" placeholder="Username"
-                       required minlength="3" maxlength="25"/>
+                <header>
+                    <h1 class="title">Login Form</h1>
+                </header>
 
-                <label class="input-field" for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Password"
-                       required minlength="6" maxlength="30"/>
-            </div>
+                <div class="img-container">
+                    <img src="../images/login-avatar.png" alt="Avatar" class="avatar">
+                </div>
 
-            <button class="button" type="submit">Sign in</button>
+                <div class="container">
+                    <label class="input-field" for="login">Login</label>
+                    <input type="text" id="login" name="login" placeholder="Username"
+                           required minlength="3" maxlength="25"/>
+                    <label class="input-field" for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Password" required minlength="6" maxlength="30"/>
+                </div>
 
-            <div>
-                <label>
-                    <input type="checkbox" id="remember-me" checked="checked" name="remember-me"/> Remember me
-                </label>
-            </div>
+                <button class="button" type="submit">Sign in</button>
 
-            <div class="registration-container">
-                <label>
-                    New user?
-                    <a href="/registration/" title="Registration Page" class="auth-hyperlink">Sign up</a>
-                </label>
-            </div>
-        </form>
-    </div>
-</div>
+                <div>
+                    <label>
+                        <input type="checkbox" id="remember-me" checked="checked" name="remember-me"/> Remember me
+                    </label>
+                </div>
+
+                <div class="registration-container">
+                    <label>
+                        New user?
+                        <a href="/registration/" title="Registration Page" class="auth-hyperlink">Sign up</a>
+                    </label>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
 </body>
 </html>
