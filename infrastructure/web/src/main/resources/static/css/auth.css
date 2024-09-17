@@ -12,8 +12,11 @@ input[type=text], input[type=password] {
     text-align: center;
 }
 
-.button {
+#sign-in-button {
     background-color: #04AA6D;
+}
+
+.button {
     color: white;
     text-align: center;
     text-decoration: none;

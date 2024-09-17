@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
     <title>Login Page</title>
-    <link rel="stylesheet" href="../styles/auth.css">
-    <meta name="viewport" content="width=device-width"/>
-    <link rel="icon" sizes="16x16 32x32 48x48" type="image/png" href="../images/icon.png"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../static/css/auth.css">
+    <link rel="icon" sizes="16x16 32x32 48x48" type="image/png" href="../static/images/icon.png"/>
 </head>
 <body class="auth-background">
 
@@ -19,30 +19,31 @@
                 </header>
 
                 <div class="img-container">
-                    <img src="../images/login-avatar.png" alt="Avatar" class="avatar">
+                    <img src="../static/images/login-avatar.png" alt="Avatar" class="avatar">
                 </div>
 
                 <div class="container">
                     <label class="input-field" for="login">Login</label>
-                    <input type="text" id="login" name="login" placeholder="Username"
-                           required minlength="3" maxlength="25"/>
+                    <input type="text" id="login" name="login" placeholder="Username" required
+                           minlength="3" maxlength="25" autocomplete="login"/>
+
                     <label class="input-field" for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Password" required minlength="6" maxlength="30"/>
+                    <input type="password" id="password" name="password" placeholder="Password" required
+                           minlength="6" maxlength="30" autocomplete="current-password"/>
                 </div>
 
-                <button class="button" type="submit">Sign in</button>
+                <button id="sign-in-button" class="button" type="submit">Sign in</button>
 
                 <div>
-                    <label>
-                        <input type="checkbox" id="remember-me" checked="checked" name="remember-me"/> Remember me
-                    </label>
+                    <input type="checkbox" id="remember-me" name="remember-me" checked/>
+                    <label for="remember-me"> Remember me</label>
                 </div>
 
                 <div class="registration-container">
-                    <label>
+                    <p>
                         New user?
                         <a href="/registration/" title="Registration Page" class="auth-hyperlink">Sign up</a>
-                    </label>
+                    </p>
                 </div>
             </form>
         </div>
