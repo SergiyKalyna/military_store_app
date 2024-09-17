@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en">
 <head>
     <title>Hello World!</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="This is a website where you can buy military items, clothes, equipment, etc"/>
+    <meta name="keywords" content="military, military-shop, military equipment, military clothes, military items"/>
+    <link rel="stylesheet" href="../static/css/auth.css">
 </head>
 <body>
-<h1 th:inline="text">Hello <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>
-<form th:action="@{/logout}" method="post">
+<div>
+    <h1 id="title">Hello user!</h1>
+</div>
+<form action="/logout" method="post">
     <input type="submit" value="Sign Out"/>
 </form>
 </body>

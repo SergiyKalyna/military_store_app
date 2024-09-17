@@ -1,34 +1,53 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<html lang="en">
 <head>
+    <title>Login Page</title>
     <meta charset="utf-8">
-    <title>Login Customer</title>
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../static/css/auth.css">
+    <link rel="icon" sizes="16x16 32x32 48x48" type="image/png" href="../static/images/icon.png"/>
 </head>
-<body>
-<div class="container">
-    <form class="form-signin" method="post" action="/login">
-        <div style="text-align: center;">
-            <h1>Login Page</h1>
+<body class="auth-background">
+
+<main>
+    <section class="centered-form">
+        <div class="form-container">
+            <form method="post" action="/login">
+
+                <header>
+                    <h1 class="title">Login Form</h1>
+                </header>
+
+                <div class="img-container">
+                    <img src="../static/images/login-avatar.png" alt="Avatar" class="avatar">
+                </div>
+
+                <div class="container">
+                    <label class="input-field" for="login">Login</label>
+                    <input type="text" id="login" name="login" placeholder="Username" required
+                           minlength="3" maxlength="25" autocomplete="login"/>
+
+                    <label class="input-field" for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Password" required
+                           minlength="6" maxlength="30" autocomplete="current-password"/>
+                </div>
+
+                <button id="sign-in-button" class="button" type="submit">Sign in</button>
+
+                <div>
+                    <input type="checkbox" id="remember-me" name="remember-me" checked/>
+                    <label for="remember-me"> Remember me</label>
+                </div>
+
+                <div class="registration-container">
+                    <p>
+                        New user?
+                        <a href="/registration/" title="Registration Page" class="auth-hyperlink">Sign up</a>
+                    </p>
+                </div>
+            </form>
         </div>
-        <div class="form-group my-3">
-            <label for="login">Login</label>
-            <input type="text" id="login" name="login" class="form-control" placeholder="Username"
-                   required minlength="3" maxlength="25"/>
-        </div>
-        <div class="form-group my-3">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password"
-                   required minlength="6" maxlength="30"/>
-        </div>
-        <div class="form-check my-3">
-            <label for="remember-me" class="form-check-label">Remember me</label>
-            <input type="checkbox" id="remember-me" name="remember-me" class="form-check-input"/>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <a href="/registration/" class="btn btn-lg btn-secondary">Registration</a>
-    </form>
-</div>
+    </section>
+</main>
 </body>
 </html>

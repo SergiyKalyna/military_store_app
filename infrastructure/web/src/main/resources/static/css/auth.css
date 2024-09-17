@@ -1,0 +1,87 @@
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.title {
+    margin-top: 5px;
+    text-align: center;
+}
+
+#sign-in-button {
+    background-color: #04AA6D;
+}
+
+.button {
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    margin: 5px 20px 10px;
+    cursor: pointer;
+    border-radius: 12px;
+    padding: 10px 24px;
+    font-family: inherit;
+    font-weight: inherit;
+    border: none;
+    width: 93%;
+}
+
+.auth-background {
+    background-image: url("../images/auth-background.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+}
+
+.centered-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45vh;
+}
+
+.form-container {
+    background-color: antiquewhite;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    padding: 16px;
+}
+
+.input-field {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.registration-container {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.auth-hyperlink {
+    color: blue;
+    text-decoration: none;
+}
+
+.img-container {
+    text-align: center;
+}
+
+img.avatar {
+    width: 20%;
+    border-radius: 50%;
+}
+
+#remember-me {
+    margin-left: 20px;
+}

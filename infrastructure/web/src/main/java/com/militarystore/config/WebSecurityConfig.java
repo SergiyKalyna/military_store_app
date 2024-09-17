@@ -26,7 +26,7 @@ public class WebSecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .httpBasic(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(request -> request
-                .requestMatchers("/", "/registration/**", "/error/**", "/auth").permitAll()
+                .requestMatchers("/", "/registration/**", "/error/**", "/auth", "/static/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/products/{productId}", "/products/subcategory-id/{subcategoryId}", "/products/product-name/{productName}").permitAll()
                 .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
