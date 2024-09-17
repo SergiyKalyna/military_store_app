@@ -10,6 +10,8 @@ spring:
             enabled: false
     mail:
         username: "militarystorenotificator@gmail.com"
+    mvc:
+      static-path-pattern: "/static/**"
 
 springdoc:
     swagger-ui:
