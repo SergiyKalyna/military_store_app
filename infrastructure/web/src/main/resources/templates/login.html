@@ -11,7 +11,7 @@
 
 <main>
     <section class="centered-form">
-        <div class="form-container">
+        <div class="login-container">
             <form method="post" action="/login">
 
                 <header>
@@ -22,7 +22,7 @@
                     <img src="../static/images/login-avatar.png" alt="Avatar" class="avatar">
                 </div>
 
-                <div class="container">
+                <div class="input-data-container">
                     <label class="input-field" for="login">Login</label>
                     <input type="text" id="login" name="login" placeholder="Username" required
                            minlength="3" maxlength="25" autocomplete="login"/>
@@ -30,9 +30,9 @@
                     <label class="input-field" for="password">Password</label>
                     <input type="password" id="password" name="password" placeholder="Password" required
                            minlength="6" maxlength="30" autocomplete="current-password"/>
-                </div>
 
-                <button id="sign-in-button" class="button" type="submit">Sign in</button>
+                    <button id="sign-in-button" class="button" type="submit">Sign in</button>
+                </div>
 
                 <div>
                     <input type="checkbox" id="remember-me" name="remember-me" checked/>
