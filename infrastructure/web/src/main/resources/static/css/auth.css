@@ -1,3 +1,7 @@
+html {
+    font-size: clamp(1rem, 0.75rem + 1.5vw, 1.2rem);
+}
+
 .centered-form {
     display: flex;
     justify-content: center;
@@ -11,6 +15,9 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     height: 25%;
     width: 25%;
+    flex-shrink: 1;
+    min-width: 250px;
+    min-height: 300px;
 }
 
 .input-data-container {
@@ -51,14 +58,14 @@ input[type=text], input[type=password] {
 }
 
 .input-field {
-    font-size: 18px;
+    font-size: 1rem;
     font-weight: bold;
 }
 
 .registration-container {
     margin-top: 20px;
     text-align: center;
-    font-size: 18px;
+    font-size: 1rem;
 }
 
 .auth-hyperlink {
@@ -68,6 +75,10 @@ input[type=text], input[type=password] {
 
 .auth-hyperlink:is(:hover, :focus) {
     color: blueviolet;
+}
+
+.auth-hyperlink:active {
+    color: red;
 }
 
 .img-container {
@@ -84,7 +95,7 @@ img.avatar {
     padding: 12px 20px;
     margin: 10px 0 0;
     width: 100%;
-    font-size: 18px;
+    font-size: 1rem;
 }
 
 #sign-in-button:is(:hover, :focus) {
@@ -94,12 +105,37 @@ img.avatar {
     transition-duration: 500ms;
     box-shadow: 0px 8px 10px 1px rgba(0, 0, 0, 0.2);
 }
+
 #sign-in-button:active {
     transform: scale(0.95);
     background-color: #027A4F;
     box-shadow: 0px 5px 7px 1px rgba(0, 0, 0, 0.4);
+    color: black;
 }
 
 #remember-me {
     margin-left: 20px;
+}
+
+@media (max-width: 600px) {
+    html {
+        font-size: 0.8rem;
+    }
+
+    .centered-form {
+        flex-direction: row;
+    }
+    .login-container {
+        box-sizing: border-box;
+        padding: 5px;
+    }
+
+    .title {
+        align-self: center;
+        margin: 0 0 5px;
+    }
+
+    .auth-background {
+        background-image: url("../images/auth-background-small-size.png");
+    }
 }
