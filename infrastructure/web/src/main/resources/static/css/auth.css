@@ -1,3 +1,29 @@
+html {
+    font-size: clamp(1rem, 0.75rem + 1.5vw, 1.2rem);
+}
+
+.centered-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    background-color: antiquewhite;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 25%;
+    width: 25%;
+    flex-shrink: 1;
+    min-width: 250px;
+    min-height: 300px;
+}
+
+.input-data-container {
+    padding: 16px;
+}
+
 input[type=text], input[type=password] {
     width: 100%;
     padding: 12px 20px;
@@ -12,65 +38,47 @@ input[type=text], input[type=password] {
     text-align: center;
 }
 
-#sign-in-button {
-    background-color: #04AA6D;
-}
-
 .button {
     color: white;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 18px;
-    margin: 5px 20px 10px;
     cursor: pointer;
     border-radius: 12px;
-    padding: 10px 24px;
     font-family: inherit;
     font-weight: inherit;
     border: none;
-    width: 93%;
 }
 
 .auth-background {
     background-image: url("../images/auth-background.png");
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-size: 100% 100%;
-}
-
-.centered-form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 45vh;
-}
-
-.form-container {
-    background-color: antiquewhite;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.container {
-    padding: 16px;
+    background-size: cover;
 }
 
 .input-field {
-    font-size: 18px;
+    font-size: 1rem;
     font-weight: bold;
 }
 
 .registration-container {
     margin-top: 20px;
     text-align: center;
-    font-size: 18px;
+    font-size: 1rem;
 }
 
 .auth-hyperlink {
     color: blue;
     text-decoration: none;
+}
+
+.auth-hyperlink:is(:hover, :focus) {
+    color: blueviolet;
+}
+
+.auth-hyperlink:active {
+    color: red;
 }
 
 .img-container {
@@ -82,6 +90,52 @@ img.avatar {
     border-radius: 50%;
 }
 
+#sign-in-button {
+    background-color: #04AA6D;
+    padding: 12px 20px;
+    margin: 10px 0 0;
+    width: 100%;
+    font-size: 1rem;
+}
+
+#sign-in-button:is(:hover, :focus) {
+    transform: scale(1.05);
+    background-color: #028A59;
+    transition-property: transform;
+    transition-duration: 500ms;
+    box-shadow: 0px 8px 10px 1px rgba(0, 0, 0, 0.2);
+}
+
+#sign-in-button:active {
+    transform: scale(0.95);
+    background-color: #027A4F;
+    box-shadow: 0px 5px 7px 1px rgba(0, 0, 0, 0.4);
+    color: black;
+}
+
 #remember-me {
     margin-left: 20px;
+}
+
+@media (max-width: 600px) {
+    html {
+        font-size: 0.8rem;
+    }
+
+    .centered-form {
+        flex-direction: row;
+    }
+    .login-container {
+        box-sizing: border-box;
+        padding: 5px;
+    }
+
+    .title {
+        align-self: center;
+        margin: 0 0 5px;
+    }
+
+    .auth-background {
+        background-image: url("../images/auth-background-small-size.png");
+    }
 }
