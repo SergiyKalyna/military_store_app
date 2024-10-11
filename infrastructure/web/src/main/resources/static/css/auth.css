@@ -21,18 +21,45 @@ select {
     border: 1px solid #ccc;
     box-sizing: border-box;
     border-radius: 8px;
-    color: grey;
+    color: black;
     font-family: inherit;
 }
 
 .input-data-container {
-    padding: 16px;
+    padding: 8px 16px;
 }
 
 .input-field {
     font-size: 1rem;
     font-weight: bold;
     align-self: flex-start;
+}
+
+.input-data-placeholder {
+    color: grey;
+    font-size: 0.9rem;
+}
+
+input:is(:focus, :hover) {
+    border: 2px solid #04AA6D;
+    background-color: powderblue;
+}
+
+input:valid {
+    border: 2px solid #04AA6D;
+}
+
+input[type=date].input-data-placeholder {
+    color: grey;
+}
+
+input[type=date].input-data-placeholder:valid,
+select.input-data-placeholder:valid {
+    color: black;
+}
+
+input:user-invalid {
+    border: 2px solid red;
 }
 
 /*Containers*/
@@ -56,7 +83,7 @@ select {
 
 .registration-form {
     background-color: grey;
-    margin: 30px;
+    margin: 10px 30px;
     border-radius: 8px;
     height: 90%;
     width: 30%;
@@ -68,7 +95,7 @@ select {
 }
 
 .account-prompt-container {
-    margin-top: 20px;
+    margin-top: 10px;
     text-align: center;
     font-size: 1rem;
 }
@@ -227,8 +254,10 @@ img.avatar {
         background-image: url("../images/login-background-small-size.png");
     }
 
-    #sign-in-button {
-        padding-top: 0;
-        margin-top: 0;
+    #sign-in-button,
+    #sign-up-button {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        margin-top: 6px;
     }
 }
