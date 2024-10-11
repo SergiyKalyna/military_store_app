@@ -2,6 +2,12 @@ html {
     font-size: clamp(1rem, 0.75rem + 1.5vw, 1.2rem);
 }
 
+.title {
+    margin-top: 15px;
+    text-align: center;
+}
+
+/*Input styles*/
 input[type=text],
 input[type=password],
 input[type=email],
@@ -19,6 +25,17 @@ select {
     font-family: inherit;
 }
 
+.input-data-container {
+    padding: 16px;
+}
+
+.input-field {
+    font-size: 1rem;
+    font-weight: bold;
+    align-self: flex-start;
+}
+
+/*Containers*/
 .centered-form {
     display: flex;
     justify-content: center;
@@ -31,7 +48,7 @@ select {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     height: 25%;
-    width: 25%;
+    width: 30%;
     flex-shrink: 1;
     min-width: 250px;
     min-height: 300px;
@@ -50,25 +67,10 @@ select {
     opacity: 90%;
 }
 
-.input-data-container {
-    padding: 16px;
-}
-
-.title {
-    margin-top: 15px;
+.account-prompt-container {
+    margin-top: 20px;
     text-align: center;
-}
-
-.button {
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    cursor: pointer;
-    border-radius: 12px;
-    font-family: inherit;
-    font-weight: inherit;
-    border: none;
+    font-size: 1rem;
 }
 
 .auth-background {
@@ -85,18 +87,16 @@ select {
     background-image: url("../images/registration-background.png");
 }
 
-.input-field {
-    font-size: 1rem;
-    font-weight: bold;
-    align-self: flex-start;
-}
-
-.account-prompt-container {
-    margin-top: 20px;
+.img-container {
     text-align: center;
-    font-size: 1rem;
 }
 
+img.avatar {
+    width: 20%;
+    border-radius: 50%;
+}
+
+/*Hyperlinks*/
 .auth-hyperlink {
     color: blue;
     text-decoration: none;
@@ -110,13 +110,17 @@ select {
     color: red;
 }
 
-.img-container {
+/*Buttons*/
+.button {
+    color: white;
     text-align: center;
-}
-
-img.avatar {
-    width: 20%;
-    border-radius: 50%;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 12px;
+    font-family: inherit;
+    font-weight: inherit;
+    border: none;
 }
 
 #sign-in-button {
