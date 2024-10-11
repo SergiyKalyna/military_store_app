@@ -2,6 +2,23 @@ html {
     font-size: clamp(1rem, 0.75rem + 1.5vw, 1.2rem);
 }
 
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=tel],
+input[type=date],
+select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 8px;
+    color: grey;
+    font-family: inherit;
+}
+
 .centered-form {
     display: flex;
     justify-content: center;
@@ -20,21 +37,25 @@ html {
     min-height: 300px;
 }
 
+.registration-form {
+    background-color: grey;
+    margin: 30px;
+    border-radius: 8px;
+    height: 90%;
+    width: 30%;
+    flex-shrink: 1;
+    min-width: 300px;
+    min-height: 400px;
+    max-width: 500px;
+    opacity: 90%;
+}
+
 .input-data-container {
     padding: 16px;
 }
 
-input[type=text], input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
 .title {
-    margin-top: 5px;
+    margin-top: 15px;
     text-align: center;
 }
 
@@ -51,18 +72,26 @@ input[type=text], input[type=password] {
 }
 
 .auth-background {
-    background-image: url("../images/auth-background.png");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
 }
 
+.login-background {
+    background-image: url("../images/login-background.png");
+}
+
+.registration-background {
+    background-image: url("../images/registration-background.png");
+}
+
 .input-field {
     font-size: 1rem;
     font-weight: bold;
+    align-self: flex-start;
 }
 
-.registration-container {
+.account-prompt-container {
     margin-top: 20px;
     text-align: center;
     font-size: 1rem;
@@ -113,6 +142,29 @@ img.avatar {
     color: black;
 }
 
+#sign-up-button {
+    background-color: #f44336;
+    padding: 12px 20px;
+    margin: 15px 0 0;
+    width: 100%;
+    font-size: 1rem;
+}
+
+#sign-up-button:is(:hover, :focus) {
+    transform: scale(1.05);
+    background-color: #d32f2f;
+    transition-property: transform;
+    transition-duration: 500ms;
+    box-shadow: 0px 8px 10px 1px rgba(0, 0, 0, 0.2);
+}
+
+#sign-up-button:active {
+    transform: scale(0.95);
+    background-color: #c62828;
+    box-shadow: 0px 5px 7px 1px rgba(0, 0, 0, 0.4);
+    color: black;
+}
+
 #remember-me {
     margin-left: 20px;
 }
@@ -122,12 +174,44 @@ img.avatar {
         font-size: 0.8rem;
     }
 
+    input[type=text],
+    input[type=password],
+    input[type=email],
+    input[type=tel],
+    input[type=date],
+    select {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
     .centered-form {
         flex-direction: row;
     }
+
     .login-container {
         box-sizing: border-box;
         padding: 5px;
+    }
+
+    .registration-form {
+        box-sizing: border-box;
+        padding: 0 5px;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .input-data-container {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .input-data-placeholder {
+        font-size: 0.8rem;
+    }
+
+    .img-container {
+        margin-top: 0;
+        margin-bottom: 0;
     }
 
     .title {
@@ -135,7 +219,12 @@ img.avatar {
         margin: 0 0 5px;
     }
 
-    .auth-background {
-        background-image: url("../images/auth-background-small-size.png");
+    .login-background {
+        background-image: url("../images/login-background-small-size.png");
+    }
+
+    #sign-in-button {
+        padding-top: 0;
+        margin-top: 0;
     }
 }
