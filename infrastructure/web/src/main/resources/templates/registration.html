@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Registration Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../static/css/auth.css">
+    <link rel="icon" sizes="16x16 32x32 48x48" type="image/png" href="../static/images/icon.png"/>
+</head>
+<body class="auth-background registration-background">
+<div class="centered-form">
+
+    <div class="registration-form">
+        <header>
+            <h2 class="title">Registration Page</h2>
+        </header>
+
+        <div class="img-container">
+            <img src="../static/images/login-avatar.png" alt="Avatar" class="avatar">
+        </div>
+
+        <main>
+            <form method="post" action="/registration">
+                <div class="input-data-container">
+                    <label class="input-field" for="login">Login</label>
+                    <input class="input-data-placeholder" type="text" id="login" name="login" placeholder="Username"
+                           required minlength="3" maxlength="25" autocomplete="login"/>
+
+                    <label class="input-field" for="password">Password</label>
+                    <input class="input-data-placeholder" type="password" id="password" name="password"
+                           placeholder="Password" required minlength="6" maxlength="30" autocomplete="current-password"/>
+
+                    <label class="input-field" for="first-name">First Name</label>
+                    <input class="input-data-placeholder" type="text" id="first-name" name="firstName"
+                           placeholder="First Name" required autocomplete="first-name"/>
+
+                    <label class="input-field" for="second-name">Last Name</label>
+                    <input class="input-data-placeholder" type="text" id="second-name" name="secondName"
+                           placeholder="Last Name" required autocomplete="second-name"/>
+
+                    <label class="input-field" for="email">Email</label>
+                    <input class="input-data-placeholder" type="email" id="email" name="email" placeholder="Email"
+                           required autocomplete="email"/>
+
+                    <label class="input-field" for="phone">Phone Number</label>
+                    <input class="input-data-placeholder" type="tel" id="phone" name="phone"
+                           placeholder="Phone (e.g. +1-234-567-8901)" required autocomplete="phone"
+                           pattern="\+?[0-9]{1,4}?[-.\s]?(\(?\d{1,3}?\)?[-.\s]?)?[\d\s.-]{3,15}"/>
+
+                    <label class="input-field">Gender
+                        <select class="input-data-placeholder" name="gender" required>
+                            <option value="" disabled selected>Please select your gender</option>
+                            <option value="MALE">Male</option>
+                            <option value="FEMALE">Female</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </label>
+
+                    <label class="input-field" for="birth-date">Birth Date</label>
+                    <input class="input-data-placeholder" type="date" id="birth-date" name="birthdayDate" required
+                           autocomplete="birth-date"/>
+
+                    <button id="sign-up-button" class="button" type="submit">Sign up</button>
+
+                    <div class="account-prompt-container">
+                        <p>
+                            Already have an account?
+                            <a href="/login" title="Login Page" class="auth-hyperlink">Sign in</a>
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+</body>
+</html>
