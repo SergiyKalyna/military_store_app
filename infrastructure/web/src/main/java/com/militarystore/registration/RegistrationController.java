@@ -24,9 +24,11 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public Integer createUser(@ModelAttribute UserRegistrationRequest registrationRequest) {
+    public String createUser(@ModelAttribute UserRegistrationRequest registrationRequest) {
         var user = userConverter.convertToUser(registrationRequest);
 
-        return createUserUseCase.saveUser(user);
+        createUserUseCase.saveUser(user);
+
+        return "redirect:/";
     }
 }
