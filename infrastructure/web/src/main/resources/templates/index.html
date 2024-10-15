@@ -6,14 +6,149 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content="This is a website where you can buy military items, clothes, equipment, etc"/>
     <meta name="keywords" content="military, military-shop, military equipment, military clothes, military items"/>
-    <link rel="stylesheet" href="../static/css/auth.css">
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
-<div>
-    <h1 id="title">Hello user!</h1>
+<div class="main-page-container">
+
+    <header>
+        <div class="logotype-container">
+            <a class="logotype" href="/" title="Military Store Home Page">
+                <img
+                    src="../static/images/logotype.svg"
+                    alt="Military Store logo"
+                    class="logotype"
+                    loading="eager"
+                    fetchpriority="high"
+                >
+            </a>
+        </div>
+
+        <div class="header-container">
+            <h1 id="header-title">Military Store Ukraine</h1>
+        </div>
+
+        <div class="sign-in-container">
+            <a href="/login" class="button" title="Login Page">Sign In</a>
+        </div>
+
+        <div class="sign-up-container">
+            <a href="/registration" class="button" title="Registration Page">Sign Up</a>
+        </div>
+
+        <div class="logout-container">
+            <form action="/logout" method="post">
+                <button class="button" type="submit">Sign Out</button>
+            </form>
+        </div>
+    </header>
+
+
+    <nav class="nav-container">
+        <div class="categories-container">
+            <form action="/categories" method="get">
+                <button class="button" type="submit">
+                    <label class="button-name">Categories</label>
+                    <img
+                        src="../static/images/icons/category.svg"
+                        alt="Categories"
+                        class="icon"
+                        loading="eager"
+                        fetchpriority="high"
+                    >
+                </button>
+            </form>
+        </div>
+
+<!--        Should be fixed with JS-->
+        <div class="search-container">
+            <form action="/product-name/{productName}" method="get">
+                <div class="input-icon-wrapper">
+                    <img
+                        src="../static/images/icons/search.svg"
+                        alt="Search Icon"
+                        class="search-icon"
+                        loading="eager"
+                        fetchpriority="high"
+                    >
+                    <input type="text" class="search-input" name="productName" placeholder="Search product by name..."/>
+                </div>
+                <button class="button search-button" type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="wishlist-container">
+            <a href="/users/wishlist" class="button" title="User wishlist">
+               <label class="button-name">Wishlist</label>
+                <img
+                    src="../static/images/icons/wishlist.svg"
+                    alt="Wishlist"
+                    class="icon"
+                    loading="eager"
+                    fetchpriority="high"
+                >
+            </a>
+        </div>
+
+        <div class="basket-container">
+            <a href="/products/basket" class="button" title="User basket">
+                <label class="button-name">Basket</label>
+                <img
+                    src="../static/images/icons/basket.svg"
+                    alt="Basket"
+                    class="icon"
+                    loading="eager"
+                    fetchpriority="high"
+                >
+            </a>
+        </div>
+
+<!--        Should be fixed with js-->
+        <div class="profile-container">
+            <a href="/users/{userId}" class="button" title="User profile">
+                <label class="button-name">Profile</label>
+                <img
+                    src="../static/images/icons/profile.svg"
+                    alt="Profile"
+                    class="icon"
+                    loading="eager"
+                    fetchpriority="high"
+                >
+            </a>
+        </div>
+    </nav>
+
+    <main class="content-container"></main>
+
+    <footer class="footer-container">
+        <div class="footer-info">
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p>Phone: +38 (044) 123-45-67</p>
+                <p>Email: support@militarystore.com</p>
+                <p>Address: 123 Military Road, Cherkassy, Ukraine</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Working Hours</h4>
+                <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
+                <p>Saturday: 10:00 AM - 4:00 PM</p>
+                <p>Sunday: Closed</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <p><a href="https://www.facebook.com/militarist.ua">Facebook</a></p>
+                <p><a href="https://www.instagram.com/mtac.ua/">Instagram</a></p>
+                <p><a href="https://t.me/militaristua">Telegram</a></p>
+                <p><a href="https://www.youtube.com/user/militaristgame">YouTube</a></p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2024 Military Shop | All rights reserved.</p>
+        </div>
+    </footer>
 </div>
-<form action="/logout" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
 </body>
 </html>
