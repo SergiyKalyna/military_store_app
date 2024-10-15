@@ -4,7 +4,6 @@ html {
 
 .main-page-container {
     display: grid;
-    grid-gap: 10px;
     grid-template-columns:
         [logo categories] minmax(10px, 2fr)
         [title search content] minmax(100px, 7fr)
@@ -13,11 +12,13 @@ html {
         [logout profile] minmax(5px, 1fr);
     grid-template-rows:
             [header-row] minmax(10px, 80px)
+            [banner-row] minmax(150px, auto)
             [nav-row] minmax(10px, 65px)
             [content-row] minmax(300px, 3fr)
             [footer-row] minmax(10px, 260px);
     grid-template-areas:
             "header header  header  header  header"
+            "banner banner  banner  banner  banner"
             "nav    nav     nav     nav     nav"
             "main   main    main    main    main"
             "footer footer  footer  footer  footer";
@@ -117,6 +118,20 @@ header {
     text-align: center;
 }
 
+/*Banner styles*/
+.banner-container {
+    grid-area: banner;
+    display: grid;
+    grid-template-rows: auto;
+}
+
+.banner-container img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    object-position: 50% 15%;
+}
+
 /*Nav styles*/
 .nav-container {
     grid-area: nav;
@@ -144,7 +159,6 @@ header {
     margin: 5px;
     border-radius: 25px;
     transition: all 0.3s ease;
-
     min-width: 50px;
     max-width: 100px;
 }
@@ -433,6 +447,7 @@ header {
     .main-page-container {
         grid-template-rows:
             [header-row] minmax(10px, 50px)
+            [banner-row] minmax(10px, 200px)
             [nav-row] minmax(10px, 45px)
             [content-row] minmax(300px, 3fr)
             [footer-row] minmax(10px, 1fr);
