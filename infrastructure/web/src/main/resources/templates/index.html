@@ -53,13 +53,13 @@
     </div>
 
     <nav class="nav-container">
-        <div class="categories-container">
+        <div class="catalog-container">
             <form action="/categories" method="get">
                 <button class="button" type="submit">
-                    <label class="button-name">Categories</label>
+                    <label class="button-name">Catalog</label>
                     <img
-                        src="../static/images/icons/category.svg"
-                        alt="Categories"
+                        src="../static/images/icons/catalog.svg"
+                        alt="Catalog"
                         class="icon"
                         loading="eager"
                         fetchpriority="high"
@@ -126,7 +126,120 @@
         </div>
     </nav>
 
-    <main class="content-container"></main>
+    <nav class="sidebar-container">
+        <div class="sidebar-section">
+<!--            Should be replace with /categories data to render and redirect to /{id}/subcategory via js-->
+            <h4>Categories</h4>
+            <ul>
+                <li><a href="/categories/1" title="Clothes">Clothes</a></li>
+                <li><a href="/categories/2" title="Equipment">Equipment</a></li>
+                <li><a href="/categories/3" title="Shoes">Shoes</a></li>
+                <li><a href="/categories/4" title="Hats">Hats</a></li>
+                <li><a href="/categories/5" title="Helmets">Helmets</a></li>
+                <li><a href="/categories/6" title="Gloves">Gloves</a></li>
+                <li><a href="/categories/7" title="Backpacks">Backpacks</a></li>
+                <li><a href="/categories/8" title="Accessories">Accessories</a></li>
+                <li><a href="/categories/9" title="Glasses">Glasses</a></li>
+                <li><a href="/categories/10" title="Watches">Watches</a></li>
+                <li><a href="/categories/11" title="Armor">Armor</a></li>
+                <li><a href="/categories/12" title="Weapons">Weapons</a></li>
+                <li><a href="/categories/13" title="Gears">Gears</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="content-container">
+<!--        Will be updated with js /subcategory-id/{subcategoryId}-->
+        <div class="item-block">
+            <img src="../static/images/mock/armor-1.png" alt="Item" />
+            <div class="item-info">
+                <h3 class="item-name">Armor</h3>
+                <p class="item-stock">In Stock</p>
+                <p class="item-price">$99.99</p>
+            </div>
+        </div>
+
+        <div class="item-block">
+            <img src="../static/images/mock/armor-2.png" alt="Item" />
+            <div class="item-info">
+                <h3 class="item-name">Armor Full Complect</h3>
+                <p class="item-stock">In Stock</p>
+                <p class="item-price">$329.99</p>
+            </div>
+        </div>
+
+        <div class="item-block">
+            <img src="../static/images/mock/armor-3.png" alt="Item" />
+            <div class="item-info">
+                <h3 class="item-name">Armor D-24</h3>
+                <p class="item-stock">In Stock</p>
+                <p class="item-price">$912.99</p>
+            </div>
+        </div>
+
+        <div class="item-block">
+            <img src="../static/images/mock/shoes-1.png" alt="Item" />
+            <div class="item-info">
+                <h3 class="item-name">Shoes M-4</h3>
+                <p class="item-stock">In Stock</p>
+                <p class="item-price">$99.99</p>
+            </div>
+        </div>
+
+        <div class="item-block">
+            <img src="../static/images/mock/shoes-2.png" alt="Item" />
+            <div class="item-info">
+                <h3 class="item-name">Shoes Lowa</h3>
+                <p class="item-stock">In Stock</p>
+                <p class="item-price">$1299.99</p>
+            </div>
+        </div>
+
+        <div class="item-block">
+            <img src="../static/images/mock/shoes-3.png" alt="Item" />
+            <div class="item-info">
+                <h3 class="item-name">Shoes Berkut</h3>
+                <p class="item-stock">In Stock</p>
+                <p class="item-price">$111.00</p>
+            </div>
+        </div>
+
+        <div class="item-block">
+            <img src="../static/images/mock/shoes-4.png" alt="Item" />
+            <div class="item-info">
+                <h3 class="item-name">Shoes Grotex</h3>
+                <p class="item-stock out-of-stock">Out of Stock</p>
+                <p class="item-price">$129.99</p>
+            </div>
+        </div>
+
+        <div class="item-block">
+            <img src="../static/images/mock/shoes-5.png" alt="Item" />
+            <div class="item-info">
+                <h3 class="item-name">Shoes Winter Z-1</h3>
+                <p class="item-stock out-of-stock">Out of Stock</p>
+                <p class="item-price">$329.99</p>
+            </div>
+        </div>
+
+        <div class="item-block">
+            <img src="../static/images/mock/helmet-1.png" alt="Item" />
+            <div class="item-info">
+                <h3 class="item-name">Helmet RG-M1</h3>
+                <p class="item-stock">In Stock</p>
+                <p class="item-price">$452.00</p>
+            </div>
+        </div>
+
+        <div class="item-block">
+            <img src="../static/images/mock/helmet-2.png" alt="Item" />
+            <div class="item-info">
+                <h3 class="item-name">Helmet Combat Multicam</h3>
+                <p class="item-stock out-of-stock">Out of Stock</p>
+                <p class="item-price">$500.00</p>
+            </div>
+        </div>
+    </main>
 
     <footer class="footer-container">
         <div class="footer-info">

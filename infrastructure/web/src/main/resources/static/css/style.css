@@ -5,7 +5,7 @@ html {
 .main-page-container {
     display: grid;
     grid-template-columns:
-        [logo categories] minmax(10px, 2fr)
+        [logo categories sidebar] minmax(10px, 2fr)
         [title search content] minmax(100px, 7fr)
         [sign-in wishlist] minmax(5px, 1fr)
         [sign-up basket] minmax(5px, 1fr)
@@ -14,14 +14,14 @@ html {
             [header-row] minmax(10px, 80px)
             [banner-row] minmax(150px, auto)
             [nav-row] minmax(10px, 65px)
-            [content-row] minmax(300px, 3fr)
+            [content-row] minmax(550px, auto)
             [footer-row] minmax(10px, 260px);
     grid-template-areas:
-            "header header  header  header  header"
-            "banner banner  banner  banner  banner"
-            "nav    nav     nav     nav     nav"
-            "main   main    main    main    main"
-            "footer footer  footer  footer  footer";
+            "header  header  header  header  header"
+            "banner  banner  banner  banner  banner"
+            "nav     nav     nav     nav     nav"
+            "sidebar main    main    main    main"
+            "footer  footer  footer  footer  footer";
 }
 
 /*Header styles*/
@@ -175,7 +175,7 @@ header {
     transform: scale(0.95) rotate(-2deg);
 }
 
-.categories-container,
+.catalog-container,
 .search-container,
 .wishlist-container,
 .basket-container,
@@ -196,14 +196,14 @@ header {
     margin: 5px 10px;
 }
 
-.categories-container {
+.catalog-container {
     grid-column: categories-start / categories-end;
     grid-row: nav-row-start / nav-row-end;
     justify-self: start;
     width: 100%;
 }
 
-.categories-container form {
+.catalog-container form {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -211,7 +211,7 @@ header {
     margin: 5px 0;
 }
 
-.categories-container .button {
+.catalog-container .button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -226,23 +226,23 @@ header {
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-.categories-container .button-name {
+.catalog-container .button-name {
     font-size: 0.85rem;
     padding-right: 10px;
 }
 
-.categories-container .icon {
+.catalog-container .icon {
     width: 20px;
     height: 20px;
 }
 
-.categories-container .button:is(:hover, :focus) {
+.catalog-container .button:is(:hover, :focus) {
     background-color: #7c97c6;
     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
     transform: scale(1.05);
 }
 
-.categories-container .button:active {
+.catalog-container .button:active {
     background-color: #6e85b2;
     transform: scale(0.95);
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
@@ -342,10 +342,130 @@ header {
     justify-self: start;
 }
 
+/*Sidebar styles*/
+.sidebar-container {
+    grid-area: sidebar;
+    background-color: #e6f7ff;
+    width: 100%;
+    height: auto;
+    padding: 20px 10px 20px 0;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-section h4 {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    margin-top: 0;
+    color: #004d66;
+    font-weight: bold;
+    text-align: center;
+}
+
+.sidebar-section ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-section ul li {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.sidebar-section ul li a {
+    display: block;
+    padding: 10px;
+    font-size: 1rem;
+    color: #5a5a5a;
+    text-decoration: none;
+    border-bottom: 1px solid #d1e0e0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar-section ul li a:is(:hover, :focus) {
+    background-color: #ccf2ff;
+    color: #00334d;
+}
+
+.sidebar-section ul li a:active {
+    background-color: #99e6ff;
+    color: #002b3a;
+    font-weight: bold;
+    border-left: 4px solid #01579b;
+}
+
 /*Main styles*/
 .content-container {
     grid-area: main;
-    background-color: lightcoral;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(400px, auto));
+    gap: 30px 10px;
+    padding: 20px 20px;
+    background-color: #f0faff;
+    justify-content: space-around;
+    align-content: center;
+}
+
+.item-block {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-self: center;
+    width: 300px;
+    height: 430px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.item-block:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.item-block img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    padding: 5px 10px;
+    height: 100px;
+}
+
+.item-name {
+    font-size: 1em;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    margin: 5px;
+}
+
+.item-stock {
+    font-size: 0.75em;
+    text-align: center;
+    color: #28a745;
+    margin: 5px;
+}
+
+.item-stock.out-of-stock {
+    color: #dc3545;
+}
+
+.item-price {
+    font-size: 1.2em;
+    text-align: center;
+    font-weight: bold;
+    color: #007bff;
+    margin: 15px 15px 0;
 }
 
 /*Footer styles*/
@@ -437,9 +557,29 @@ header {
         margin-left: 0;
     }
 
-    .categories-container .button-name {
+    .catalog-container .button-name {
         font-size: 0.7rem;
         padding-right: 5px;
+    }
+
+    .sidebar-container h4 {
+        font-size: 1.2rem;
+    }
+
+    .sidebar-section ul li a {
+        font-size: 0.9rem;
+    }
+
+    .content-container .item-name {
+        font-size: 0.9rem;
+    }
+
+    .content-container .item-stock {
+        font-size: 0.7rem;
+    }
+
+    .content-container .item-price {
+        font-size: 1rem;
     }
 }
 
@@ -449,7 +589,7 @@ header {
             [header-row] minmax(10px, 50px)
             [banner-row] minmax(10px, 200px)
             [nav-row] minmax(10px, 45px)
-            [content-row] minmax(300px, 3fr)
+            [content-row] minmax(200px, auto)
             [footer-row] minmax(10px, 1fr);
     }
 
@@ -475,11 +615,11 @@ header {
         display: none;
     }
 
-    .categories-container .button-name {
+    .catalog-container .button-name {
         font-size: 0.55rem;
     }
 
-    .categories-container .button {
+    .catalog-container .button {
         height: 25px;
     }
 
@@ -504,6 +644,26 @@ header {
     .search-button {
         margin-left: 0;
         width: 70px;
+    }
+
+    .sidebar-container h4 {
+        font-size: 0.9rem;
+    }
+
+    .sidebar-section ul li a {
+        font-size: 0.7rem;
+    }
+
+    .content-container .item-name {
+        font-size: 0.8rem;
+    }
+
+    .content-container .item-stock {
+        font-size: 0.6rem;
+    }
+
+    .content-container .item-price {
+        font-size: 0.9rem;
     }
 
     .footer-info {
